@@ -627,26 +627,28 @@ CREATE TABLE terms_codeset_industrystd (
 	terminologystdid int,
 	PRIMARY KEY (termcodesetid)
 );
-CREATE TABLE terms_umls_mrconoso (
-	cui char(8) NOT NULL,
-	lat char(3) NOT NULL,
-	ts char(1) NOT NULL,
-	lui varchar(10) NOT NULL,
-	stt varchar(3) NOT NULL,
-	sui varchar(10) NOT NULL,
-	ispref char(1) NOT NULL,
-	aui varchar(9) NOT NULL,
-	saui varchar(50),
-	scui varchar(100),
-	sdui varchar(100),
-	sab varchar(20) NOT NULL,
-	tty varchar(20) NOT NULL,
-	code varchar(100) NOT NULL,
-	str varchar(3000) NOT NULL,
-	srl varchar(25) NOT NULL,
-	suppress char(1) NOT NULL,
-    statusid int default 1,
+CREATE TABLE terms_umls_mrconoso
+(
+    cui         char(8)       NOT NULL,
+    lat         char(3)       NOT NULL,
+    ts          char(1)       NOT NULL,
+    lui         varchar(10)   NOT NULL,
+    stt         varchar(3)    NOT NULL,
+    sui         varchar(10)   NOT NULL,
+    ispref      char(1)       NOT NULL,
+    aui         varchar(9)    NOT NULL,
+    saui        varchar(50),
+    scui        varchar(100),
+    sdui        varchar(100),
+    sab         varchar(20)   NOT NULL,
+    tty         varchar(20)   NOT NULL,
+    code        varchar(100)  NOT NULL,
+    str         varchar(3000) NOT NULL,
+    srl         varchar(25)   NOT NULL,
+    suppress    char(1)       NOT NULL,
+    statusid    int      default 1,
     createddate datetime DEFAULT (GETUTCDATE())
+)
 ;
 
 ALTER TABLE apis

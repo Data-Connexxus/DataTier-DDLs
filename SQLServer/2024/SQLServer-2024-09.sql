@@ -88,6 +88,10 @@ CREATE TABLE platform_datageneration (
                                          createddate datetime DEFAULT (GETUTCDATE()),
                                          statusid int default 1,
                                          createduser varchar(20),
+                                         quantity int,
+                                         maxrecordsinsource int,
+                                         registeredapp char(38),
+                                         organizationguid char(38),
                                          PRIMARY KEY (datagentypeid)
 );
 

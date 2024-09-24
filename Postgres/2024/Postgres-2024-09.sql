@@ -37,8 +37,7 @@ CREATE TABLE datatier_datastructure
 
 create table datatier
 (
-    datatierid       integer default nextval('datatier_seq'::regclass) not null
-        primary key,
+    datatierid       integer default nextval('datatier_seq'::regclass) not null primary key,
     basevalue        varchar(99),
     supportingvalue1 varchar(169),
     supportingvalue2 varchar(50),
@@ -108,19 +107,23 @@ CREATE TABLE platform_datageneration (
        createddate timestamp DEFAULT CURRENT_TIMESTAMP,
        statusid integer DEFAULT 1,
        createduser varchar(20) DEFAULT 'NULL'::character varying,
+       quantity integer,
+       maxrecordsinsource integer,
+       registeredapp char(38),
+       organizationguid char(38),
        PRIMARY KEY (datagentypeid)
 );
 
 create table platform_datastructures
 (
-    platformdatastructuresid   integer     default nextval('platform_datastructures_seq'::regclass) not null,
-    datastructurename          varchar(50) default 'NULL'::character varying,
-    sensitivityflagid          integer ,
-    createddate                timestamp   default CURRENT_TIMESTAMP,
-    statusid                   integer     default 1,
-    createduser                varchar(20) default 'NULL'::character varying,
-    platformdatastructuresguid char(38)    default 'gen_random_uuid()'::bpchar,
-    registeredapp              char(38)    default NULL::bpchar,
+    platformdatastructuresid   integer  default nextval('platform_datastructures_seq'::regclass) not null,
+    datastructurename varchar(50) default 'NULL'::character varying,
+    sensitivityflagid integer,
+    createddate timestamp default CURRENT_TIMESTAMP,
+    statusid integer default 1,
+    createduser varchar(20) default 'NULL'::character varying,
+    platformdatastructuresguid char(38) default 'gen_random_uuid()'::bpchar,
+    registeredapp char(38) default NULL::bpchar,
     PRIMARY KEY (platformdatastructuresid)
 );
 

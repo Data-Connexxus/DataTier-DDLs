@@ -30,25 +30,25 @@ create sequence platform_xmap_tokens_dataattributes_seq;
 -- Create Tables
 CREATE TABLE datatier_crawler
 (
-        datacrawler_id integer DEFAULT nextval('datatier_crawler_seq'::regclass) NOT NULL,
-        token char(128) DEFAULT 'NULL'::character varying,
-        crawledtext_details text DEFAULT 'NULL'::character varying,
-        created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-        status_id integer DEFAULT 1,
-        registered_app varchar(38) DEFAULT 'NULL'::character varying,
-        organization_guid varchar(38) DEFAULT 'NULL'::character varying,
-        PRIMARY KEY (datacrawler_id)
+    datacrawler_id integer DEFAULT nextval('datatier_crawler_seq'::regclass) NOT NULL,
+    token char(128) DEFAULT 'NULL'::character varying,
+    crawledtext_details text DEFAULT 'NULL'::character varying,
+    created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+    status_id integer DEFAULT 1,
+    registered_app varchar(38) DEFAULT 'NULL'::character varying,
+    organization_guid varchar(38) DEFAULT 'NULL'::character varying,
+    PRIMARY KEY (datacrawler_id)
 );
 
 CREATE TABLE datatier_sdp_datastructures
 (
-        datastructurecore_id integer DEFAULT nextval('datatier_sdp_datastructure_seq'::regclass) NOT NULL,
-        datastructure_name varchar(29) DEFAULT 'NULL'::character varying,
-        datastructure_details text DEFAULT 'NULL'::character varying,
-        created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-        status_id integer DEFAULT 1,
-        registered_app varchar(38) DEFAULT 'NULL'::character varying,
-        PRIMARY KEY (datastructurecore_id)
+    datastructurecore_id integer DEFAULT nextval('datatier_sdp_datastructure_seq'::regclass) NOT NULL,
+    datastructure_name varchar(29) DEFAULT 'NULL'::character varying,
+    datastructure_details text DEFAULT 'NULL'::character varying,
+    created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+    status_id integer DEFAULT 1,
+    registered_app varchar(38) DEFAULT 'NULL'::character varying,
+    PRIMARY KEY (datastructurecore_id)
 );
 
 create table datatier_sdp_dataattributes
@@ -64,7 +64,7 @@ create table datatier_sdp_dataattributes
     supportingvalue7 varchar(50),
     created_date      timestamp,
     status_id         integer,
-    dataattributeid  integer,
+    dataattribute_id  integer,
     created_user      varchar(20),
     registered_app    char(38),
     datagentype_id    integer
@@ -72,75 +72,75 @@ create table datatier_sdp_dataattributes
 
 CREATE TABLE datatier_tokens
 (
-        datatokens_id integer DEFAULT nextval('datatier_tokens_seq'::regclass) NOT NULL,
-        token char(128) DEFAULT 'NULL'::character varying,
-        created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-        status_id integer DEFAULT 1,
-        registered_app varchar(38) DEFAULT 'NULL'::character varying,
-        organization_guid varchar(38) DEFAULT 'NULL'::character varying,
-        intfc_type varchar(10) DEFAULT 'API',
-        datasource_id integer
-        PRIMARY KEY (datacrawler_id)
+    datatoken_id integer DEFAULT nextval('datatier_tokens_seq'::regclass) NOT NULL,
+    token char(128) DEFAULT 'NULL'::character varying,
+    created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+    status_id integer DEFAULT 1,
+    registered_app varchar(38) DEFAULT 'NULL'::character varying,
+    organization_guid varchar(38) DEFAULT 'NULL'::character varying,
+    intfc_type varchar(10) DEFAULT 'API',
+    datasource_id integer,
+    PRIMARY KEY (datatoken_id)
 );
 
 CREATE TABLE datamodel_apis (
-     api_id integer DEFAULT nextval('apis_seq'::regclass) NOT NULL,
-     technology varchar(30),
-     dataattributes_id integer,
-     baseurllocation varchar(99),
-     apiname varchar(79),
-     created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-     status_id integer DEFAULT 1,
-     purpose varchar(49),
-     datmodel_tablename varchar(99),
-     apiparams varchar(59),
-     apiexample varchar(149),
-     PRIMARY KEY (api_id)
+                                api_id integer DEFAULT nextval('apis_seq'::regclass) NOT NULL,
+                                technology varchar(30),
+                                dataattributes_id integer,
+                                baseurllocation varchar(99),
+                                apiname varchar(79),
+                                created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                status_id integer DEFAULT 1,
+                                purpose varchar(49),
+                                datmodel_tablename varchar(99),
+                                apiparams varchar(59),
+                                apiexample varchar(149),
+                                PRIMARY KEY (api_id)
 );
 
 CREATE TABLE datamodel_datatables (
-     tablename varchar(64) NOT NULL,
-     tableinformation varchar(249) DEFAULT 'NULL'::character varying,
-     status_id integer DEFAULT 1,
-     created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-     datadomain varchar(64),
-     PRIMARY KEY (tablename)
+                                      tablename varchar(64) NOT NULL,
+                                      tableinformation varchar(249) DEFAULT 'NULL'::character varying,
+                                      status_id integer DEFAULT 1,
+                                      created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                      datadomain varchar(64),
+                                      PRIMARY KEY (tablename)
 );
 
 CREATE TABLE datamodel_domain (
-      domainname varchar(64) NOT NULL,
-      domaininformation varchar(249) DEFAULT 'NULL'::character varying,
-      status_id integer DEFAULT 1,
-      created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (domainname)
+                                  domainname varchar(64) NOT NULL,
+                                  domaininformation varchar(249) DEFAULT 'NULL'::character varying,
+                                  status_id integer DEFAULT 1,
+                                  created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                  PRIMARY KEY (domainname)
 );
 
 CREATE TABLE platform_dataattributes (
-      platformdataattributes_id integer DEFAULT nextval('platform_dataattributes_seq'::regclass) NOT NULL,
-      dataattribute_name varchar(50) DEFAULT 'NULL'::character varying,
-      sensitivityflag_id integer,
-      created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-      status_id integer DEFAULT 1,
-      created_user varchar(20) DEFAULT 'NULL'::character varying,
-      platformdataattribute_guid char(38) DEFAULT 'NULL'::bpchar,
-      registered_app char(38) DEFAULT 'NULL'::character varying,
-      attributetype varchar(10) DEFAULT 'NULL'::character varying,
-      PRIMARY KEY (platformdataattributes_id)
+                                         platformdataattributes_id integer DEFAULT nextval('platform_dataattributes_seq'::regclass) NOT NULL,
+                                         dataattribute_name varchar(50) DEFAULT 'NULL'::character varying,
+                                         sensitivityflag_id integer,
+                                         created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                         status_id integer DEFAULT 1,
+                                         created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                         platformdataattribute_guid char(38) DEFAULT 'NULL'::bpchar,
+                                         registered_app char(38) DEFAULT 'NULL'::character varying,
+                                         attributetype varchar(10) DEFAULT 'NULL'::character varying,
+                                         PRIMARY KEY (platformdataattributes_id)
 );
 
 CREATE TABLE platform_datageneration (
-       datagentype_id integer DEFAULT nextval('platform_datageneration_seq'::regclass) NOT NULL,
-       datagentype_description varchar(65) DEFAULT 'NULL'::character varying,
-       definition varchar(255) DEFAULT 'NULL'::character varying,
-       dataattribute_id integer,
-       created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-       status_id integer DEFAULT 1,
-       created_user varchar(20) DEFAULT 'NULL'::character varying,
-       quantity integer,
-       maxrecordsinsource integer,
-       registered_app char(38) DEFAULT 'NULL'::character varying,
-       organization_guid char(38) DEFAULT 'NULL'::character varying,
-       PRIMARY KEY (datagentype_id)
+                                         datagentype_id integer DEFAULT nextval('platform_datageneration_seq'::regclass) NOT NULL,
+                                         datagentype_description varchar(65) DEFAULT 'NULL'::character varying,
+                                         definition varchar(255) DEFAULT 'NULL'::character varying,
+                                         dataattribute_id integer,
+                                         created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                         status_id integer DEFAULT 1,
+                                         created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                         quantity integer,
+                                         maxrecordsinsource integer,
+                                         registered_app char(38) DEFAULT 'NULL'::character varying,
+                                         organization_guid char(38) DEFAULT 'NULL'::character varying,
+                                         PRIMARY KEY (datagentype_id)
 );
 
 create table platform_datasources
@@ -170,93 +170,93 @@ create table platform_datastructures
 );
 
 CREATE TABLE platform_datastructures_dtl (
-      platformdatastructuresdtl_id integer DEFAULT nextval('platform_datastructures_seq'::regclass) NOT NULL,
-      platformdatastructures_id integer,
-      compositedatastructure_name varchar(50) DEFAULT 'NULL'::character varying,
-      sensitivityflag_id integer DEFAULT 1,
-      created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-      status_id integer DEFAULT 1,
-      created_user varchar(20) DEFAULT 'NULL'::character varying,
-      platformdatastructures_to_dataattributes_guid char(38) DEFAULT 'NULL'::bpchar,
-      registered_app char(38) DEFAULT 'NULL'::bpchar,
-      platformdataattributes_id integer,
-      PRIMARY KEY (platformdatastructuresdtl_id)
+                                             platformdatastructuresdtl_id integer DEFAULT nextval('platform_datastructures_seq'::regclass) NOT NULL,
+                                             platformdatastructures_id integer,
+                                             compositedatastructure_name varchar(50) DEFAULT 'NULL'::character varying,
+                                             sensitivityflag_id integer DEFAULT 1,
+                                             created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                             status_id integer DEFAULT 1,
+                                             created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                             platformdatastructures_to_dataattributes_guid char(38) DEFAULT 'NULL'::bpchar,
+                                             registered_app char(38) DEFAULT 'NULL'::bpchar,
+                                             platformdataattributes_id integer,
+                                             PRIMARY KEY (platformdatastructuresdtl_id)
 );
 
 CREATE TABLE platform_xmap_tokens_attributes_dtl (
-      platformxmaptokensattributesdtl_id integer DEFAULT nextval('platform_xmap_tokens_dataattributes_seq'::regclass) NOT NULL,
-      platformdatastructures_id integer,
-      xmap_details varchar(149) DEFAULT 'NULL'::character varying,
-      dataattribute_id integer DEFAULT 1,
-      fieldorder_id integer DEFAULT 1,
-      created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-      status_id integer DEFAULT 1,
-      created_user varchar(20) DEFAULT 'NULL'::character varying,
-      registered_app char(38) DEFAULT 'NULL'::bpchar,
-      organization_guid char(38) default NULL::bpchar,
-      PRIMARY KEY (platformxmaptokensattributesdtl_id)
+                                                     platformxmaptokensattributesdtl_id integer DEFAULT nextval('platform_xmap_tokens_dataattributes_seq'::regclass) NOT NULL,
+                                                     platformdatastructures_id integer,
+                                                     xmap_details varchar(149) DEFAULT 'NULL'::character varying,
+                                                     dataattribute_id integer DEFAULT 1,
+                                                     fieldorder_id integer DEFAULT 1,
+                                                     created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                                     status_id integer DEFAULT 1,
+                                                     created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                                     registered_app char(38) DEFAULT 'NULL'::bpchar,
+                                                     organization_guid char(38) default NULL::bpchar,
+                                                     PRIMARY KEY (platformxmaptokensattributesdtl_id)
 );
 
 CREATE TABLE refdata_application (
-      app_guid char(38) DEFAULT 'gen_random_uuid()' NOT NULL,
-      application_customcode varchar(15) DEFAULT 'NULL'::character varying,
-      application_desc varchar(50) DEFAULT 'NULL'::character varying,
-      created_user varchar(20) DEFAULT 'NULL'::character varying,
-      created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-      status_id integer DEFAULT 1,
-      vendor_id integer,
-      industry_oid varchar(49),
-      organization_uid varchar(49),
-      PRIMARY KEY (app_guid)
+                                     app_guid char(38) DEFAULT 'gen_random_uuid()' NOT NULL,
+                                     application_customcode varchar(15) DEFAULT 'NULL'::character varying,
+                                     application_desc varchar(50) DEFAULT 'NULL'::character varying,
+                                     created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                     created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                     status_id integer DEFAULT 1,
+                                     vendor_id integer,
+                                     industry_oid varchar(49),
+                                     organization_uid varchar(49),
+                                     PRIMARY KEY (app_guid)
 );
 
 
 CREATE TABLE refdata_codeset (
-       codesets_id integer DEFAULT nextval('refdata_codeset_seq'::regclass) NOT NULL,
-       codeset_name varchar(50) DEFAULT 'NULL'::character varying,
-       industry_std varchar(6) DEFAULT 'NULL'::character varying,
-       status_id integer DEFAULT 1,
-       created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-       created_user varchar(20) DEFAULT 'NULL'::character varying,
-       codeset_guid char(38) DEFAULT 'NULL'::bpchar,
-       field_mapping varchar(40) DEFAULT 'NULL'::character varying,
-       sensitivityflag_id integer,
-       externaltable_id varchar(20) DEFAULT 'NULL'::character varying,
-       external_notes varchar(149) DEFAULT 'NULL'::character varying,
-       external_link varchar(99) DEFAULT 'NULL'::character varying,
-       PRIMARY KEY (codesetsid)
+                                 codesets_id integer DEFAULT nextval('refdata_codeset_seq'::regclass) NOT NULL,
+                                 codeset_name varchar(50) DEFAULT 'NULL'::character varying,
+                                 industry_std varchar(6) DEFAULT 'NULL'::character varying,
+                                 status_id integer DEFAULT 1,
+                                 created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                 created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                 codeset_guid char(38) DEFAULT 'NULL'::bpchar,
+                                 field_mapping varchar(40) DEFAULT 'NULL'::character varying,
+                                 sensitivityflag_id integer,
+                                 externaltable_id varchar(20) DEFAULT 'NULL'::character varying,
+                                 external_notes varchar(149) DEFAULT 'NULL'::character varying,
+                                 external_link varchar(99) DEFAULT 'NULL'::character varying,
+                                 PRIMARY KEY (codesets_id)
 );
 
 CREATE TABLE refdata_codesets_crossmaps (
-      codesetcrossmap_id integer DEFAULT nextval('refdata_codesetscrossmaps_seq'::regclass) NOT NULL,
-      implcodesets_id integer NOT NULL,
-      application_id bigint,
-      terminologystd_to integer,
-      created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-      status_id integer DEFAULT 1,
-      created_user varchar(20) DEFAULT 'NULL'::character varying,
-      transformcode_value varchar(40) DEFAULT 'NULL'::character varying,
-      transformcode_desc varchar(129) DEFAULT 'NULL'::character varying,
-      originalcode_value varchar(40),
-      originalcode_desc varchar(40),
-      PRIMARY KEY (codesetcrossmap_id)
+                                            codesetcrossmap_id integer DEFAULT nextval('refdata_codesetscrossmaps_seq'::regclass) NOT NULL,
+                                            implcodesets_id integer NOT NULL,
+                                            application_id bigint,
+                                            terminologystd_to integer,
+                                            created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                            status_id integer DEFAULT 1,
+                                            created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                            transformcode_value varchar(40) DEFAULT 'NULL'::character varying,
+                                            transformcode_desc varchar(129) DEFAULT 'NULL'::character varying,
+                                            originalcode_value varchar(40),
+                                            originalcode_desc varchar(40),
+                                            PRIMARY KEY (codesetcrossmap_id)
 );
 
 CREATE TABLE refdata_countries (
-      country_id integer DEFAULT nextval('refdata_countries_seq'::regclass) NOT NULL,
-      idd varchar(5) DEFAULT 'NULL'::character varying,
-      country_name varchar(59) DEFAULT 'NULL'::character varying,
-      created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-      status_id integer DEFAULT 1,
-      PRIMARY KEY (country_id)
+                                   country_id integer DEFAULT nextval('refdata_countries_seq'::regclass) NOT NULL,
+                                   idd varchar(5) DEFAULT 'NULL'::character varying,
+                                   country_name varchar(59) DEFAULT 'NULL'::character varying,
+                                   created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                   status_id integer DEFAULT 1,
+                                   PRIMARY KEY (country_id)
 );
 
 CREATE TABLE refdata_devicetypes (
-      devicetype_id integer DEFAULT nextval('refdata_devicetypes_seq'::regclass) NOT NULL,
-      devicetype varchar(30),
-      created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-      status_id integer DEFAULT 1,
-      PRIMARY KEY (devicetype_id)
+                                     devicetype_id integer DEFAULT nextval('refdata_devicetypes_seq'::regclass) NOT NULL,
+                                     devicetype varchar(30),
+                                     created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                     status_id integer DEFAULT 1,
+                                     PRIMARY KEY (devicetype_id)
 );
 
 CREATE TABLE refdata_industrystd_eventtypes
@@ -271,181 +271,181 @@ CREATE TABLE refdata_industrystd_eventtypes
 
 
 CREATE TABLE refdata_industries (
-      industry_id integer DEFAULT nextval('refdata_industries_seq'::regclass) NOT NULL,
-      industry_name varchar(45),
-      created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-      status_id integer DEFAULT 1,
-      PRIMARY KEY (industry_id)
+                                    industry_id integer DEFAULT nextval('refdata_industries_seq'::regclass) NOT NULL,
+                                    industry_name varchar(45),
+                                    created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                    status_id integer DEFAULT 1,
+                                    PRIMARY KEY (industry_id)
 );
 
 CREATE TABLE refdata_industriestobusiness (
-       industrytobusiness_id integer DEFAULT nextval('refdata_industriestobusiness_seq'::regclass) NOT NULL,
-       industry_id integer,
-       business_area varchar(50),
-       created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-       status_id integer DEFAULT 1,
-       PRIMARY KEY (industrytobusiness_id)
+                                              industrytobusiness_id integer DEFAULT nextval('refdata_industriestobusiness_seq'::regclass) NOT NULL,
+                                              industry_id integer,
+                                              business_area varchar(50),
+                                              created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                              status_id integer DEFAULT 1,
+                                              PRIMARY KEY (industrytobusiness_id)
 );
 
 CREATE TABLE refdata_industrystd (
-      industry_std varchar(6) NOT NULL,
-      industrystd_desc varchar(30) DEFAULT 'NULL'::character varying,
-      created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-      status_id integer DEFAULT 1,
-      PRIMARY KEY (industry_std)
+                                     industry_std varchar(6) NOT NULL,
+                                     industrystd_desc varchar(30) DEFAULT 'NULL'::character varying,
+                                     created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                     status_id integer DEFAULT 1,
+                                     PRIMARY KEY (industry_std)
 );
 
 CREATE TABLE refdata_legalentities (
-       legalentity_guid char(38) NOT NULL,
-       location_name varchar(50) DEFAULT 'NULL'::character varying,
-       address varchar(75) DEFAULT 'NULL'::character varying,
-       city varchar(60) DEFAULT 'NULL'::character varying,
-       state_id varchar(2) DEFAULT 'NULL'::character varying,
-       zipcode varchar(12) DEFAULT 'NULL'::character varying,
-       created_user varchar(20) DEFAULT 'NULL'::character varying,
-       status_id integer DEFAULT 1,
-       created_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-       location_url varchar(99) DEFAULT 'NULL'::character varying,
-       location_phone varchar(12) DEFAULT 'NULL'::character varying,
-       PRIMARY KEY (legalentity_guid)
+                                       legalentity_guid char(38) NOT NULL,
+                                       location_name varchar(50) DEFAULT 'NULL'::character varying,
+                                       address varchar(75) DEFAULT 'NULL'::character varying,
+                                       city varchar(60) DEFAULT 'NULL'::character varying,
+                                       state_id varchar(2) DEFAULT 'NULL'::character varying,
+                                       zipcode varchar(12) DEFAULT 'NULL'::character varying,
+                                       created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                       status_id integer DEFAULT 1,
+                                       created_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                                       location_url varchar(99) DEFAULT 'NULL'::character varying,
+                                       location_phone varchar(12) DEFAULT 'NULL'::character varying,
+                                       PRIMARY KEY (legalentity_guid)
 );
 
 CREATE TABLE refdata_organization (
-       organization_guid char(38) NOT NULL,
-       organization_internal_code varchar(10) DEFAULT 'NULL'::character varying,
-       organization_internal_id varchar(10) DEFAULT 'NULL'::character varying,
-       organization_name varchar(50) DEFAULT 'NULL'::character varying,
-       address varchar(75) DEFAULT 'NULL'::character varying,
-       city varchar(60) DEFAULT 'NULL'::character varying,
-       state_id varchar(2) DEFAULT 'NULL'::character varying,
-       zipcode varchar(12) DEFAULT 'NULL'::character varying,
-       created_user varchar(20) DEFAULT 'NULL'::character varying,
-       status_id integer DEFAULT 1,
-       created_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-       legalentity_guid varchar(38) DEFAULT 'NULL'::character varying,
-       PRIMARY KEY (organization_guid)
+                                      organization_guid char(38) NOT NULL,
+                                      organization_internal_code varchar(10) DEFAULT 'NULL'::character varying,
+                                      organization_internal_id varchar(10) DEFAULT 'NULL'::character varying,
+                                      organization_name varchar(50) DEFAULT 'NULL'::character varying,
+                                      address varchar(75) DEFAULT 'NULL'::character varying,
+                                      city varchar(60) DEFAULT 'NULL'::character varying,
+                                      state_id varchar(2) DEFAULT 'NULL'::character varying,
+                                      zipcode varchar(12) DEFAULT 'NULL'::character varying,
+                                      created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                      status_id integer DEFAULT 1,
+                                      created_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                                      legalentity_guid varchar(38) DEFAULT 'NULL'::character varying,
+                                      PRIMARY KEY (organization_guid)
 );
 
 
 CREATE TABLE refdata_regextypes (
-       regextype_id integer DEFAULT nextval('refdata_regextypes_seq'::regclass) NOT NULL,
-       regextype_desc varchar(69),
-       created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-       status_id integer DEFAULT 1,
-       organizationid char(38) DEFAULT 'NULL'::character varying,
-       applicationid char(38) DEFAULT 'NULL'::character varying,
-       PRIMARY KEY (regextype_id)
+                                    regextype_id integer DEFAULT nextval('refdata_regextypes_seq'::regclass) NOT NULL,
+                                    regextype_desc varchar(69),
+                                    created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                    status_id integer DEFAULT 1,
+                                    organization_id char(38) DEFAULT 'NULL'::character varying,
+                                    application_guid char(38) DEFAULT 'NULL'::character varying,
+                                    PRIMARY KEY (regextype_id)
 );
 
 CREATE TABLE refdata_rulesets (
-       rule_id integer DEFAULT nextval('refdata_rulesets_seq'::regclass) NOT NULL,
-       rule_name varchar(65) DEFAULT 'NULL'::character varying,
-       created_user varchar(20) DEFAULT 'NULL'::character varying,
-       created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-       status_id integer DEFAULT 1,
-       expirationdate timestamp,
-       PRIMARY KEY (rule_id)
+                                  rule_id integer DEFAULT nextval('refdata_rulesets_seq'::regclass) NOT NULL,
+                                  rule_name varchar(65) DEFAULT 'NULL'::character varying,
+                                  created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                  created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                  status_id integer DEFAULT 1,
+                                  expirationdate timestamp,
+                                  PRIMARY KEY (rule_id)
 );
 
 CREATE TABLE refdata_rulesetsdefinitions (
-      rulesetdefinitions_id char(38) NOT NULL,
-      rulesetdefinitions_name varchar(50) DEFAULT 'NULL'::character varying,
-      ruleset_id integer,
-      steporder_id integer,
-      operationtype_id varchar(7) DEFAULT 'NULL'::character varying,
-      ruleset_defvalue char(40) DEFAULT 'NULL'::bpchar,
-      status_id integer DEFAULT 1,
-      created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-      effective_date timestamp,
-      applicationid char(38) DEFAULT 'NULL'::character varying,
-      term_date timestamp,
-      dataattribute_id integer,
-      PRIMARY KEY (rulesetdefinitions_id)
+                                             rulesetdefinitions_id char(38) NOT NULL,
+                                             rulesetdefinitions_name varchar(50) DEFAULT 'NULL'::character varying,
+                                             ruleset_id integer,
+                                             steporder_id integer,
+                                             operationtype_id varchar(7) DEFAULT 'NULL'::character varying,
+                                             ruleset_defvalue char(40) DEFAULT 'NULL'::bpchar,
+                                             status_id integer DEFAULT 1,
+                                             created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                             effective_date timestamp,
+                                             application_guid char(38) DEFAULT 'NULL'::character varying,
+                                             term_date timestamp,
+                                             dataattribute_id integer,
+                                             PRIMARY KEY (rulesetdefinitions_id)
 );
 
 CREATE TABLE refdata_professiontypes (
-       professiontype_id integer DEFAULT nextval('refdata_professiontypes_seq'::regclass) NOT NULL,
-       professiontype_name varchar(65) DEFAULT 'NULL'::character varying,
-       created_user varchar(20) DEFAULT 'NULL'::character varying,
-       created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-       status_id integer DEFAULT 1,
-       PRIMARY KEY (professiontype_id)
+                                         professiontype_id integer DEFAULT nextval('refdata_professiontypes_seq'::regclass) NOT NULL,
+                                         professiontype_name varchar(65) DEFAULT 'NULL'::character varying,
+                                         created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                         created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                         status_id integer DEFAULT 1,
+                                         PRIMARY KEY (professiontype_id)
 );
 
 
 CREATE TABLE refdata_operationtype (
-       operationtype_id varchar(7) NOT NULL,
-       operationtype_name varchar(60) DEFAULT 'NULL'::character varying,
-       created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-       status_id integer DEFAULT 1,
-       PRIMARY KEY (operationtype_id)
+                                       operationtype_id varchar(7) NOT NULL,
+                                       operationtype_name varchar(60) DEFAULT 'NULL'::character varying,
+                                       created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                       status_id integer DEFAULT 1,
+                                       PRIMARY KEY (operationtype_id)
 );
 
 CREATE TABLE refdata_sensitivityflag (
-       sensitiveflag_id integer DEFAULT nextval('refdata_sensitivityflag_seq'::regclass) NOT NULL,
-       sensitiveflag_desc varchar(30) DEFAULT 'NULL'::character varying,
-       created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-       status_id integer DEFAULT 1,
-       PRIMARY KEY (sensitiveflag_id)
+                                         sensitiveflag_id integer DEFAULT nextval('refdata_sensitivityflag_seq'::regclass) NOT NULL,
+                                         sensitiveflag_desc varchar(30) DEFAULT 'NULL'::character varying,
+                                         created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                         status_id integer DEFAULT 1,
+                                         PRIMARY KEY (sensitiveflag_id)
 );
 
 CREATE TABLE refdata_status (
-        status_id integer DEFAULT nextval('refdata_status_seq'::regclass) NOT NULL,
-        status_description varchar(45) NOT NULL,
-        created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-        created_user varchar(20) DEFAULT 'NULL'::character varying,
-        PRIMARY KEY (status_id)
+                                status_id integer DEFAULT nextval('refdata_status_seq'::regclass) NOT NULL,
+                                status_description varchar(45) NOT NULL,
+                                created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                PRIMARY KEY (status_id)
 );
 
 CREATE TABLE refdata_terminologystd (
-        terminologystd_id integer DEFAULT nextval('refdata_terminologystd_seq'::regclass) NOT NULL,
-        terminologystd varchar(25) NOT NULL,
-        terminologystd_version varchar(10) NOT NULL,
-        terminologystd_desc varchar(129) DEFAULT 'NULL'::character varying,
-        created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-        status_id integer DEFAULT 1,
-        PRIMARY KEY (terminologystd_id)
+                                        terminologystd_id integer DEFAULT nextval('refdata_terminologystd_seq'::regclass) NOT NULL,
+                                        terminologystd varchar(25) NOT NULL,
+                                        terminologystd_version varchar(10) NOT NULL,
+                                        terminologystd_desc varchar(129) DEFAULT 'NULL'::character varying,
+                                        created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                        status_id integer DEFAULT 1,
+                                        PRIMARY KEY (terminologystd_id)
 );
 
 CREATE TABLE refdata_timezones (
-        timezone_value varchar(3) NOT NULL,
-        timezone_desc varchar(25) DEFAULT 'NULL'::character varying,
-        created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-        status_id integer DEFAULT 1,
-        PRIMARY KEY (timezone_value)
+                                   timezone_value varchar(3) NOT NULL,
+                                   timezone_desc varchar(25) DEFAULT 'NULL'::character varying,
+                                   created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                   status_id integer DEFAULT 1,
+                                   PRIMARY KEY (timezone_value)
 );
 
 CREATE TABLE refdata_usstates (
-       state_id varchar(2) NOT NULL,
-       state_description varchar(65) DEFAULT 'NULL'::character varying,
-       lattitude varchar(12) DEFAULT 'NULL'::character varying,
-       longitude varchar(12) DEFAULT 'NULL'::character varying,
-       created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-       status_id integer DEFAULT 1,
-       created_user varchar(20) DEFAULT 'NULL'::character varying,
-       PRIMARY KEY (state_id)
+                                  state_id varchar(2) NOT NULL,
+                                  state_description varchar(65) DEFAULT 'NULL'::character varying,
+                                  lattitude varchar(12) DEFAULT 'NULL'::character varying,
+                                  longitude varchar(12) DEFAULT 'NULL'::character varying,
+                                  created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                  status_id integer DEFAULT 1,
+                                  created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                  PRIMARY KEY (state_id)
 );
 
 CREATE TABLE refdata_vendor (
-       vendor_id integer DEFAULT nextval('refdata_vendor_seq'::regclass) NOT NULL,
-       vendor_name varchar(50) DEFAULT 'NULL'::character varying,
-       created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-       status_id integer DEFAULT 1,
-       created_user varchar(20) DEFAULT 'NULL'::character varying,
-       vendor_guid char(38) DEFAULT 'NULL'::bpchar,
-       PRIMARY KEY (vendorid)
+                                vendor_id integer DEFAULT nextval('refdata_vendor_seq'::regclass) NOT NULL,
+                                vendor_name varchar(50) DEFAULT 'NULL'::character varying,
+                                created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                status_id integer DEFAULT 1,
+                                created_user varchar(20) DEFAULT 'NULL'::character varying,
+                                vendor_guid char(38) DEFAULT 'NULL'::bpchar,
+                                PRIMARY KEY (vendor_id)
 );
 
 CREATE TABLE terms_codeset_industrystd (
-        termcodeset_id integer DEFAULT nextval('terms_codeset_industrystd_seq'::regclass)NOT NULL,
-        codesets_id integer NOT NULL,
-        created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-        status_id integer DEFAULT 1,
-        codevalue varchar(20) DEFAULT 'NULL'::character varying,
-        codedesc varchar(129) DEFAULT 'NULL'::character varying,
-        industry_std varchar(6) DEFAULT 'UNDF'::character varying,
-        terminologystd_id integer,
-        PRIMARY KEY (termcodeset_id)
+                                           termcodeset_id integer DEFAULT nextval('terms_codeset_industrystd_seq'::regclass)NOT NULL,
+                                           codesets_id integer NOT NULL,
+                                           created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                           status_id integer DEFAULT 1,
+                                           codevalue varchar(20) DEFAULT 'NULL'::character varying,
+                                           codedesc varchar(129) DEFAULT 'NULL'::character varying,
+                                           industry_std varchar(6) DEFAULT 'UNDF'::character varying,
+                                           terminologystd_id integer,
+                                           PRIMARY KEY (termcodeset_id)
 );
 
 -- Foreign Keys
@@ -476,10 +476,6 @@ ALTER TABLE datamodel_datatables
 ALTER TABLE datamodel_datatables
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
-
-ALTER TABLE databuilt_datastructure
-    ADD FOREIGN KEY (registered_app)
-        REFERENCES refdata_application (app_guid);
 
 ALTER TABLE platform_datastructures
     ADD FOREIGN KEY (registered_app)
@@ -558,7 +554,7 @@ ALTER TABLE refdata_professiontypes
         REFERENCES refdata_status (status_id);
 
 ALTER TABLE refdata_regextypes
-    ADD FOREIGN KEY (application_id)
+    ADD FOREIGN KEY (application_guid)
         REFERENCES refdata_application (app_guid);
 
 ALTER TABLE refdata_regextypes
@@ -574,7 +570,7 @@ ALTER TABLE refdata_rulesets
         REFERENCES refdata_status (status_id);
 
 ALTER TABLE refdata_rulesetsdefinitions
-    ADD FOREIGN KEY (application_id)
+    ADD FOREIGN KEY (application_guid)
         REFERENCES refdata_application (app_guid);
 
 ALTER TABLE refdata_rulesetsdefinitions
@@ -700,10 +696,10 @@ ALTER TABLE terms_codeset_industrystd
 
 -- Indexes
 create index if not exists datatiersdp_dataattributes_index
-    on public.datatier (datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4,
+    on datatier_sdp_dataattributes (datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4,
                         supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
                         datagentype_id, status_id, created_user, registered_app);
 
-CREATE INDEX terms_codeset_industrystd_index ON terms_codeset_industrystd USING btree (termcodeset_id, codesets_id, created_date, status_id, codevalue, codedesc, industrystd);
+CREATE INDEX terms_codeset_industrystd_index ON terms_codeset_industrystd USING btree (termcodeset_id, codesets_id, created_date, status_id, codevalue, codedesc, industry_std);
 
-CREATE UNIQUE INDEX terms_codeset_industrystd_uindex ON terms_codeset_industrystd USING btree (codesets_id, codevalue, codedesc, industrystd);
+CREATE UNIQUE INDEX terms_codeset_industrystd_uindex ON terms_codeset_industrystd USING btree (codesets_id, codevalue, codedesc, industry_std);

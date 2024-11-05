@@ -1,9 +1,8 @@
-[Core Synthetic Data Platform Site](https://github.com/SyntheticDataPlatform/.github/blob/main/profile/README.md)
+[Core Platform Site](https://github.com/DataJediToolBelt/)
 
-# Database Definitions
-The easiest thing we could have done is make this a complete SaaS-based offering. We are cognizant of the potential for
-partners to build out potential service offerings down the road. We also want to ensure that organizations can
-have control of the data.
+# Background
+This repository is specifically designed to help implement the DDL
+for the platform.
 
 ## Pre-Requisites
 Ensure you have all the tools needed to be installed and configured. 
@@ -13,6 +12,10 @@ Ensure you have all the tools needed to be installed and configured.
 3. If this is an enterprise or SaaS-provided database, you must ensure you have an account capable of creating
    databases and adding extensions. If you are not allowed those permissions, then admins will need to create the
    database and possibly run the ddl script within the database to create all the data objects.
+
+## Data Tier Enhancements
+As of November 2024 release we now include a specific file that chronicles releases.
+Please look at this [file](DBEnhancements.md) for data tier enhancements.
 
 # Running The Database Definition (DDL)
 - Load up your favorite RDBMS management tool or command line, get the latest script for the database technology you are implementing, and run it.

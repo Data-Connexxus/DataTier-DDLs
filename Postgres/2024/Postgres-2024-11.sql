@@ -118,6 +118,23 @@ CREATE TABLE datamodel_domain
     PRIMARY KEY (domainname)
 );
 
+CREATE TABLE platform_codesets_crossmaps
+(
+    codesetcrossmap_id  integer      DEFAULT nextval('refdata_codesetscrossmaps_seq'::regclass) NOT NULL,
+    implcodesets_id     integer                                                                 NOT NULL,
+    application_guid      CHAR(38),
+    organization_guid      CHAR(38),
+    terminologystd_to   integer,
+    created_date        timestamp    DEFAULT CURRENT_TIMESTAMP,
+    status_id           integer      DEFAULT 1,
+    created_user        varchar(20)  DEFAULT 'NULL'::character varying,
+    transformcode_value varchar(40)  DEFAULT 'NULL'::character varying,
+    transformcode_desc  varchar(129) DEFAULT 'NULL'::character varying,
+    originalcode_value  varchar(40),
+    originalcode_desc   varchar(40),
+    PRIMARY KEY (codesetcrossmap_id)
+);
+
 CREATE TABLE platform_dataattributes
 (
     platformdataattributes_id  integer     DEFAULT nextval('platform_dataattributes_seq'::regclass) NOT NULL,
@@ -236,22 +253,6 @@ CREATE TABLE refdata_codeset
     PRIMARY KEY (codesets_id)
 );
 
-CREATE TABLE refdata_codesets_crossmaps
-(
-    codesetcrossmap_id  integer      DEFAULT nextval('refdata_codesetscrossmaps_seq'::regclass) NOT NULL,
-    implcodesets_id     integer                                                                 NOT NULL,
-    application_id      bigint,
-    terminologystd_to   integer,
-    created_date        timestamp    DEFAULT CURRENT_TIMESTAMP,
-    status_id           integer      DEFAULT 1,
-    created_user        varchar(20)  DEFAULT 'NULL'::character varying,
-    transformcode_value varchar(40)  DEFAULT 'NULL'::character varying,
-    transformcode_desc  varchar(129) DEFAULT 'NULL'::character varying,
-    originalcode_value  varchar(40),
-    originalcode_desc   varchar(40),
-    PRIMARY KEY (codesetcrossmap_id)
-);
-
 CREATE TABLE refdata_countries
 (
     country_id   integer     DEFAULT nextval('refdata_countries_seq'::regclass) NOT NULL,
@@ -326,6 +327,15 @@ CREATE TABLE refdata_legalentities
     PRIMARY KEY (legalentity_guid)
 );
 
+CREATE TABLE refdata_operationtype
+(
+    operationtype_id   varchar(7) NOT NULL,
+    operationtype_name varchar(60) DEFAULT 'NULL'::character varying,
+    created_date       timestamp   DEFAULT CURRENT_TIMESTAMP,
+    status_id          integer     DEFAULT 1,
+    PRIMARY KEY (operationtype_id)
+);
+
 CREATE TABLE refdata_organization
 (
     organization_guid          char(38)                              NOT NULL,
@@ -342,7 +352,6 @@ CREATE TABLE refdata_organization
     legalentity_guid           varchar(38) DEFAULT 'NULL'::character varying,
     PRIMARY KEY (organization_guid)
 );
-
 
 CREATE TABLE refdata_regextypes
 (
@@ -393,15 +402,6 @@ CREATE TABLE refdata_professiontypes
     PRIMARY KEY (professiontype_id)
 );
 
-
-CREATE TABLE refdata_operationtype
-(
-    operationtype_id   varchar(7) NOT NULL,
-    operationtype_name varchar(60) DEFAULT 'NULL'::character varying,
-    created_date       timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id          integer     DEFAULT 1,
-    PRIMARY KEY (operationtype_id)
-);
 
 CREATE TABLE refdata_sensitivityflag
 (

@@ -6,7 +6,7 @@ CREATE TABLE datatier_crawler
     crawledtext_details text,
     created_date        datetime DEFAULT (GETUTCDATE()),
     status_id           int DEFAULT 1,
-    registered_app      char(38),
+    registeredapp_guid      char(38),
     organization_guid   char(38),
     PRIMARY KEY (datacrawler_id)
 );
@@ -26,20 +26,20 @@ CREATE TABLE datatier_sdp_dataattributes (
                           status_id INT default 1,
                           dataattribute_id INT,
                           createduser varchar(20),
-                          registered_app char(38),
+                          registeredapp_guid char(38),
                           datagentype_id INT,
                           PRIMARY KEY (datatier_id)
 );
 
 drop table if exists datatier_sdp_datastructures;
 CREATE TABLE datatier_sdp_datastructures (
-                                         datastructurecore_id INT IDENTITY(1,1) NOT NULL,
-                                         datastructurename varchar(29),
-                                         datastructuredetails text,
+                                         datastructure_core_id INT IDENTITY(1,1) NOT NULL,
+                                         datastructure_name varchar(29),
+                                         datastructure_details text,
                                          created_date datetime DEFAULT (GETUTCDATE()),
                                          status_id INT default 1,
-                                         registered_app char(38),
-                                         PRIMARY KEY (datastructurecore_id)
+                                         registeredapp_guid char(38),
+                                         PRIMARY KEY (datastructure_core_id)
 );
 
 CREATE TABLE datatier_tokens
@@ -48,7 +48,7 @@ CREATE TABLE datatier_tokens
     token             char(128),
     created_date      datetime DEFAULT (GETUTCDATE()),
     status_id         INT    DEFAULT 1,
-    registered_app    char(38),
+    registeredapp_guid    char(38),
     organization_guid char(38),
     intfc_type        varchar(10) DEFAULT 'API',
     datasource_id     INT,
@@ -109,17 +109,17 @@ CREATE TABLE platform_codesets_crossmaps (
 
 drop table if exists platform_dataattributes;
 CREATE TABLE platform_dataattributes (
-                                         platformdataattributes_id INT IDENTITY(1,1) NOT NULL,
+                                         platform_dataattributes_id INT IDENTITY(1,1) NOT NULL,
                                          dataattributename varchar(50),
                                          sensitivityflag_id INT,
                                          created_date datetime DEFAULT (GETUTCDATE()),
                                          status_id INT default 1,
                                          createduser varchar(20),
-                                         platformdataattributeguid char(38),
-                                         registered_app char(38),
-                                         platformtablename varchar(38),
-                                         attributetype varchar(10),
-                                         PRIMARY KEY (platformdataattributes_id)
+                                         platform_dataattributeguid char(38),
+                                         registeredapp_guid char(38),
+                                         platform_tablename char(38),
+                                         attribute_type varchar(10),
+                                         PRIMARY KEY (platform_dataattributes_id)
 );
 
 drop table if exists platform_datageneration;
@@ -133,7 +133,7 @@ CREATE TABLE platform_datageneration (
                                          createduser varchar(20),
                                          quantity int,
                                          maxrecordsinsource int,
-                                         registered_app char(38),
+                                         registeredapp_guid char(38),
                                          organization_guid char(38),
                                          PRIMARY KEY (datagentype_id)
 );
@@ -141,60 +141,60 @@ CREATE TABLE platform_datageneration (
 drop table if exists platform_datasources;
 create table platform_datasources
 (
-    platformdatasources_id INT IDENTITY(1,1) NOT NULL,
+    platform_datasources_id INT IDENTITY(1,1) NOT NULL,
     datasource_name        varchar(50),
     datasource_type        varchar(10),
     created_date           datetime DEFAULT (GETUTCDATE()),
     status_id              INT     default 1,
     created_user           varchar(20),
     organization_guid      char(38),
-    registered_app         char(38),
-    PRIMARY KEY (platformdatasources_id)
+    registeredapp_guid         char(38),
+    PRIMARY KEY (platform_datasources_id)
 );
 
 drop table if exists platform_datastructure;
 CREATE TABLE platform_datastructures (
-                                         platformdatastructures_id INT IDENTITY(1,1) NOT NULL,
-                                         datastructurename varchar(50),
+                                         platform_datastructures_id INT IDENTITY(1,1) NOT NULL,
+                                         datastructure_name varchar(50),
                                          sensitivityflag_id INT,
                                          created_date datetime DEFAULT (GETUTCDATE()),
                                          status_id INT default 1,
-                                         createduser varchar(20),
-                                         platformdatastructuresguid char(38),
-                                         registered_app char(38),
-                                         PRIMARY KEY (platformdatastructures_id)
+                                         created_user varchar(20),
+                                         platform_datastructures_guid char(38),
+                                         registeredapp_guid char(38),
+                                         PRIMARY KEY (platform_datastructures_id)
 );
 
 drop table if exists platform_datastructures_dtl;
 CREATE TABLE platform_datastructures_dtl (
-                                             platformdatastructuresdtl_id INT IDENTITY(1,1) NOT NULL,
-                                             platformdatastructures_id INT,
-                                             compositedatastructurename varchar(50),
+                                             platform_datastructuresdtl_id INT IDENTITY(1,1) NOT NULL,
+                                             platform_datastructures_id INT,
+                                             composite_datastructure_name varchar(50),
                                              sensitivityflag_id INT,
                                              created_date datetime DEFAULT (GETUTCDATE()),
                                              status_id INT default 1,
                                              createduser varchar(20),
-                                             platformdatastructurestodataattributesguid char(38),
-                                             registered_app char(38),
-                                             platformdataattributes_id INT,
-                                             PRIMARY KEY (platformdatastructuresdtl_id)
+                                             platform_datastructures_to_dataattributes_guid char(38),
+                                             registeredapp_guid char(38),
+                                             platform_dataattributes_id INT,
+                                             PRIMARY KEY (platform_datastructuresdtl_id)
 );
 
 
 DROP TABLE if exists platform_xmap_tokens_attributes_dtl;
 CREATE TABLE platform_xmap_tokens_attributes_dtl
 (
-    platformxmaptokensattributesdtl_id INT IDENTITY(1,1) NOT NULL,
-    platformdatastructures_id          int,
+    platform_xmap_tokensattributesdtl_id INT IDENTITY(1,1) NOT NULL,
+    platform_datastructures_id          int,
     xmap_details                       varchar(149),
     dataattribute_id                   int      DEFAULT 1,
     fieldorder_id                      int   DEFAULT 1,
     created_date                       timestamp    datetime DEFAULT (GETUTCDATE()),
     status_id                          int      DEFAULT 1,
     created_user                       varchar(20),
-    registered_app                     char(38),
+    registeredapp_guid                     char(38),
     organization_guid                  char(38),
-    PRIMARY KEY (platformxmaptokensattributesdtl_id)
+    PRIMARY KEY (platform_xmap_tokensattributesdtl_id)
 );
 
 drop table if exists refdata_application;
@@ -214,17 +214,17 @@ CREATE TABLE refdata_application (
 drop table if exists refdata_codeset;
 CREATE TABLE refdata_codeset (
                                  codesets_id INT IDENTITY(1,1) NOT NULL,
-                                 codesetname varchar(50),
-                                 industrystd varchar(6),
+                                 codeset_name varchar(50),
+                                 industry_std varchar(6),
                                  status_id INT default 1,
                                  created_date datetime DEFAULT (GETUTCDATE()),
-                                 createduser varchar(20),
+                                 created_user varchar(20),
                                  codeset_guid char(38),
-                                 fieldmapping varchar(40),
+                                 field_mapping varchar(40),
                                  sensitivityflag_id INT,
-                                 externaltableid varchar(20),
-                                 externalnotes varchar(149),
-                                 externallink varchar(99),
+                                 externaltable_id varchar(20),
+                                 external_notes varchar(149),
+                                 external_link varchar(99),
                                  PRIMARY KEY (codesets_id)
 );
 
@@ -232,7 +232,7 @@ drop table if exists refdata_countries;
 CREATE TABLE refdata_countries (
                                    country_id INT IDENTITY(1,1) NOT NULL,
                                    idd varchar(5),
-                                   countryname varchar(59),
+                                   country_name varchar(59),
                                    created_date datetime DEFAULT (GETUTCDATE()),
                                    status_id INT default 1,
                                    PRIMARY KEY (country_id)
@@ -269,7 +269,7 @@ CREATE TABLE refdata_industriestobusiness (
 drop table if exists refdata_industrystd;
 CREATE TABLE refdata_industrystd (
                                      industry_std varchar(6) NOT NULL,
-                                     industrystddesc varchar(30),
+                                     industrystd_desc varchar(30),
                                      created_date datetime DEFAULT (GETUTCDATE()),
                                      status_id INT default 1,
                                      PRIMARY KEY (industry_std)
@@ -291,13 +291,13 @@ CREATE TABLE refdata_legalentities (
                                        location_name varchar(50),
                                        address varchar(75),
                                        city varchar(60),
-                                       stateid varchar(2),
+                                       state_id varchar(2),
                                        zipcode varchar(12),
-                                       createduser varchar(20),
+                                       created_user varchar(20),
                                        status_id INT default 1,
                                        created_date datetime DEFAULT (GETUTCDATE()),
-                                       locationurl varchar(99),
-                                       locationphone varchar(12),
+                                       location_url varchar(99),
+                                       location_phone varchar(12),
                                        PRIMARY KEY (legalentity_guid)
 );
 
@@ -318,9 +318,9 @@ CREATE TABLE refdata_organization (
                                       organization_name varchar(50),
                                       address varchar(75),
                                       city varchar(60),
-                                      stateid varchar(2),
+                                      state_id varchar(2),
                                       zipcode varchar(12),
-                                      createduser varchar(20),
+                                      created_user varchar(20),
                                       status_id INT default 1,
                                       created_date datetime DEFAULT (GETUTCDATE()),
                                       legalentity_guid char(38),
@@ -388,9 +388,9 @@ CREATE TABLE refdata_sensitivityflag (
 drop table if exists refdata_status;
 CREATE TABLE refdata_status (
                                 status_id INT IDENTITY(1,1) NOT NULL,
-                                statusdescription varchar(45) NOT NULL,
+                                status_description varchar(45) NOT NULL,
                                 created_date datetime,
-                                createduser varchar(20),
+                                created_user varchar(20),
                                 PRIMARY KEY (status_id)
 );
 
@@ -398,8 +398,8 @@ drop table if exists refdata_terminologystd;
 CREATE TABLE refdata_terminologystd (
                                         terminologystd_id INT IDENTITY(1,1) NOT NULL,
                                         terminologystd varchar(25) NOT NULL,
-                                        terminologystdversion varchar(10) NOT NULL,
-                                        terminologystddesc varchar(129),
+                                        terminologystd_version varchar(10) NOT NULL,
+                                        terminologystd_desc varchar(129),
                                         created_date datetime DEFAULT (GETUTCDATE()),
                                         status_id INT default 1,
                                         PRIMARY KEY (terminologystd_id)
@@ -422,7 +422,7 @@ CREATE TABLE refdata_usstates (
                                   longitude varchar(12),
                                   created_date datetime DEFAULT (GETUTCDATE()),
                                   status_id INT default 1,
-                                  createduser varchar(20),
+                                  created_user varchar(20),
                                   PRIMARY KEY (state_id)
 );
 
@@ -443,15 +443,15 @@ CREATE TABLE terms_codeset_industrystd (
                                            codesets_id INT NOT NULL,
                                            created_date datetime DEFAULT (GETUTCDATE()),
                                            status_id INT default 1,
-                                           codevalue varchar(20),
-                                           codedesc varchar(129),
-                                           industrystd varchar(6),
+                                           code_value varchar(20),
+                                           code_desc varchar(129),
+                                           industry_std varchar(6),
                                            terminologystd_id INT,
                                            PRIMARY KEY (termcodeset_id)
 );
 
 ALTER TABLE databuilt_datastructure
-    ADD FOREIGN KEY (registered_app)
+    ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_application (app_guid);
 
 ALTER TABLE databuilt_datastructure
@@ -461,7 +461,7 @@ ALTER TABLE databuilt_datastructure
 
 ALTER TABLE datamodel_apis
     ADD FOREIGN KEY (dataattributes_id)
-        REFERENCES platform_dataattributes (platformdataattributes_id);
+        REFERENCES platform_dataattributes (platform_dataattributes_id);
 
 
 ALTER TABLE datamodel_datatables
@@ -474,7 +474,7 @@ ALTER TABLE datamodel_datatables
 
 
 ALTER TABLE datatier
-    ADD FOREIGN KEY (registered_app)
+    ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_application (app_guid);
 
 ALTER TABLE datatier
@@ -483,7 +483,7 @@ ALTER TABLE datatier
 
 
 ALTER TABLE platform_dataattributes
-    ADD FOREIGN KEY (registered_app)
+    ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_application (app_guid);
 
 ALTER TABLE platform_dataattributes
@@ -497,7 +497,7 @@ ALTER TABLE platform_dataattributes
 
 ALTER TABLE platform_datageneration
     ADD FOREIGN KEY (dataattribute_id)
-        REFERENCES platform_dataattributes (platformdataattributes_id);
+        REFERENCES platform_dataattributes (platform_dataattributes_id);
 
 ALTER TABLE platform_datageneration
     ADD FOREIGN KEY (status_id)
@@ -505,7 +505,7 @@ ALTER TABLE platform_datageneration
 
 
 ALTER TABLE platform_datastructures
-    ADD FOREIGN KEY (registered_app)
+    ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_application (app_guid);
 
 ALTER TABLE platform_datastructures
@@ -523,7 +523,7 @@ ALTER TABLE refdata_application
 
 ALTER TABLE refdata_application
     ADD FOREIGN KEY (vendor_id)
-        REFERENCES refdata_vendor (vendori_d);
+        REFERENCES refdata_vendor (vendor_id);
 
 
 ALTER TABLE refdata_codeset
@@ -654,7 +654,7 @@ ALTER TABLE refdata_rulesets
 
 ALTER TABLE refdata_rulesetsdefinitions
     ADD FOREIGN KEY (dataattribute_id)
-        REFERENCES platform_dataattributes (platformdataattributes_id);
+        REFERENCES platform_dataattributes (platform_dataattributes_id);
 
 ALTER TABLE refdata_rulesetsdefinitions
     ADD FOREIGN KEY (application_id)

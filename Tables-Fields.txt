@@ -1,0 +1,29 @@
+Not in Spark or Snowflake - refdata_industrystd, refdata_codeset, refdata_countries (spark), refdata_industries (spark), refdata_industriestobusiness (spark), refdata_operationtype (spark)
+refdata_terminologystd (spark), platform_datastructures, platform_datastructures_dtl, platform (rename of refdata_crossmap), newly created datatier_ tables and refdata_sources
+
+x - refdata_status(status_id, status_description, created_date, created_user)
+x - refdata_timezones (timezone_value, timezone_desc, created_date, status_id)
+x- refdata_usstates (state_id, state_description, lattitude, longitude, created_date, status_id, created_user)
+x- refdata_vendor (vendor_id, vendor_name, created_date, status_id, created_user, vendor_guid)
+x-refdata_industrystd (industry_std, industrystd_desc, created_date, status_id)
+x-refdata_sensitivityflag (sensitiveflag_id, sensitiveflag_desc, created_date, status_id)
+x-refdata_codeset (codesets_id, codeset_name, industry_std, status_id, created_date, created_user, codeset_guid, field_mapping, sensitivityflag_id, externaltable_id, external_notes, external_link)
+x-refdata_application (app_guid, application_customcode, application_desc, created_user, created_date, status_id, vendor_id, industry_oid, organization_uid)
+x-refdata_countries (country_id, idd, country_name, created_date, status_id)
+x-refdata_devicetypes (devicetype_id, devicetype, created_date, status_id)
+x-refdata_industries (industry_id, industry_name, created_date, status_id)
+x-refdata_industriestobusiness (industrytobusiness_id, industry_id, business_area, created_date, status_id)
+x-refdata_legalentities (legalentity_guid, location_name, address, city, state_id, zipcode, created_user, status_id, created_date, location_url, location_phone)
+x-refdata_operationtype (operationtype_id, operationtype_name, created_date, status_id)
+x-refdata_organization (organization_guid, organization_internal_code, organization_internal_id, organization_name, address, city, state_id, zipcode, created_user, status_id, created_date, legalentity_guid)
+x-refdata_terminologystd (terminologystd_id, terminologystd, terminologystd_version, terminologystd_desc)
+
+datamodel_domain (domainname,domaininformation,statusid,createddate)
+datamodel_datatables (tablename,tableinformation,statusid,createddate,datadomain)
+
+x-platform_dataattributes (platformdataattributes_id, dataattribute_name, sensitivityflag_id, created_date, status_id, created_user, platformdataattribute_guid, registered_app, attributetype)
+x-platform_datageneration (datagentype_id, datagentype_description, definition, dataattribute_id, created_date, status_id, created_user, quantity, maxrecordsinsource, registered_app, organization_guid)
+x-platform_datastructures (platformdatastructures_id, datastructure_name, sensitivityflag_id, created_date, status_id, created_user, platformdatastructures_guid, registered_app)
+x-platform_datastructures_dtl (platformdatastructuresdtl_id, platformdatastructures_id, compositedatastructure_name, sensitivityflag_id, created_date, status_id, created_user, platformdatastructures_to_dataattributes_guid, registered_app, platformdataattributes_id)
+
+datatier_sdp_dataattributes(datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4, supportingvalue5, supportingvalue6, supportingvalue7, created_date, status_id, dataattribute_id, created_user, registered_app, datagentype_id)

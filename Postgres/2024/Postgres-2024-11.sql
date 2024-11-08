@@ -35,20 +35,20 @@ CREATE TABLE datatier_crawler
     crawledtext_details text        DEFAULT 'NULL'::character varying,
     created_date        timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id           integer     DEFAULT 1,
-    registered_app      varchar(38) DEFAULT 'NULL'::character varying,
-    organization_guid   varchar(38) DEFAULT 'NULL'::character varying,
+    registeredapp_guid      char(38) DEFAULT 'NULL'::character varying,
+    organization_guid   char(38) DEFAULT 'NULL'::character varying,
     PRIMARY KEY (datacrawler_id)
 );
 
 CREATE TABLE datatier_sdp_datastructures
 (
-    datastructurecore_id  integer     DEFAULT nextval('datatier_sdp_datastructure_seq'::regclass) NOT NULL,
+    datastructure_core_id  integer     DEFAULT nextval('datatier_sdp_datastructure_seq'::regclass) NOT NULL,
     datastructure_name    varchar(29) DEFAULT 'NULL'::character varying,
     datastructure_details text        DEFAULT 'NULL'::character varying,
     created_date          timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id             integer     DEFAULT 1,
-    registered_app        varchar(38) DEFAULT 'NULL'::character varying,
-    PRIMARY KEY (datastructurecore_id)
+    registeredapp_guid        char(38) DEFAULT 'NULL'::character varying,
+    PRIMARY KEY (datastructure_core_id)
 );
 
 create table datatier_sdp_dataattributes
@@ -66,7 +66,7 @@ create table datatier_sdp_dataattributes
     status_id        integer,
     dataattribute_id integer,
     created_user     varchar(20),
-    registered_app   char(38),
+    registeredapp_guid   char(38),
     datagentype_id   integer
 );
 
@@ -76,8 +76,8 @@ CREATE TABLE datatier_tokens
     token             char(128)   DEFAULT 'NULL'::character varying,
     created_date      timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id         integer     DEFAULT 1,
-    registered_app    varchar(38) DEFAULT 'NULL'::character varying,
-    organization_guid varchar(38) DEFAULT 'NULL'::character varying,
+    registeredapp_guid    char(38) DEFAULT 'NULL'::character varying,
+    organization_guid char(38) DEFAULT 'NULL'::character varying,
     intfc_type        varchar(10) DEFAULT 'API',
     datasource_id     integer,
     PRIMARY KEY (datatoken_id)
@@ -137,16 +137,16 @@ CREATE TABLE platform_codesets_crossmaps
 
 CREATE TABLE platform_dataattributes
 (
-    platformdataattributes_id  integer     DEFAULT nextval('platform_dataattributes_seq'::regclass) NOT NULL,
+    platform_dataattributes_id  integer     DEFAULT nextval('platform__dataattributes_seq'::regclass) NOT NULL,
     dataattribute_name         varchar(50) DEFAULT 'NULL'::character varying,
     sensitivityflag_id         integer,
     created_date               timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id                  integer     DEFAULT 1,
     created_user               varchar(20) DEFAULT 'NULL'::character varying,
-    platformdataattribute_guid char(38)    DEFAULT 'NULL'::bpchar,
-    registered_app             char(38)    DEFAULT 'NULL'::character varying,
-    attributetype              varchar(10) DEFAULT 'NULL'::character varying,
-    PRIMARY KEY (platformdataattributes_id)
+    platform_dataattribute_guid char(38)    DEFAULT 'NULL'::bpchar,
+    registeredapp_guid             char(38)    DEFAULT 'NULL'::character varying,
+    attribute_type              varchar(10) DEFAULT 'NULL'::character varying,
+    PRIMARY KEY (platform_dataattributes_id)
 );
 
 CREATE TABLE platform_datageneration
@@ -160,65 +160,65 @@ CREATE TABLE platform_datageneration
     created_user            varchar(20)  DEFAULT 'NULL'::character varying,
     quantity                integer,
     maxrecordsinsource      integer,
-    registered_app          char(38)     DEFAULT 'NULL'::character varying,
+    registeredapp_guid          char(38)     DEFAULT 'NULL'::character varying,
     organization_guid       char(38)     DEFAULT 'NULL'::character varying,
     PRIMARY KEY (datagentype_id)
 );
 
 create table platform_datasources
 (
-    platformdatasources_id integer     default nextval('platform_datasources_seq'::regclass) not null,
+    platform_datasources_id integer     default nextval('platform_datasources_seq'::regclass) not null,
     datasource_name        varchar(50) default 'NULL'::character varying,
     datasource_type        varchar(10),
     created_date           timestamp   default CURRENT_TIMESTAMP,
     status_id              integer     default 1,
     created_user           varchar(20) default 'NULL'::character varying,
     organization_guid      char(38)    DEFAULT 'NULL'::character varying,
-    registered_app         char(38)    DEFAULT 'NULL'::character varying,
-    PRIMARY KEY (platformdatasources_id)
+    registeredapp_guid         char(38)    DEFAULT 'NULL'::character varying,
+    PRIMARY KEY (platform_datasources_id)
 );
 
 create table platform_datastructures
 (
-    platformdatastructures_id   integer     default nextval('platform_datastructures_seq'::regclass) not null,
+    platform_datastructures_id   integer     default nextval('platform_datastructures_seq'::regclass) not null,
     datastructure_name          varchar(50) default 'NULL'::character varying,
     sensitivityflag_id          integer,
     created_date                timestamp   default CURRENT_TIMESTAMP,
     status_id                   integer     default 1,
     created_user                varchar(20) default 'NULL'::character varying,
-    platformdatastructures_guid char(38)    default 'gen_random_uuid()'::bpchar,
-    registered_app              char(38)    DEFAULT 'NULL'::character varying,
-    PRIMARY KEY (platformdatastructures_id)
+    platform_datastructures_guid char(38)    default 'gen_random_uuid()'::bpchar,
+    registeredapp_guid              char(38)    DEFAULT 'NULL'::character varying,
+    PRIMARY KEY (platform_datastructures_id)
 );
 
 CREATE TABLE platform_datastructures_dtl
 (
-    platformdatastructuresdtl_id                  integer     DEFAULT nextval('platform_datastructures_seq'::regclass) NOT NULL,
-    platformdatastructures_id                     integer,
-    compositedatastructure_name                   varchar(50) DEFAULT 'NULL'::character varying,
+    platform_datastructuresdtl_id                  integer     DEFAULT nextval('platform_datastructures_seq'::regclass) NOT NULL,
+    platform_datastructures_id                     integer,
+    composite_datastructure_name                   varchar(50) DEFAULT 'NULL'::character varying,
     sensitivityflag_id                            integer     DEFAULT 1,
     created_date                                  timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id                                     integer     DEFAULT 1,
     created_user                                  varchar(20) DEFAULT 'NULL'::character varying,
-    platformdatastructures_to_dataattributes_guid char(38)    DEFAULT 'NULL'::bpchar,
-    registered_app                                char(38)    DEFAULT 'NULL'::bpchar,
-    platformdataattributes_id                     integer,
-    PRIMARY KEY (platformdatastructuresdtl_id)
+    platform_datastructures_to_dataattributes_guid char(38)    DEFAULT 'NULL'::bpchar,
+    registeredapp_guid                                char(38)    DEFAULT 'NULL'::bpchar,
+    platform_dataattributes_id                     integer,
+    PRIMARY KEY (platform_datastructuresdtl_id)
 );
 
 CREATE TABLE platform_xmap_tokens_attributes_dtl
 (
-    platformxmaptokensattributesdtl_id integer      DEFAULT nextval('platform_xmap_tokens_dataattributes_seq'::regclass) NOT NULL,
-    platformdatastructures_id          integer,
+    platform_xmap_tokens_attributesdtl_id integer      DEFAULT nextval('platform_xmap_tokens_dataattributes_seq'::regclass) NOT NULL,
+    platform_datastructures_id          integer,
     xmap_details                       varchar(149) DEFAULT 'NULL'::character varying,
     dataattribute_id                   integer      DEFAULT 1,
     fieldorder_id                      integer      DEFAULT 1,
     created_date                       timestamp    DEFAULT CURRENT_TIMESTAMP,
     status_id                          integer      DEFAULT 1,
     created_user                       varchar(20)  DEFAULT 'NULL'::character varying,
-    registered_app                     char(38)     DEFAULT 'NULL'::bpchar,
+    registeredapp_guid                     char(38)     DEFAULT 'NULL'::bpchar,
     organization_guid                  char(38)     default NULL::bpchar,
-    PRIMARY KEY (platformxmaptokensattributesdtl_id)
+    PRIMARY KEY (platform_xmap_tokens_attributesdtl_id)
 );
 
 CREATE TABLE refdata_application
@@ -349,7 +349,7 @@ CREATE TABLE refdata_organization
     created_user               varchar(20) DEFAULT 'NULL'::character varying,
     status_id                  integer     DEFAULT 1,
     created_date               timestamp   DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    legalentity_guid           varchar(38) DEFAULT 'NULL'::character varying,
+    legalentity_guid           char(38) DEFAULT 'NULL'::character varying,
     PRIMARY KEY (organization_guid)
 );
 
@@ -359,7 +359,7 @@ CREATE TABLE refdata_regextypes
     regextype_desc   varchar(69),
     created_date     timestamp DEFAULT CURRENT_TIMESTAMP,
     status_id        integer   DEFAULT 1,
-    organization_id  char(38)  DEFAULT 'NULL'::character varying,
+    organization_guid  char(38)  DEFAULT 'NULL'::character varying,
     application_guid char(38)  DEFAULT 'NULL'::character varying,
     PRIMARY KEY (regextype_id)
 );
@@ -470,8 +470,8 @@ CREATE TABLE terms_codeset_industrystd
     codesets_id       integer                                                                 NOT NULL,
     created_date      timestamp    DEFAULT CURRENT_TIMESTAMP,
     status_id         integer      DEFAULT 1,
-    codevalue         varchar(20)  DEFAULT 'NULL'::character varying,
-    codedesc          varchar(129) DEFAULT 'NULL'::character varying,
+    code_value         varchar(20)  DEFAULT 'NULL'::character varying,
+    code_desc          varchar(129) DEFAULT 'NULL'::character varying,
     industry_std      varchar(6)   DEFAULT 'UNDF'::character varying,
     terminologystd_id integer,
     PRIMARY KEY (termcodeset_id)
@@ -483,7 +483,7 @@ ALTER TABLE datatier_crawler
         REFERENCES refdata_status (status_id);
 
 ALTER TABLE datatier_sdp_dataattributes
-    ADD FOREIGN KEY (registered_app)
+    ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_application (app_guid);
 
 ALTER TABLE datatier_sdp_dataattributes
@@ -496,7 +496,7 @@ ALTER TABLE datatier_tokens
 
 ALTER TABLE datamodel_apis
     ADD FOREIGN KEY (dataattributes_id)
-        REFERENCES platform_dataattributes (platformdataattributes_id);
+        REFERENCES platform_dataattributes (platform_dataattributes_id);
 
 ALTER TABLE datamodel_datatables
     ADD FOREIGN KEY (datadomain)
@@ -507,7 +507,7 @@ ALTER TABLE datamodel_datatables
         REFERENCES refdata_status (status_id);
 
 ALTER TABLE platform_datastructures
-    ADD FOREIGN KEY (registered_app)
+    ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_application (app_guid);
 
 ALTER TABLE platform_datastructures
@@ -519,7 +519,7 @@ ALTER TABLE platform_datastructures
         REFERENCES refdata_status (status_id);
 
 ALTER TABLE platform_dataattributes
-    ADD FOREIGN KEY (registered_app)
+    ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_application (app_guid);
 
 ALTER TABLE platform_dataattributes
@@ -587,7 +587,7 @@ ALTER TABLE refdata_regextypes
         REFERENCES refdata_application (app_guid);
 
 ALTER TABLE refdata_regextypes
-    ADD FOREIGN KEY (organization_id)
+    ADD FOREIGN KEY (organization_guid)
         REFERENCES refdata_organization (organization_guid);
 
 ALTER TABLE refdata_regextypes
@@ -608,7 +608,7 @@ ALTER TABLE refdata_rulesetsdefinitions
 
 ALTER TABLE refdata_rulesetsdefinitions
     ADD FOREIGN KEY (dataattribute_id)
-        REFERENCES platform_dataattributes (platformdataattributes_id);
+        REFERENCES platform_dataattributes (platform_dataattributes_id);
 
 ALTER TABLE refdata_rulesetsdefinitions
     ADD FOREIGN KEY (operationtype_id)
@@ -636,7 +636,7 @@ ALTER TABLE refdata_countries
 
 ALTER TABLE platform_datageneration
     ADD FOREIGN KEY (dataattribute_id)
-        REFERENCES platform_dataattributes (platformdataattributes_id);
+        REFERENCES platform_dataattributes (platform_dataattributes_id);
 
 ALTER TABLE platform_datageneration
     ADD FOREIGN KEY (status_id)
@@ -727,7 +727,7 @@ ALTER TABLE terms_codeset_industrystd
 create index if not exists datatiersdp_dataattributes_index
     on datatier_sdp_dataattributes (datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4,
     supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
-    datagentype_id, status_id, created_user, registered_app);
+    datagentype_id, status_id, created_user, registeredapp_guid);
 
 CREATE INDEX terms_codeset_industrystd_index ON terms_codeset_industrystd USING btree (termcodeset_id, codesets_id, created_date, status_id, codevalue, codedesc, industry_std);
 

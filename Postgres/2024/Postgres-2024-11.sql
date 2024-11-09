@@ -1,31 +1,57 @@
 -- Create Sequences First
 -- Need to create for all serial datatypes
+drop sequence if exists datatier_sdp_datastructure_seq;
 create sequence datatier_sdp_datastructure_seq;
+drop sequence if exists sequence datatier_sdp_dataattribute_seq;
 create sequence datatier_sdp_dataattribute_seq;
+drop sequence if exists datatier_tokens_seq;
 create sequence datatier_tokens_seq;
+drop sequence if exists datatier_crawler_seq;
 create sequence datatier_crawler_seq;
+drop sequence if exists apis_seq;
 create sequence apis_seq;
+drop sequence if exists refdata_codesets_seq;
 create sequence refdata_codesets_seq;
+drop sequence if exists refdata_codesetscrossmaps_seq;
 create sequence refdata_codesetscrossmaps_seq;
+drop sequence if exists refdata_professiontypes_seq;
 create sequence refdata_professiontypes_seq;
+drop sequence if exists refdata_regextypes_seq;
 create sequence refdata_regextypes_seq;
+drop sequence if exists refdata_rulesets_seq;
 create sequence refdata_rulesets_seq;
-create sequence platform_dataattributes_seq;
-create sequence platform_datageneration_seq;
-create sequence platform_datastructures_seq;
-create sequence refdata_codeset_seq;
-create sequence refdata_countries_seq;
-create sequence refdata_devicetypes_seq;
-create sequence refdata_eventtypes_seq;
-create sequence refdata_industries_seq;
-create sequence refdata_industriestobusiness_seq;
-create sequence refdata_sensitivityflag_seq;
-create sequence refdata_status_seq;
-create sequence refdata_terminologystd_seq;
-create sequence refdata_vendor_seq;
-create sequence terms_codeset_industrystd_seq;
+drop sequence if exists platform_datasources_seq;
 create sequence platform_datasources_seq;
+drop sequence if exists platform_xmap_tokens_dataattributes_seq;
 create sequence platform_xmap_tokens_dataattributes_seq;
+drop sequence if exists platform_dataattributes_seq;
+create sequence platform_dataattributes_seq;
+drop sequence if exists platform_datageneration_seq;
+create sequence platform_datageneration_seq;
+drop sequence if exists platform_datastructures_seq;
+create sequence platform_datastructures_seq;
+drop sequence if exists refdata_codeset_seq;
+create sequence refdata_codeset_seq;
+drop sequence if exists refdata_countries_seq;
+create sequence refdata_countries_seq;
+drop sequence if exists refdata_devicetypes_seq;
+create sequence refdata_devicetypes_seq;
+drop sequence if exists refdata_eventtypes_seq;
+create sequence refdata_eventtypes_seq;
+drop sequence if exists refdata_industries_seq;
+create sequence refdata_industries_seq;
+drop sequence if exists refdata_industriestobusiness_seq;
+create sequence refdata_industriestobusiness_seq;
+drop sequence if exists refdata_sensitivityflag_seq;
+create sequence refdata_sensitivityflag_seq;
+drop sequence if exists refdata_status_seq;
+create sequence refdata_status_seq;
+drop sequence if exists refdata_terminologystd_seq;
+create sequence refdata_terminologystd_seq;
+drop sequence if exists refdata_vendor_seq;
+create sequence refdata_vendor_seq;
+drop sequence if exists terms_codeset_industrystd_seq;
+create sequence terms_codeset_industrystd_seq;
 
 -- Create Tables
 CREATE TABLE datatier_crawler
@@ -231,7 +257,7 @@ CREATE TABLE refdata_application
     status_id              integer     DEFAULT 1,
     vendor_id              integer,
     industry_oid           varchar(49),
-    organization_uid       varchar(49),
+    organization_guid       varchar(49),
     PRIMARY KEY (app_guid)
 );
 
@@ -275,7 +301,7 @@ CREATE TABLE refdata_devicetypes
 CREATE TABLE refdata_industrystd_eventtypes
 (
     eventtype_id    varchar(10) NOT NULL,
-    eventtype_ddesc varchar(30) default 'NULL'::character varying,
+    eventtype_desc varchar(30) default 'NULL'::character varying,
     industry_std    varchar(6),
     created_date    timestamp   default CURRENT_TIMESTAMP,
     status_id       integer     default 1,
@@ -371,7 +397,7 @@ CREATE TABLE refdata_rulesets
     created_user   varchar(20) DEFAULT 'NULL'::character varying,
     created_date   timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id      integer     DEFAULT 1,
-    expirationdate timestamp,
+    expiration_date timestamp,
     PRIMARY KEY (rule_id)
 );
 

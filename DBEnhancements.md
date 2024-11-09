@@ -8,6 +8,10 @@ and/or MS SQL Server.
 
 # 2024-11
 
+## Need to Address: Future
+Not in Spark or Snowflake - refdata_industrystd, refdata_codeset, refdata_countries (spark), refdata_industries (spark), refdata_industriestobusiness (spark), refdata_operationtype (spark)
+refdata_terminologystd (spark), platform_datastructures, platform_datastructures_dtl, platform (rename of refdata_crossmap), newly created datatier_ tables and refdata_sources
+
 ## Created 
 The following tables were created for this month's release.
 
@@ -23,6 +27,7 @@ The following tables have been enhanced for this month's release.
 - datatier_dataattributes to datatier_sdp_dataattributes
 
 Renamed fields:
+- massive cleanup and renaming of fields to make the field names more human readable and intelligent
 - any fields ending in id we made _id
 - any fields ending in guid we made _guid
 - industrystd to industry_std

@@ -26,7 +26,7 @@ CREATE TABLE datatier_sdp_dataattributes
     created_date       datetime DEFAULT (GETUTCDATE()),
     status_id          INT      default 1,
     dataattribute_id   INT,
-    createduser        varchar(20),
+    created_user        varchar(20),
     registeredapp_guid char(38),
     datagentype_id     INT,
     PRIMARY KEY (datatier_id)

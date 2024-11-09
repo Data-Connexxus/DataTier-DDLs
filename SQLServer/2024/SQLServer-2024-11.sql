@@ -118,12 +118,12 @@ drop table if exists platform_dataattributes;
 CREATE TABLE platform_dataattributes
 (
     platform_dataattributes_id INT IDENTITY(1,1) NOT NULL,
-    dataattributename          varchar(50),
+    dataattribute_name          varchar(50),
     sensitivityflag_id         INT,
     created_date               datetime DEFAULT (GETUTCDATE()),
     status_id                  INT      default 1,
     createduser                varchar(20),
-    platform_dataattributeguid char(38),
+    platform_dataattribute_guid char(38),
     registeredapp_guid         char(38),
     platform_tablename         char(38),
     attribute_type             varchar(10),
@@ -134,7 +134,7 @@ drop table if exists platform_datageneration;
 CREATE TABLE platform_datageneration
 (
     datagentype_id         INT IDENTITY(1,1) NOT NULL,
-    datagentypedescription varchar(65),
+    datagentype_description varchar(65),
     definition             varchar(255),
     dataattribute_id       INT,
     created_date           datetime DEFAULT (GETUTCDATE()),
@@ -277,7 +277,7 @@ CREATE TABLE refdata_industriestobusiness
 (
     industrytobusiness_id INT IDENTITY(1,1) NOT NULL,
     industry_id           INT,
-    businessarea          varchar(50),
+    business_area          varchar(50),
     created_date          datetime DEFAULT (GETUTCDATE()),
     status_id             INT      default 1,
     PRIMARY KEY (industrytobusiness_id)
@@ -461,10 +461,10 @@ drop table if exists refdata_vendor;
 CREATE TABLE refdata_vendor
 (
     vendor_id    INT IDENTITY(1,1) NOT NULL,
-    vendorname   varchar(50),
+    vendor_name   varchar(50),
     created_date datetime DEFAULT (GETUTCDATE()),
     status_id    INT      default 1,
-    createduser  varchar(20),
+    created_user  varchar(20),
     vendor_guid  char(38),
     PRIMARY KEY (vendor_id)
 );

@@ -2,7 +2,7 @@
 -- Need to create for all serial datatypes
 drop sequence if exists datatier_sdp_datastructure_seq;
 create sequence datatier_sdp_datastructure_seq;
-drop sequence if exists sequence datatier_sdp_dataattribute_seq;
+drop sequence if exists datatier_sdp_dataattribute_seq;
 create sequence datatier_sdp_dataattribute_seq;
 drop sequence if exists datatier_tokens_seq;
 create sequence datatier_tokens_seq;
@@ -163,7 +163,7 @@ CREATE TABLE platform_codesets_crossmaps
 
 CREATE TABLE platform_dataattributes
 (
-    platform_dataattributes_id  integer     DEFAULT nextval('platform__dataattributes_seq'::regclass) NOT NULL,
+    platform_dataattributes_id  integer     DEFAULT nextval('platform_dataattributes_seq'::regclass) NOT NULL,
     dataattribute_name         varchar(50) DEFAULT 'NULL'::character varying,
     sensitivityflag_id         integer,
     created_date               timestamp   DEFAULT CURRENT_TIMESTAMP,
@@ -572,15 +572,15 @@ ALTER TABLE refdata_codeset
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE refdata_codesets_crossmaps
+ALTER TABLE platform_codesets_crossmaps
     ADD FOREIGN KEY (implcodesets_id)
         REFERENCES refdata_codeset (codesets_id);
 
-ALTER TABLE refdata_codesets_crossmaps
+ALTER TABLE platform_codesets_crossmaps
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE refdata_codesets_crossmaps
+ALTER TABLE platform_codesets_crossmaps
     ADD FOREIGN KEY (terminologystd_to)
         REFERENCES refdata_terminologystd (terminologystd_id);
 
@@ -752,9 +752,9 @@ ALTER TABLE terms_codeset_industrystd
 -- Indexes
 create index if not exists datatiersdp_dataattributes_index
     on datatier_sdp_dataattributes (datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4,
-    supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
-    datagentype_id, status_id, created_user, registeredapp_guid);
+                                    supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
+                                    datagentype_id, status_id, created_user, registeredapp_guid);
 
-CREATE INDEX terms_codeset_industrystd_index ON terms_codeset_industrystd USING btree (termcodeset_id, codesets_id, created_date, status_id, codevalue, codedesc, industry_std);
+CREATE INDEX terms_codeset_industrystd_index ON terms_codeset_industrystd USING btree (termcodeset_id, codesets_id, created_date, status_id, code_value, code_desc, industry_std);
 
-CREATE UNIQUE INDEX terms_codeset_industrystd_uindex ON terms_codeset_industrystd USING btree (codesets_id, codevalue, codedesc, industry_std);
+CREATE UNIQUE INDEX terms_codeset_industrystd_uindex ON terms_codeset_industrystd USING btree (codesets_id, code_value, code_desc, industry_std);

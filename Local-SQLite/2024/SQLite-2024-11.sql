@@ -90,8 +90,34 @@ CREATE TABLE datamodel_domain
     created_date      TEXT default (datetime('now', 'localtime'))
 );
 
+DROP TABLE if exists platform_codesets;
+CREATE TABLE platform_codesets
+(
+    codeset_id  integer primary key autoincrement,
+    application_guid    TEXT,
+    organization_guid   TEXT,
+    created_date        TEXT default (datetime('now', 'localtime')),
+    status_id           integer   DEFAULT 1,
+    created_user        TEXT,
+    originalcode_value  TEXT,
+    originalcode_desc   TEXT
+);
+
+drop table if exists terms_codesets_industrystd;
+CREATE TABLE platform_codesets_industrystd
+(
+    termcodeset_id    integer  primary key autoincrement,
+    codesets_id       integer                                                              NOT NULL,
+    created_date      TEXT default (datetime('now', 'localtime')),
+    status_id         integer   DEFAULT 1,
+    code_value        TEXT,
+    code_desc         TEXT,
+    industry_std      TEXT,
+    terminologystd_id integer
+);
+
 DROP TABLE if exists platform_codesets_crossmaps;
-CREATE TABLE platform_codesets_crossmaps
+CREATE TABLE platform_codesets_xmap
 (
     codesetcrossmap_id  integer primary key autoincrement,
     implcodesets_id     integer NOT NULL,
@@ -431,19 +457,6 @@ CREATE TABLE refdata_vendor
     status_id    integer   DEFAULT 1,
     created_user TEXT,
     vendor_guid  TEXT
-);
-
-drop table if exists terms_codeset_industrystd;
-CREATE TABLE terms_codeset_industrystd
-(
-    termcodeset_id    integer  primary key autoincrement,
-    codesets_id       integer                                                              NOT NULL,
-    created_date      TEXT default (datetime('now', 'localtime')),
-    status_id         integer   DEFAULT 1,
-    code_value        TEXT,
-    code_desc         TEXT,
-    industry_std      TEXT,
-    terminologystd_id integer
 );
 
 -- Indexes

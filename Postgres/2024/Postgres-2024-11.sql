@@ -10,16 +10,12 @@ drop sequence if exists datatier_crawler_seq;
 create sequence datatier_crawler_seq;
 drop sequence if exists apis_seq;
 create sequence apis_seq;
-drop sequence if exists refdata_codesets_seq;
-create sequence refdata_codesets_seq;
-drop sequence if exists refdata_codesetscrossmaps_seq;
-create sequence refdata_codesetscrossmaps_seq;
-drop sequence if exists refdata_professiontypes_seq;
-create sequence refdata_professiontypes_seq;
-drop sequence if exists refdata_regextypes_seq;
-create sequence refdata_regextypes_seq;
-drop sequence if exists refdata_rulesets_seq;
-create sequence refdata_rulesets_seq;
+drop sequence if exists platform_codeset_industrystd_seq;
+create sequence platform_codeset_industrystd_seq;
+drop sequence if exists platform_codesets_seq;
+create sequence platform_codesets_seq;
+drop sequence if exists platform_codesets_xmap_seq;
+create sequence platform_codesets_xmaps_seq;
 drop sequence if exists platform_datasources_seq;
 create sequence platform_datasources_seq;
 drop sequence if exists platform_xmap_tokens_dataattributes_seq;
@@ -42,6 +38,12 @@ drop sequence if exists refdata_industries_seq;
 create sequence refdata_industries_seq;
 drop sequence if exists refdata_industriestobusiness_seq;
 create sequence refdata_industriestobusiness_seq;
+drop sequence if exists refdata_professiontypes_seq;
+create sequence refdata_professiontypes_seq;
+drop sequence if exists refdata_regextypes_seq;
+create sequence refdata_regextypes_seq;
+drop sequence if exists refdata_rulesets_seq;
+create sequence refdata_rulesets_seq;
 drop sequence if exists refdata_sensitivityflag_seq;
 create sequence refdata_sensitivityflag_seq;
 drop sequence if exists refdata_status_seq;
@@ -50,8 +52,6 @@ drop sequence if exists refdata_terminologystd_seq;
 create sequence refdata_terminologystd_seq;
 drop sequence if exists refdata_vendor_seq;
 create sequence refdata_vendor_seq;
-drop sequence if exists terms_codeset_industrystd_seq;
-create sequence terms_codeset_industrystd_seq;
 
 -- Create Tables
 CREATE TABLE datatier_crawler
@@ -144,9 +144,35 @@ CREATE TABLE datamodel_domain
     PRIMARY KEY (domainname)
 );
 
-CREATE TABLE platform_codesets_crossmaps
+CREATE TABLE platform_codesets
 (
-    codesetcrossmap_id  integer      DEFAULT nextval('refdata_codesetscrossmaps_seq'::regclass) NOT NULL,
+    codeset_id  integer      DEFAULT nextval('platform_codesets_seq'::regclass) NOT NULL,
+    application_guid      CHAR(38),
+    organization_guid      CHAR(38),
+    created_date        timestamp    DEFAULT CURRENT_TIMESTAMP,
+    status_id           integer      DEFAULT 1,
+    created_user        varchar(20)  DEFAULT 'NULL'::character varying,
+    originalcode_value  varchar(40),
+    originalcode_desc   varchar(149),
+    PRIMARY KEY (codeset_id)
+);
+
+CREATE TABLE platform_codeset_industrystd
+(
+    termcodeset_id    integer      DEFAULT nextval('platform_codeset_industrystd_seq'::regclass) NOT NULL,
+    codesets_id       integer                                                                 NOT NULL,
+    created_date      timestamp    DEFAULT CURRENT_TIMESTAMP,
+    status_id         integer      DEFAULT 1,
+    code_value         varchar(20)  DEFAULT 'NULL'::character varying,
+    code_desc          varchar(129) DEFAULT 'NULL'::character varying,
+    industry_std      varchar(6)   DEFAULT 'UNDF'::character varying,
+    terminologystd_id integer,
+    PRIMARY KEY (termcodeset_id)
+);
+
+CREATE TABLE platform_codesets_xmap
+(
+    codesetcrossmap_id  integer      DEFAULT nextval('platform_codesets_xmaps_seq'::regclass) NOT NULL,
     implcodesets_id     integer                                                                 NOT NULL,
     application_guid      CHAR(38),
     organization_guid      CHAR(38),
@@ -307,7 +333,6 @@ CREATE TABLE refdata_industrystd_eventtypes
     status_id       integer     default 1,
     PRIMARY KEY (eventtype_id)
 );
-
 
 CREATE TABLE refdata_industries
 (
@@ -490,19 +515,6 @@ CREATE TABLE refdata_vendor
     PRIMARY KEY (vendor_id)
 );
 
-CREATE TABLE terms_codeset_industrystd
-(
-    termcodeset_id    integer      DEFAULT nextval('terms_codeset_industrystd_seq'::regclass) NOT NULL,
-    codesets_id       integer                                                                 NOT NULL,
-    created_date      timestamp    DEFAULT CURRENT_TIMESTAMP,
-    status_id         integer      DEFAULT 1,
-    code_value         varchar(20)  DEFAULT 'NULL'::character varying,
-    code_desc          varchar(129) DEFAULT 'NULL'::character varying,
-    industry_std      varchar(6)   DEFAULT 'UNDF'::character varying,
-    terminologystd_id integer,
-    PRIMARY KEY (termcodeset_id)
-);
-
 -- Foreign Keys
 ALTER TABLE datatier_crawler
     ADD FOREIGN KEY (status_id)
@@ -556,6 +568,50 @@ ALTER TABLE platform_dataattributes
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
+ALTER TABLE platform_codesets_xmap
+    ADD FOREIGN KEY (implcodesets_id)
+        REFERENCES refdata_codeset (codesets_id);
+
+ALTER TABLE platform_codesets_xmap
+    ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
+
+ALTER TABLE platform_codesets_xmap
+    ADD FOREIGN KEY (terminologystd_to)
+        REFERENCES refdata_terminologystd (terminologystd_id);
+
+ALTER TABLE platform_codeset_industrystd
+    ADD FOREIGN KEY (codesets_id)
+        REFERENCES refdata_codeset (codesets_id);
+
+ALTER TABLE platform_codeset_industrystd
+    ADD FOREIGN KEY (industry_std)
+        REFERENCES refdata_industrystd (industry_std);
+
+ALTER TABLE platform_codeset_industrystd
+    ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
+
+ALTER TABLE platform_codeset_industrystd
+    ADD FOREIGN KEY (terminologystd_id)
+        REFERENCES refdata_terminologystd (terminologystd_id);
+
+ALTER TABLE platform_datageneration
+    ADD FOREIGN KEY (dataattribute_id)
+        REFERENCES platform_dataattributes (platform_dataattributes_id);
+
+ALTER TABLE platform_datageneration
+    ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
+
+ALTER TABLE platform_datasources
+    ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
+
+ALTER TABLE platform_xmap_tokens_attributes_dtl
+    ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
+
 ALTER TABLE refdata_application
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
@@ -571,18 +627,6 @@ ALTER TABLE refdata_codeset
 ALTER TABLE refdata_codeset
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
-
-ALTER TABLE platform_codesets_crossmaps
-    ADD FOREIGN KEY (implcodesets_id)
-        REFERENCES refdata_codeset (codesets_id);
-
-ALTER TABLE platform_codesets_crossmaps
-    ADD FOREIGN KEY (status_id)
-        REFERENCES refdata_status (status_id);
-
-ALTER TABLE platform_codesets_crossmaps
-    ADD FOREIGN KEY (terminologystd_to)
-        REFERENCES refdata_terminologystd (terminologystd_id);
 
 ALTER TABLE refdata_legalentities
     ADD FOREIGN KEY (status_id)
@@ -660,22 +704,6 @@ ALTER TABLE refdata_countries
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE platform_datageneration
-    ADD FOREIGN KEY (dataattribute_id)
-        REFERENCES platform_dataattributes (platform_dataattributes_id);
-
-ALTER TABLE platform_datageneration
-    ADD FOREIGN KEY (status_id)
-        REFERENCES refdata_status (status_id);
-
-ALTER TABLE platform_datasources
-    ADD FOREIGN KEY (status_id)
-        REFERENCES refdata_status (status_id);
-
-ALTER TABLE platform_xmap_tokens_attributes_dtl
-    ADD FOREIGN KEY (status_id)
-        REFERENCES refdata_status (status_id);
-
 ALTER TABLE refdata_devicetypes
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
@@ -731,22 +759,6 @@ ALTER TABLE refdata_usstates
 ALTER TABLE refdata_vendor
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
-
-ALTER TABLE terms_codeset_industrystd
-    ADD FOREIGN KEY (codesets_id)
-        REFERENCES refdata_codeset (codesets_id);
-
-ALTER TABLE terms_codeset_industrystd
-    ADD FOREIGN KEY (industry_std)
-        REFERENCES refdata_industrystd (industry_std);
-
-ALTER TABLE terms_codeset_industrystd
-    ADD FOREIGN KEY (status_id)
-        REFERENCES refdata_status (status_id);
-
-ALTER TABLE terms_codeset_industrystd
-    ADD FOREIGN KEY (terminologystd_id)
-        REFERENCES refdata_terminologystd (terminologystd_id);
 
 
 -- Indexes

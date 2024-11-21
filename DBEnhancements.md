@@ -40,3 +40,9 @@ Renamed fields:
 - datastructurename to datastructure_name
 - datastructure_name to datastructure_name
 - and datastructuredetails to datastructure_details
+
+
+Done in SQLlite, SQL Server. PostgresQL
+Rename platform_codesets_crossmaps to platform_codesets_xmap
+Create platform_codesets from platform_codesets_xmap and eliminate the mapping details to make it focused on single sourced data
+Rename terms_codeset_industrystd to platform_codeset_industrystd

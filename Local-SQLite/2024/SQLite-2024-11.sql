@@ -164,6 +164,34 @@ CREATE TABLE platform_datageneration_dataattributes
     organization_guid       TEXT
 );
 
+DROP TABLE if exists platform_databuilding_dataattributes;
+CREATE TABLE platform_databuilding_dataattributes
+(
+    databuild_dataattribute_id          integer primary key autoincrement,
+    databuild_description TEXT,
+    definition              TEXT,
+    platform_dataattribute_id        integer,
+    created_date            TEXT default (datetime('now', 'localtime')),
+    status_id               integer   DEFAULT 1,
+    created_user            TEXT,
+    quantity                integer,
+    maxrecordsinsource      integer,
+    registeredapp_guid      TEXT,
+    organization_guid       TEXT,
+    param1 TEXT,
+    param1_operator TEXT,
+    param1_value TEXT,
+    param2 TEXT,
+    param2_operator TEXT,
+    param2_value TEXT,
+    param3 TEXT,
+    param3_operator TEXT,
+    param3_value TEXT,
+    param4 TEXT,
+    param4_operator TEXT,
+    param4_value TEXT
+);
+
 DROP TABLE if exists platform_databuilding_datastructures;
 CREATE TABLE platform_databuilding_datastructures
 (

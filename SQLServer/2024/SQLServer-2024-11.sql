@@ -175,6 +175,35 @@ CREATE TABLE platform_datageneration_dataattributes
     PRIMARY KEY (datagentype_id)
 );
 
+drop table if exists platform_databuilding_dataattributes;
+CREATE TABLE platform_databuilding_dataattributes
+(
+    databuild_dataattribute_id        INT IDENTITY(1,1) NOT NULL,
+    databuild_description varchar(65),
+    definition             varchar(255),
+    platform_attribute_id       INT,
+    created_date           datetime DEFAULT (GETUTCDATE()),
+    status_id              INT      default 1,
+    createduser            varchar(20),
+    quantity               int,
+    maxrecordsinsource     int,
+    registeredapp_guid     char(38),
+    organization_guid      char(38),
+    param1  varchar(30),
+    param1_operator varchar(7),
+    param1_value varchar(65),
+    param2  varchar(30),
+    param2_operator varchar(7),
+    param2_value varchar(65),
+    param3  varchar(30),
+    param3_operator varchar(7),
+    param3_value varchar(65),
+    param4  varchar(30),
+    param4_operator varchar(7),
+    param4_value varchar(65),
+    PRIMARY KEY (databuild_dataattribute_id)
+);
+
 drop table if exists platform_databuilding_datastructures;
 CREATE TABLE platform_databuilding_datastructures
 (
@@ -235,7 +264,6 @@ CREATE TABLE platform_datastructures_dtl
     platform_dataattributes_id                     INT,
     PRIMARY KEY (platform_datastructuresdtl_id)
 );
-
 
 DROP TABLE if exists platform_xmap_tokens_attributes_dtl;
 CREATE TABLE platform_xmap_tokens_attributes_dtl
@@ -589,6 +617,14 @@ ALTER TABLE platform_datageneration_dataattributes
 ALTER TABLE platform_datageneration_dataattributes
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
+
+ALTER TABLE platform_databuilding_dataattributes
+    ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
+
+ALTER TABLE platform_databuilding_dataattributes
+    ADD FOREIGN KEY (platform_attribute_id)
+        REFERENCES platform_dataattributes (platform_dataattributes_id);
 
 ALTER TABLE platform_databuilding_datastructures
     ADD FOREIGN KEY (status_id)

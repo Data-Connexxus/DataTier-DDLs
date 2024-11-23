@@ -24,6 +24,8 @@ drop sequence if exists platform_dataattributes_seq;
 create sequence platform_dataattributes_seq;
 drop sequence if exists platform_datageneration_seq;
 create sequence platform_datageneration_seq;
+drop sequence if exists platform_databuilding_dataattributes_seq;
+create sequence platform_databuilding_dataattributes_seq
 drop sequence if exists platform_databuilding_datastructures_seq;
 create sequence platform_databuilding_datastructures_seq;
 drop sequence if exists platform_datastructures_seq;
@@ -229,6 +231,35 @@ CREATE TABLE platform_datageneration_dataattributes
     registeredapp_guid          char(38)     DEFAULT 'NULL'::character varying,
     organization_guid       char(38)     DEFAULT 'NULL'::character varying,
     PRIMARY KEY (datagentype_id)
+);
+
+drop table if exists platform_databuilding_dataattributes;
+CREATE TABLE platform_databuilding_dataattributes
+(
+    databuild_dataattribute_id          integer      DEFAULT nextval('platform_databuilding_dataattributes_seq'::regclass) NOT NULL,
+    databuild_description varchar(65)  DEFAULT 'NULL'::character varying,
+    definition              varchar(255) DEFAULT 'NULL'::character varying,
+    platform_datastructures_id        integer,
+    created_date            timestamp    DEFAULT CURRENT_TIMESTAMP,
+    status_id               integer      DEFAULT 1,
+    created_user            varchar(20)  DEFAULT 'NULL'::character varying,
+    quantity                integer,
+    maxrecordsinsource      integer,
+    registeredapp_guid          char(38)     DEFAULT 'NULL'::character varying,
+    organization_guid       char(38)     DEFAULT 'NULL'::character varying,
+    param1  varchar(30) DEFAULT 'NULL'::character varying,
+    param1_operator varchar(7) DEFAULT 'NULL'::character varying,
+    param1_value varchar(65) DEFAULT 'NULL'::character varying,
+    param2  varchar(30) DEFAULT 'NULL'::character varying,
+    param2_operator varchar(7) DEFAULT 'NULL'::character varying,
+    param2_value varchar(65) DEFAULT 'NULL'::character varying,
+    param3  varchar(30) DEFAULT 'NULL'::character varying,
+    param3_operator varchar(7) DEFAULT 'NULL'::character varying,
+    param3_value varchar(65) DEFAULT 'NULL'::character varying,
+    param4  varchar(30) DEFAULT 'NULL'::character varying,
+    param4_operator varchar(7) DEFAULT 'NULL'::character varying,
+    param4_value varchar(65) DEFAULT 'NULL'::character varying,
+    PRIMARY KEY (databuild_dataattribute_id)
 );
 
 drop table if exists platform_databuilding_datastructures;
@@ -618,6 +649,18 @@ ALTER TABLE platform_datageneration_dataattributes
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
+ALTER TABLE platform_databuilding_dataattributes
+    ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
+
+ALTER TABLE platform_databuilding_dataattributes
+    ADD FOREIGN KEY (registeredapp_guid)
+        REFERENCES refdata_application (app_guid);
+
+ALTER TABLE platform_databuilding_dataattributes
+    ADD FOREIGN KEY (organization_guid)
+        REFERENCES refdata_organization (organization_guid);
+
 ALTER TABLE platform_databuilding_datastructures
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
@@ -823,7 +866,7 @@ ALTER TABLE refdata_vendor
         REFERENCES refdata_status (status_id);
 
 -- Indexes
-create index if not exists datatiersdp_dataattributes_index
+create index if not exists datatier_sdp_dataattributes_index
     on datatier_sdp_dataattributes (datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4,
                                     supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
                                     datagentype_id, status_id, created_user, registeredapp_guid);

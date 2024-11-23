@@ -60,7 +60,7 @@ CREATE TABLE datamodel_apis
 (
     api_id             integer primary key autoincrement,
     technology         TEXT,
-    dataattributes_id  integer,
+    dataattribute_id  integer,
     baseurllocation    TEXT,
     apiname            TEXT,
     created_date       TEXT default (datetime('now', 'localtime')),
@@ -93,9 +93,10 @@ CREATE TABLE datamodel_domain
 DROP TABLE if exists platform_codesets;
 CREATE TABLE platform_codesets
 (
-    codeset_id  integer primary key autoincrement,
+    platform_codeset_id  integer primary key autoincrement,
     application_guid    TEXT,
     organization_guid   TEXT,
+    codesets_id INT,
     created_date        TEXT default (datetime('now', 'localtime')),
     status_id           integer   DEFAULT 1,
     created_user        TEXT,
@@ -108,7 +109,6 @@ drop table if exists platform_codesets_industrystd;
 CREATE TABLE platform_codesets_industrystd
 (
     termcodeset_id    integer  primary key autoincrement,
-    codesets_id       integer                                                              NOT NULL,
     created_date      TEXT default (datetime('now', 'localtime')),
     status_id         integer   DEFAULT 1,
     code_value        TEXT,
@@ -118,12 +118,13 @@ CREATE TABLE platform_codesets_industrystd
 );
 
 DROP TABLE if exists platform_codesets_crossmaps;
+DROP TABLE if exists platform_codesets_xmap;
 CREATE TABLE platform_codesets_xmap
 (
     codesetcrossmap_id  integer primary key autoincrement,
-    implcodesets_id     integer NOT NULL,
     application_guid    TEXT,
     organization_guid   TEXT,
+    terminologystd_from     integer,
     terminologystd_to   integer,
     created_date        TEXT default (datetime('now', 'localtime')),
     status_id           integer   DEFAULT 1,
@@ -132,20 +133,6 @@ CREATE TABLE platform_codesets_xmap
     transformcode_desc  TEXT,
     originalcode_value  TEXT,
     originalcode_desc   TEXT
-);
-
-DROP TABLE if exists platform_dataattributes;
-CREATE TABLE platform_dataattributes
-(
-    platform_dataattributes_id  integer primary key autoincrement,
-    dataattribute_name          TEXT,
-    sensitivityflag_id          integer,
-    created_date                TEXT default (datetime('now', 'localtime')),
-    status_id                   integer   DEFAULT 1,
-    created_user                TEXT,
-    platform_dataattribute_guid TEXT,
-    registeredapp_guid          TEXT,
-    attribute_type              TEXT
 );
 
 DROP TABLE if exists platform_datageneration_dataattributes;
@@ -159,7 +146,7 @@ CREATE TABLE platform_datageneration_dataattributes
     status_id               integer   DEFAULT 1,
     created_user            TEXT,
     quantity                integer,
-    maxrecordsinsource      integer,
+    maxrecords_in_source      integer,
     registeredapp_guid      TEXT,
     organization_guid       TEXT
 );
@@ -170,12 +157,12 @@ CREATE TABLE platform_databuilding_dataattributes
     databuild_dataattribute_id          integer primary key autoincrement,
     databuild_description TEXT,
     definition              TEXT,
-    platform_dataattributes_id        integer,
+    dataattribute_id        integer,
     created_date            TEXT default (datetime('now', 'localtime')),
     status_id               integer   DEFAULT 1,
     created_user            TEXT,
     quantity                integer,
-    maxrecordsinsource      integer,
+    maxrecords_in_source      integer,
     registeredapp_guid      TEXT,
     organization_guid       TEXT,
     param1 TEXT,
@@ -198,12 +185,12 @@ CREATE TABLE platform_databuilding_datastructures
     datagentype_datastructures_id          integer primary key autoincrement,
     datagentype_description TEXT,
     definition              TEXT,
-    platform_datastructures_id        integer,
+    datastructure_id        integer,
     created_date            TEXT default (datetime('now', 'localtime')),
     status_id               integer   DEFAULT 1,
     created_user            TEXT,
     quantity                integer,
-    maxrecordsinsource      integer,
+    maxrecords_in_source      integer,
     registeredapp_guid      TEXT,
     organization_guid       TEXT
 );
@@ -221,24 +208,11 @@ create table platform_datasources
     registeredapp_guid      TEXT
 );
 
-drop table if exists platform_datastructures;
-create table platform_datastructures
-(
-    platform_datastructures_id   integer primary key autoincrement,
-    datastructure_name           TEXT,
-    sensitivityflag_id           integer,
-    created_date                 TEXT default (datetime('now', 'localtime')),
-    status_id                    integer   default 1,
-    created_user                 TEXT,
-    platform_datastructures_guid TEXT,
-    registeredapp_guid           TEXT
-);
-
 drop table if exists platform_datastructures_dtl;
 CREATE TABLE platform_datastructures_dtl
 (
     platform_datastructuresdtl_id                  integer primary key autoincrement,
-    platform_datastructures_id                     integer,
+    datastructure_id                     integer,
     composite_datastructure_name                   TEXT,
     sensitivityflag_id                             integer   DEFAULT 1,
     created_date                                   TEXT default (datetime('now', 'localtime')),
@@ -246,14 +220,14 @@ CREATE TABLE platform_datastructures_dtl
     created_user                                   TEXT,
     platform_datastructures_to_dataattributes_guid TEXT,
     registeredapp_guid                             TEXT,
-    platform_dataattributes_id                     integer
+    dataattribute_id                     integer
 );
 
 drop table if exists platform_xmap_tokens_attributes_dtl;
 CREATE TABLE platform_xmap_tokens_attributes_dtl
 (
     platform_xmap_tokens_attributesdtl_id integer primary key autoincrement,
-    platform_datastructures_id            integer,
+    datastructure_id            integer,
     xmap_details                          TEXT,
     dataattribute_id                      integer   DEFAULT 1,
     fieldorder_id                         integer   DEFAULT 1,
@@ -303,6 +277,35 @@ CREATE TABLE refdata_countries
     country_name TEXT,
     created_date TEXT default (datetime('now', 'localtime')),
     status_id    integer   DEFAULT 1
+);
+
+DROP TABLE if exists platform_dataattributes;
+DROP TABLE if exists refdata_dataattributes;
+CREATE TABLE refdata_dataattributes
+(
+    dataattribute_id  integer primary key autoincrement,
+    dataattribute_name          TEXT,
+    sensitivityflag_id          integer,
+    created_date                TEXT default (datetime('now', 'localtime')),
+    status_id                   integer   DEFAULT 1,
+    created_user                TEXT,
+    platform_dataattribute_guid TEXT,
+    registeredapp_guid          TEXT,
+    attribute_type              TEXT
+);
+
+drop table if exists platform_datastructures;
+drop table if exists refdata_datastructures;
+create table refdata_datastructures
+(
+    datastructure_id   integer primary key autoincrement,
+    datastructure_name           TEXT,
+    sensitivityflag_id           integer,
+    created_date                 TEXT default (datetime('now', 'localtime')),
+    status_id                    integer   default 1,
+    created_user                 TEXT,
+    platform_datastructures_guid TEXT,
+    registeredapp_guid           TEXT
 );
 
 drop table if exists refdata_devicetypes;

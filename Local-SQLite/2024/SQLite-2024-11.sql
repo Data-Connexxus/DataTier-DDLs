@@ -170,7 +170,7 @@ CREATE TABLE platform_databuilding_dataattributes
     databuild_dataattribute_id          integer primary key autoincrement,
     databuild_description TEXT,
     definition              TEXT,
-    platform_dataattribute_id        integer,
+    platform_dataattributes_id        integer,
     created_date            TEXT default (datetime('now', 'localtime')),
     status_id               integer   DEFAULT 1,
     created_user            TEXT,

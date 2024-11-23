@@ -181,7 +181,7 @@ CREATE TABLE platform_databuilding_dataattributes
     databuild_dataattribute_id        INT IDENTITY(1,1) NOT NULL,
     databuild_description varchar(65),
     definition             varchar(255),
-    platform_attribute_id       INT,
+    platform_dataattributes_id       INT,
     created_date           datetime DEFAULT (GETUTCDATE()),
     status_id              INT      default 1,
     createduser            varchar(20),
@@ -623,7 +623,7 @@ ALTER TABLE platform_databuilding_dataattributes
         REFERENCES refdata_status (status_id);
 
 ALTER TABLE platform_databuilding_dataattributes
-    ADD FOREIGN KEY (platform_attribute_id)
+    ADD FOREIGN KEY (platform_dataattributes_id)
         REFERENCES platform_dataattributes (platform_dataattributes_id);
 
 ALTER TABLE platform_databuilding_datastructures

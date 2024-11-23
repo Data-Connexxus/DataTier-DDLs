@@ -158,8 +158,8 @@ CREATE TABLE platform_dataattributes
     PRIMARY KEY (platform_dataattributes_id)
 );
 
-drop table if exists platform_datageneration;
-CREATE TABLE platform_datageneration
+drop table if exists platform_datageneration_dataattributes;
+CREATE TABLE platform_datageneration_dataattributes
 (
     datagentype_id         INT IDENTITY(1,1) NOT NULL,
     datagentype_description varchar(65),
@@ -173,6 +173,23 @@ CREATE TABLE platform_datageneration
     registeredapp_guid     char(38),
     organization_guid      char(38),
     PRIMARY KEY (datagentype_id)
+);
+
+drop table if exists platform_databuilding_datastructures;
+CREATE TABLE platform_databuilding_datastructures
+(
+    datagentype_datastructures_id          INT IDENTITY(1,1) NOT NULL,
+    datagentype_description varchar(65),
+    definition             varchar(255),
+    platform_datastructures_id       INT,
+    created_date           datetime DEFAULT (GETUTCDATE()),
+    status_id              INT      default 1,
+    createduser            varchar(20),
+    quantity               int,
+    maxrecordsinsource     int,
+    registeredapp_guid     char(38),
+    organization_guid      char(38),
+    PRIMARY KEY (datagentype_datastructures_id)
 );
 
 drop table if exists platform_datasources;
@@ -565,13 +582,21 @@ ALTER TABLE platform_dataattributes
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE platform_datageneration
+ALTER TABLE platform_datageneration_dataattributes
     ADD FOREIGN KEY (dataattribute_id)
         REFERENCES platform_dataattributes (platform_dataattributes_id);
 
-ALTER TABLE platform_datageneration
+ALTER TABLE platform_datageneration_dataattributes
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
+
+ALTER TABLE platform_databuilding_datastructures
+    ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
+
+ALTER TABLE platform_databuilding_datastructures
+    ADD FOREIGN KEY (platform_datastructures_id)
+        REFERENCES platform_datastructures (platform_datastructures_id);
 
 ALTER TABLE platform_datastructures
     ADD FOREIGN KEY (registeredapp_guid)

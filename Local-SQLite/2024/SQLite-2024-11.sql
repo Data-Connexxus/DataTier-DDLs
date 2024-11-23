@@ -104,6 +104,7 @@ CREATE TABLE platform_codesets
 );
 
 drop table if exists terms_codesets_industrystd;
+drop table if exists platform_codesets_industrystd;
 CREATE TABLE platform_codesets_industrystd
 (
     termcodeset_id    integer  primary key autoincrement,
@@ -147,13 +148,29 @@ CREATE TABLE platform_dataattributes
     attribute_type              TEXT
 );
 
-DROP TABLE if exists platform_datageneration;
-CREATE TABLE platform_datageneration
+DROP TABLE if exists platform_datageneration_dataattributes;
+CREATE TABLE platform_datageneration_dataattributes
 (
     datagentype_id          integer primary key autoincrement,
     datagentype_description TEXT,
     definition              TEXT,
     dataattribute_id        integer,
+    created_date            TEXT default (datetime('now', 'localtime')),
+    status_id               integer   DEFAULT 1,
+    created_user            TEXT,
+    quantity                integer,
+    maxrecordsinsource      integer,
+    registeredapp_guid      TEXT,
+    organization_guid       TEXT
+);
+
+DROP TABLE if exists platform_databuilding_datastructures;
+CREATE TABLE platform_databuilding_datastructures
+(
+    datagentype_datastructures_id          integer primary key autoincrement,
+    datagentype_description TEXT,
+    definition              TEXT,
+    platform_datastructures_id        integer,
     created_date            TEXT default (datetime('now', 'localtime')),
     status_id               integer   DEFAULT 1,
     created_user            TEXT,

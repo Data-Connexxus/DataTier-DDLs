@@ -24,6 +24,8 @@ drop sequence if exists platform_dataattributes_seq;
 create sequence platform_dataattributes_seq;
 drop sequence if exists platform_datageneration_seq;
 create sequence platform_datageneration_seq;
+drop sequence if exists platform_databuilding_datastructures_seq;
+create sequence platform_databuilding_datastructures_seq;
 drop sequence if exists platform_datastructures_seq;
 create sequence platform_datastructures_seq;
 drop sequence if exists refdata_codeset_seq;
@@ -54,6 +56,7 @@ drop sequence if exists refdata_vendor_seq;
 create sequence refdata_vendor_seq;
 
 -- Create Tables
+drop table if exists platform_datastructures;
 CREATE TABLE datatier_crawler
 (
     datacrawler_id      integer     DEFAULT nextval('datatier_crawler_seq'::regclass) NOT NULL,
@@ -66,6 +69,7 @@ CREATE TABLE datatier_crawler
     PRIMARY KEY (datacrawler_id)
 );
 
+drop table if exists datatier_sdp_datastructures;
 CREATE TABLE datatier_sdp_datastructures
 (
     datastructure_core_id  integer     DEFAULT nextval('datatier_sdp_datastructure_seq'::regclass) NOT NULL,
@@ -77,6 +81,7 @@ CREATE TABLE datatier_sdp_datastructures
     PRIMARY KEY (datastructure_core_id)
 );
 
+drop table if exists datatier_sdp_dataattributes;
 create table datatier_sdp_dataattributes
 (
     datatier_id      integer default nextval('datatier_sdp_dataattribute_seq'::regclass) not null primary key,
@@ -96,6 +101,7 @@ create table datatier_sdp_dataattributes
     datagentype_id   integer
 );
 
+drop table if exists datatier_tokens;
 CREATE TABLE datatier_tokens
 (
     datatoken_id      integer     DEFAULT nextval('datatier_tokens_seq'::regclass) NOT NULL,
@@ -109,6 +115,7 @@ CREATE TABLE datatier_tokens
     PRIMARY KEY (datatoken_id)
 );
 
+drop table if exists datamodel_apis;
 CREATE TABLE datamodel_apis
 (
     api_id             integer   DEFAULT nextval('apis_seq'::regclass) NOT NULL,
@@ -125,6 +132,7 @@ CREATE TABLE datamodel_apis
     PRIMARY KEY (api_id)
 );
 
+drop table if exists datamodel_datatables;
 CREATE TABLE datamodel_datatables
 (
     tablename        varchar(64) NOT NULL,
@@ -135,6 +143,7 @@ CREATE TABLE datamodel_datatables
     PRIMARY KEY (tablename)
 );
 
+drop table if exists datamodel_domain;
 CREATE TABLE datamodel_domain
 (
     domainname        varchar(64) NOT NULL,
@@ -144,6 +153,7 @@ CREATE TABLE datamodel_domain
     PRIMARY KEY (domainname)
 );
 
+drop table if exists platform_codesets;
 CREATE TABLE platform_codesets
 (
     codeset_id  integer      DEFAULT nextval('platform_codesets_seq'::regclass) NOT NULL,
@@ -157,7 +167,8 @@ CREATE TABLE platform_codesets
     PRIMARY KEY (codeset_id)
 );
 
-CREATE TABLE platform_codeset_industrystd
+drop table if exists platform_codesets_industrystd;
+CREATE TABLE platform_codesets_industrystd
 (
     termcodeset_id    integer      DEFAULT nextval('platform_codeset_industrystd_seq'::regclass) NOT NULL,
     codesets_id       integer                                                                 NOT NULL,
@@ -170,6 +181,7 @@ CREATE TABLE platform_codeset_industrystd
     PRIMARY KEY (termcodeset_id)
 );
 
+drop table if exists platform_codesets_xmap;
 CREATE TABLE platform_codesets_xmap
 (
     codesetcrossmap_id  integer      DEFAULT nextval('platform_codesets_xmaps_seq'::regclass) NOT NULL,
@@ -187,6 +199,7 @@ CREATE TABLE platform_codesets_xmap
     PRIMARY KEY (codesetcrossmap_id)
 );
 
+drop table if exists platform_dataattributes;
 CREATE TABLE platform_dataattributes
 (
     platform_dataattributes_id  integer     DEFAULT nextval('platform_dataattributes_seq'::regclass) NOT NULL,
@@ -201,7 +214,8 @@ CREATE TABLE platform_dataattributes
     PRIMARY KEY (platform_dataattributes_id)
 );
 
-CREATE TABLE platform_datageneration
+drop table if exists platform_datageneration_dataattributes;
+CREATE TABLE platform_datageneration_dataattributes
 (
     datagentype_id          integer      DEFAULT nextval('platform_datageneration_seq'::regclass) NOT NULL,
     datagentype_description varchar(65)  DEFAULT 'NULL'::character varying,
@@ -217,6 +231,24 @@ CREATE TABLE platform_datageneration
     PRIMARY KEY (datagentype_id)
 );
 
+drop table if exists platform_databuilding_datastructures;
+CREATE TABLE platform_databuilding_datastructures
+(
+    datagentype_datastructures_id          integer      DEFAULT nextval('platform_databuilding_datastructures_seq'::regclass) NOT NULL,
+    datagentype_description varchar(65)  DEFAULT 'NULL'::character varying,
+    definition              varchar(255) DEFAULT 'NULL'::character varying,
+    platform_datastructures_id        integer,
+    created_date            timestamp    DEFAULT CURRENT_TIMESTAMP,
+    status_id               integer      DEFAULT 1,
+    created_user            varchar(20)  DEFAULT 'NULL'::character varying,
+    quantity                integer,
+    maxrecordsinsource      integer,
+    registeredapp_guid          char(38)     DEFAULT 'NULL'::character varying,
+    organization_guid       char(38)     DEFAULT 'NULL'::character varying,
+    PRIMARY KEY (datagentype_datastructures_id)
+);
+
+drop table if exists platform_datasources;
 create table platform_datasources
 (
     platform_datasources_id integer     default nextval('platform_datasources_seq'::regclass) not null,
@@ -230,6 +262,7 @@ create table platform_datasources
     PRIMARY KEY (platform_datasources_id)
 );
 
+drop table if exists platform_datastructures;
 create table platform_datastructures
 (
     platform_datastructures_id   integer     default nextval('platform_datastructures_seq'::regclass) not null,
@@ -243,6 +276,7 @@ create table platform_datastructures
     PRIMARY KEY (platform_datastructures_id)
 );
 
+drop table if exists platform_datastructures_dtl;
 CREATE TABLE platform_datastructures_dtl
 (
     platform_datastructuresdtl_id                  integer     DEFAULT nextval('platform_datastructures_seq'::regclass) NOT NULL,
@@ -258,6 +292,7 @@ CREATE TABLE platform_datastructures_dtl
     PRIMARY KEY (platform_datastructuresdtl_id)
 );
 
+drop table if exists platform_xmap_tokens_attributes_dtl;
 CREATE TABLE platform_xmap_tokens_attributes_dtl
 (
     platform_xmap_tokens_attributesdtl_id integer      DEFAULT nextval('platform_xmap_tokens_dataattributes_seq'::regclass) NOT NULL,
@@ -273,6 +308,7 @@ CREATE TABLE platform_xmap_tokens_attributes_dtl
     PRIMARY KEY (platform_xmap_tokens_attributesdtl_id)
 );
 
+drop table if exists refdata_application;
 CREATE TABLE refdata_application
 (
     app_guid               char(38)    DEFAULT 'gen_random_uuid()' NOT NULL,
@@ -287,7 +323,7 @@ CREATE TABLE refdata_application
     PRIMARY KEY (app_guid)
 );
 
-
+drop table if exists refdata_codeset;
 CREATE TABLE refdata_codeset
 (
     codesets_id        integer      DEFAULT nextval('refdata_codeset_seq'::regclass) NOT NULL,
@@ -305,6 +341,7 @@ CREATE TABLE refdata_codeset
     PRIMARY KEY (codesets_id)
 );
 
+drop table if exists efdata_countries;
 CREATE TABLE refdata_countries
 (
     country_id   integer     DEFAULT nextval('refdata_countries_seq'::regclass) NOT NULL,
@@ -315,6 +352,7 @@ CREATE TABLE refdata_countries
     PRIMARY KEY (country_id)
 );
 
+drop table if exists refdata_devicetypes;
 CREATE TABLE refdata_devicetypes
 (
     devicetype_id integer   DEFAULT nextval('refdata_devicetypes_seq'::regclass) NOT NULL,
@@ -324,6 +362,7 @@ CREATE TABLE refdata_devicetypes
     PRIMARY KEY (devicetype_id)
 );
 
+drop table if exists refdata_industrystd_eventtypes;
 CREATE TABLE refdata_industrystd_eventtypes
 (
     eventtype_id    varchar(10) NOT NULL,
@@ -334,6 +373,7 @@ CREATE TABLE refdata_industrystd_eventtypes
     PRIMARY KEY (eventtype_id)
 );
 
+drop table if exists refdata_industries;
 CREATE TABLE refdata_industries
 (
     industry_id   integer   DEFAULT nextval('refdata_industries_seq'::regclass) NOT NULL,
@@ -343,6 +383,7 @@ CREATE TABLE refdata_industries
     PRIMARY KEY (industry_id)
 );
 
+drop table if exists refdata_industriestobusiness;
 CREATE TABLE refdata_industriestobusiness
 (
     industrytobusiness_id integer   DEFAULT nextval('refdata_industriestobusiness_seq'::regclass) NOT NULL,
@@ -353,6 +394,7 @@ CREATE TABLE refdata_industriestobusiness
     PRIMARY KEY (industrytobusiness_id)
 );
 
+drop table if exists refdata_industrystd;
 CREATE TABLE refdata_industrystd
 (
     industry_std     varchar(6) NOT NULL,
@@ -362,6 +404,7 @@ CREATE TABLE refdata_industrystd
     PRIMARY KEY (industry_std)
 );
 
+drop table if exists refdata_legalentities;
 CREATE TABLE refdata_legalentities
 (
     legalentity_guid char(38)                              NOT NULL,
@@ -378,6 +421,7 @@ CREATE TABLE refdata_legalentities
     PRIMARY KEY (legalentity_guid)
 );
 
+drop table if exists refdata_operationtype;
 CREATE TABLE refdata_operationtype
 (
     operationtype_id   varchar(7) NOT NULL,
@@ -387,6 +431,7 @@ CREATE TABLE refdata_operationtype
     PRIMARY KEY (operationtype_id)
 );
 
+drop table if exists refdata_organization;
 CREATE TABLE refdata_organization
 (
     organization_guid          char(38)                              NOT NULL,
@@ -404,6 +449,7 @@ CREATE TABLE refdata_organization
     PRIMARY KEY (organization_guid)
 );
 
+drop table if exists refdata_regextypes;
 CREATE TABLE refdata_regextypes
 (
     regextype_id     integer   DEFAULT nextval('refdata_regextypes_seq'::regclass) NOT NULL,
@@ -415,6 +461,7 @@ CREATE TABLE refdata_regextypes
     PRIMARY KEY (regextype_id)
 );
 
+drop table if exists refdata_rulesets;
 CREATE TABLE refdata_rulesets
 (
     rule_id        integer     DEFAULT nextval('refdata_rulesets_seq'::regclass) NOT NULL,
@@ -426,6 +473,7 @@ CREATE TABLE refdata_rulesets
     PRIMARY KEY (rule_id)
 );
 
+drop table if exists refdata_rulesetsdefinitions;
 CREATE TABLE refdata_rulesetsdefinitions
 (
     rulesetdefinitions_id   char(38) NOT NULL,
@@ -443,6 +491,7 @@ CREATE TABLE refdata_rulesetsdefinitions
     PRIMARY KEY (rulesetdefinitions_id)
 );
 
+drop table if exists refdata_professiontypes;
 CREATE TABLE refdata_professiontypes
 (
     professiontype_id   integer     DEFAULT nextval('refdata_professiontypes_seq'::regclass) NOT NULL,
@@ -453,7 +502,7 @@ CREATE TABLE refdata_professiontypes
     PRIMARY KEY (professiontype_id)
 );
 
-
+drop table if exists refdata_sensitivityflag;
 CREATE TABLE refdata_sensitivityflag
 (
     sensitiveflag_id   integer     DEFAULT nextval('refdata_sensitivityflag_seq'::regclass) NOT NULL,
@@ -463,6 +512,7 @@ CREATE TABLE refdata_sensitivityflag
     PRIMARY KEY (sensitiveflag_id)
 );
 
+drop table if exists refdata_status;
 CREATE TABLE refdata_status
 (
     status_id          integer     DEFAULT nextval('refdata_status_seq'::regclass) NOT NULL,
@@ -472,6 +522,7 @@ CREATE TABLE refdata_status
     PRIMARY KEY (status_id)
 );
 
+drop table if exists refdata_terminologystd;
 CREATE TABLE refdata_terminologystd
 (
     terminologystd_id      integer      DEFAULT nextval('refdata_terminologystd_seq'::regclass) NOT NULL,
@@ -483,6 +534,7 @@ CREATE TABLE refdata_terminologystd
     PRIMARY KEY (terminologystd_id)
 );
 
+drop table if exists refdata_timezones;
 CREATE TABLE refdata_timezones
 (
     timezone_value varchar(3) NOT NULL,
@@ -492,6 +544,7 @@ CREATE TABLE refdata_timezones
     PRIMARY KEY (timezone_value)
 );
 
+drop table if exists refdata_usstates;
 CREATE TABLE refdata_usstates
 (
     state_id          varchar(2) NOT NULL,
@@ -504,6 +557,7 @@ CREATE TABLE refdata_usstates
     PRIMARY KEY (state_id)
 );
 
+drop table if exists refdata_vendor;
 CREATE TABLE refdata_vendor
 (
     vendor_id    integer     DEFAULT nextval('refdata_vendor_seq'::regclass) NOT NULL,
@@ -545,10 +599,6 @@ ALTER TABLE datamodel_datatables
         REFERENCES refdata_status (status_id);
 
 ALTER TABLE platform_datastructures
-    ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
-
-ALTER TABLE platform_datastructures
     ADD FOREIGN KEY (sensitivityflag_id)
         REFERENCES refdata_sensitivityflag (sensitiveflag_id);
 
@@ -556,17 +606,29 @@ ALTER TABLE platform_datastructures
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE platform_dataattributes
+ALTER TABLE platform_datageneration_dataattributes
     ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_application (app_guid);
 
-ALTER TABLE platform_dataattributes
-    ADD FOREIGN KEY (sensitivityflag_id)
-        REFERENCES refdata_sensitivityflag (sensitiveflag_id);
+ALTER TABLE platform_datageneration_dataattributes
+    ADD FOREIGN KEY (organization_guid)
+        REFERENCES refdata_organization (organization_guid);
 
-ALTER TABLE platform_dataattributes
+ALTER TABLE platform_datageneration_dataattributes
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
+
+ALTER TABLE platform_databuilding_datastructures
+    ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
+
+ALTER TABLE platform_databuilding_datastructures
+    ADD FOREIGN KEY (registeredapp_guid)
+        REFERENCES refdata_application (app_guid);
+
+ALTER TABLE platform_databuilding_datastructures
+    ADD FOREIGN KEY (organization_guid)
+        REFERENCES refdata_organization (organization_guid);
 
 ALTER TABLE platform_codesets_xmap
     ADD FOREIGN KEY (implcodesets_id)
@@ -759,7 +821,6 @@ ALTER TABLE refdata_usstates
 ALTER TABLE refdata_vendor
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
-
 
 -- Indexes
 create index if not exists datatiersdp_dataattributes_index

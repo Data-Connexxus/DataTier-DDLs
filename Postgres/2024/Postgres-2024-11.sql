@@ -1,65 +1,65 @@
 -- Create Sequences First
 -- Need to create for all serial datatypes
-drop sequence if exists datatier_sdp_datastructure_seq;
+drop sequence if exists datatier_sdp_datastructure_seq cascade;
 create sequence datatier_sdp_datastructure_seq;
-drop sequence if exists datatier_sdp_dataattribute_seq;
+drop sequence if exists datatier_sdp_dataattribute_seq cascade;
 create sequence datatier_sdp_dataattribute_seq;
-drop sequence if exists datatier_tokens_seq;
+drop sequence if exists datatier_tokens_seq cascade;
 create sequence datatier_tokens_seq;
-drop sequence if exists datatier_crawler_seq;
+drop sequence if exists datatier_crawler_seq cascade;
 create sequence datatier_crawler_seq;
-drop sequence if exists apis_seq;
+drop sequence if exists apis_seq cascade;
 create sequence apis_seq;
-drop sequence if exists platform_codeset_industrystd_seq;
+drop sequence if exists platform_codeset_industrystd_seq cascade;
 create sequence platform_codeset_industrystd_seq;
-drop sequence if exists platform_codesets_seq;
+drop sequence if exists platform_codesets_seq cascade;
 create sequence platform_codesets_seq;
-drop sequence if exists platform_codesets_xmap_seq;
+drop sequence if exists platform_codesets_xmaps_seq cascade;
 create sequence platform_codesets_xmaps_seq;
-drop sequence if exists platform_datasources_seq;
+drop sequence if exists platform_datasources_seq cascade;
 create sequence platform_datasources_seq;
-drop sequence if exists platform_xmap_tokens_dataattributes_seq;
+drop sequence if exists platform_xmap_tokens_dataattributes_seq cascade;
 create sequence platform_xmap_tokens_dataattributes_seq;
-drop sequence if exists platform_datageneration_seq;
+drop sequence if exists platform_datageneration_seq cascade;
 create sequence platform_datageneration_seq;
-drop sequence if exists platform_databuilding_dataattributes_seq;
+drop sequence if exists platform_databuilding_dataattributes_seq cascade;
 create sequence platform_databuilding_dataattributes_seq
-drop sequence if exists platform_databuilding_datastructures_seq;
+drop sequence if exists platform_databuilding_datastructures_seq cascade;
 create sequence platform_databuilding_datastructures_seq;
-drop sequence if exists refdata_codeset_seq;
+drop sequence if exists refdata_codeset_seq cascade;
 create sequence refdata_codeset_seq;
-drop sequence if exists refdata_countries_seq;
+drop sequence if exists refdata_countries_seq cascade;
 create sequence refdata_countries_seq;
-drop sequence if exists refdata_dataattributes_seq;
+drop sequence if exists refdata_dataattributes_seq cascade;
 create sequence refdata_dataattributes_seq;
-drop sequence if exists refdata_datastructures_seq;
+drop sequence if exists refdata_datastructures_seq cascade;
 create sequence refdata_datastructures_seq;
-drop sequence if exists refdata_devicetypes_seq;
+drop sequence if exists refdata_devicetypes_seq cascade;
 create sequence refdata_devicetypes_seq;
-drop sequence if exists refdata_eventtypes_seq;
+drop sequence if exists refdata_eventtypes_seq cascade;
 create sequence refdata_eventtypes_seq;
-drop sequence if exists refdata_industries_seq;
+drop sequence if exists refdata_industries_seq cascade;
 create sequence refdata_industries_seq;
-drop sequence if exists refdata_industriestobusiness_seq;
+drop sequence if exists refdata_industriestobusiness_seq cascade;
 create sequence refdata_industriestobusiness_seq;
-drop sequence if exists refdata_professiontypes_seq;
+drop sequence if exists refdata_professiontypes_seq cascade;
 create sequence refdata_professiontypes_seq;
-drop sequence if exists refdata_regextypes_seq;
+drop sequence if exists refdata_regextypes_seq cascade;
 create sequence refdata_regextypes_seq;
-drop sequence if exists refdata_rulesets_seq;
+drop sequence if exists refdata_rulesets_seq cascade;
 create sequence refdata_rulesets_seq;
-drop sequence if exists refdata_sensitivityflag_seq;
+drop sequence if exists refdata_sensitivityflag_seq cascade;
 create sequence refdata_sensitivityflag_seq;
-drop sequence if exists refdata_status_seq;
+drop sequence if exists refdata_status_seq cascade;
 create sequence refdata_status_seq;
-drop sequence if exists refdata_terminologystd_seq;
+drop sequence if exists refdata_terminologystd_seq cascade;
 create sequence refdata_terminologystd_seq;
-drop sequence if exists refdata_vendor_seq;
+drop sequence if exists refdata_vendor_seq cascade;
 create sequence refdata_vendor_seq;
 
 -- Create Tables
 -- Reference Tables
-drop table if exists refdata_application;
+drop table if exists refdata_application cascade;
 CREATE TABLE refdata_application
 (
     app_guid               char(38)    DEFAULT 'gen_random_uuid()' NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE refdata_application
     PRIMARY KEY (app_guid)
 );
 
-drop table if exists refdata_codeset;
+drop table if exists refdata_codeset cascade;
 CREATE TABLE refdata_codeset
 (
     codesets_id        integer      DEFAULT nextval('refdata_codeset_seq'::regclass) NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE refdata_codeset
     PRIMARY KEY (codesets_id)
 );
 
-drop table if exists refdata_countries;
+drop table if exists refdata_countries cascade;
 CREATE TABLE refdata_countries
 (
     country_id   integer     DEFAULT nextval('refdata_countries_seq'::regclass) NOT NULL,
@@ -103,8 +103,8 @@ CREATE TABLE refdata_countries
     PRIMARY KEY (country_id)
 );
 
-drop table if exists platform_dataattributes;
-drop table if exists refdata_dataattributes;
+drop table if exists platform_dataattributes cascade;
+drop table if exists refdata_dataattributes cascade;
 CREATE TABLE refdata_dataattributes
 (
     dataattribute_id  integer     DEFAULT nextval('refdata_dataattributes_seq'::regclass) NOT NULL,
@@ -119,8 +119,8 @@ CREATE TABLE refdata_dataattributes
     PRIMARY KEY (dataattribute_id)
 );
 
-drop table if exists platform_datastructures;
-drop table if exists refdata_datastructures;
+drop table if exists platform_datastructures cascade;
+drop table if exists refdata_datastructures cascade;
 create table refdata_datastructures
 (
     datastructure_id   integer     default nextval('refdata_datastructures_seq'::regclass) not null,
@@ -134,7 +134,7 @@ create table refdata_datastructures
     PRIMARY KEY (datastructure_id)
 );
 
-drop table if exists refdata_devicetypes;
+drop table if exists refdata_devicetypes cascade;
 CREATE TABLE refdata_devicetypes
 (
     devicetype_id integer   DEFAULT nextval('refdata_devicetypes_seq'::regclass) NOT NULL,
@@ -144,7 +144,7 @@ CREATE TABLE refdata_devicetypes
     PRIMARY KEY (devicetype_id)
 );
 
-drop table if exists refdata_industrystd_eventtypes;
+drop table if exists refdata_industrystd_eventtypes cascade;
 CREATE TABLE refdata_industrystd_eventtypes
 (
     eventtype_id    varchar(10) NOT NULL,
@@ -155,7 +155,7 @@ CREATE TABLE refdata_industrystd_eventtypes
     PRIMARY KEY (eventtype_id)
 );
 
-drop table if exists refdata_industries;
+drop table if exists refdata_industries cascade;
 CREATE TABLE refdata_industries
 (
     industry_id   integer   DEFAULT nextval('refdata_industries_seq'::regclass) NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE refdata_industries
     PRIMARY KEY (industry_id)
 );
 
-drop table if exists refdata_industriestobusiness;
+drop table if exists refdata_industriestobusiness cascade;
 CREATE TABLE refdata_industriestobusiness
 (
     industrytobusiness_id integer   DEFAULT nextval('refdata_industriestobusiness_seq'::regclass) NOT NULL,
@@ -176,7 +176,7 @@ CREATE TABLE refdata_industriestobusiness
     PRIMARY KEY (industrytobusiness_id)
 );
 
-drop table if exists refdata_industrystd;
+drop table if exists refdata_industrystd cascade;
 CREATE TABLE refdata_industrystd
 (
     industry_std     varchar(6) NOT NULL,
@@ -186,7 +186,7 @@ CREATE TABLE refdata_industrystd
     PRIMARY KEY (industry_std)
 );
 
-drop table if exists refdata_legalentities;
+drop table if exists refdata_legalentities cascade;
 CREATE TABLE refdata_legalentities
 (
     legalentity_guid char(38)                              NOT NULL,
@@ -203,7 +203,7 @@ CREATE TABLE refdata_legalentities
     PRIMARY KEY (legalentity_guid)
 );
 
-drop table if exists refdata_operationtype;
+drop table if exists refdata_operationtype cascade;
 CREATE TABLE refdata_operationtype
 (
     operationtype_id   varchar(7) NOT NULL,
@@ -213,7 +213,7 @@ CREATE TABLE refdata_operationtype
     PRIMARY KEY (operationtype_id)
 );
 
-drop table if exists refdata_organization;
+drop table if exists refdata_organization cascade;
 CREATE TABLE refdata_organization
 (
     organization_guid          char(38)                              NOT NULL,
@@ -231,7 +231,7 @@ CREATE TABLE refdata_organization
     PRIMARY KEY (organization_guid)
 );
 
-drop table if exists refdata_professiontypes;
+drop table if exists refdata_professiontypes cascade;
 CREATE TABLE refdata_professiontypes
 (
     professiontype_id   integer     DEFAULT nextval('refdata_professiontypes_seq'::regclass) NOT NULL,
@@ -242,7 +242,7 @@ CREATE TABLE refdata_professiontypes
     PRIMARY KEY (professiontype_id)
 );
 
-drop table if exists refdata_regextypes;
+drop table if exists refdata_regextypes cascade;
 CREATE TABLE refdata_regextypes
 (
     regextype_id     integer   DEFAULT nextval('refdata_regextypes_seq'::regclass) NOT NULL,
@@ -254,7 +254,7 @@ CREATE TABLE refdata_regextypes
     PRIMARY KEY (regextype_id)
 );
 
-drop table if exists refdata_rulesets;
+drop table if exists refdata_rulesets cascade;
 CREATE TABLE refdata_rulesets
 (
     rule_id        integer     DEFAULT nextval('refdata_rulesets_seq'::regclass) NOT NULL,
@@ -266,7 +266,7 @@ CREATE TABLE refdata_rulesets
     PRIMARY KEY (rule_id)
 );
 
-drop table if exists refdata_rulesetsdefinitions;
+drop table if exists refdata_rulesetsdefinitions cascade;
 CREATE TABLE refdata_rulesetsdefinitions
 (
     rulesetdefinitions_id   char(38) NOT NULL,
@@ -284,7 +284,7 @@ CREATE TABLE refdata_rulesetsdefinitions
     PRIMARY KEY (rulesetdefinitions_id)
 );
 
-drop table if exists refdata_sensitivityflag;
+drop table if exists refdata_sensitivityflag cascade;
 CREATE TABLE refdata_sensitivityflag
 (
     sensitiveflag_id   integer     DEFAULT nextval('refdata_sensitivityflag_seq'::regclass) NOT NULL,
@@ -294,7 +294,7 @@ CREATE TABLE refdata_sensitivityflag
     PRIMARY KEY (sensitiveflag_id)
 );
 
-drop table if exists refdata_status;
+drop table if exists refdata_status cascade;
 CREATE TABLE refdata_status
 (
     status_id          integer     DEFAULT nextval('refdata_status_seq'::regclass) NOT NULL,
@@ -304,7 +304,7 @@ CREATE TABLE refdata_status
     PRIMARY KEY (status_id)
 );
 
-drop table if exists refdata_terminologystd;
+drop table if exists refdata_terminologystd cascade;
 CREATE TABLE refdata_terminologystd
 (
     terminologystd_id      integer      DEFAULT nextval('refdata_terminologystd_seq'::regclass) NOT NULL,
@@ -316,7 +316,7 @@ CREATE TABLE refdata_terminologystd
     PRIMARY KEY (terminologystd_id)
 );
 
-drop table if exists refdata_timezones;
+drop table if exists refdata_timezones cascade;
 CREATE TABLE refdata_timezones
 (
     timezone_value varchar(3) NOT NULL,
@@ -326,7 +326,7 @@ CREATE TABLE refdata_timezones
     PRIMARY KEY (timezone_value)
 );
 
-drop table if exists refdata_usstates;
+drop table if exists refdata_usstates cascade;
 CREATE TABLE refdata_usstates
 (
     state_id          varchar(2) NOT NULL,
@@ -339,7 +339,7 @@ CREATE TABLE refdata_usstates
     PRIMARY KEY (state_id)
 );
 
-drop table if exists refdata_vendor;
+drop table if exists refdata_vendor cascade;
 CREATE TABLE refdata_vendor
 (
     vendor_id    integer     DEFAULT nextval('refdata_vendor_seq'::regclass) NOT NULL,
@@ -377,35 +377,35 @@ ALTER TABLE refdata_codeset
 
 ALTER TABLE refdata_countries
     ADD FOREIGN KEY  (status_id)
-        REFERENCES refdata_status(status_id)
+        REFERENCES refdata_status(status_id);
 
 ALTER TABLE refdata_devicetypes
     ADD FOREIGN KEY  (status_id)
-        REFERENCES refdata_status(status_id)
+        REFERENCES refdata_status(status_id);
 
 ALTER TABLE refdata_industrystd_eventtypes
     ADD FOREIGN KEY  (status_id)
-        REFERENCES refdata_status(status_id)
+        REFERENCES refdata_status(status_id);
 
 ALTER TABLE refdata_industrystd_eventtypes
     ADD FOREIGN KEY  (industry_std)
-        REFERENCES refdata_industrystd(industry_std)
+        REFERENCES refdata_industrystd(industry_std);
 
 ALTER TABLE refdata_industries
     ADD FOREIGN KEY  (status_id)
-        REFERENCES refdata_status(status_id)
+        REFERENCES refdata_status(status_id);
 
 ALTER TABLE refdata_industriestobusiness
     ADD FOREIGN KEY  (status_id)
-        REFERENCES refdata_status(status_id)
+        REFERENCES refdata_status(status_id);
 
 ALTER TABLE refdata_industriestobusiness
     ADD FOREIGN KEY  (industry_id)
-        REFERENCES refdata_industries(industry_id)
+        REFERENCES refdata_industries(industry_id);
 
 ALTER TABLE refdata_industrystd
     ADD FOREIGN KEY  (status_id)
-        REFERENCES refdata_status(status_id)
+        REFERENCES refdata_status(status_id);
 
 ALTER TABLE refdata_legalentities
     ADD FOREIGN KEY (status_id)
@@ -488,7 +488,7 @@ ALTER TABLE refdata_vendor
         REFERENCES refdata_status (status_id);
 
 -- Datamodel
-drop table if exists datamodel_apis;
+drop table if exists datamodel_apis cascade;
 CREATE TABLE datamodel_apis
 (
     api_id             integer   DEFAULT nextval('apis_seq'::regclass) NOT NULL,
@@ -507,8 +507,9 @@ CREATE TABLE datamodel_apis
 
 ALTER TABLE datamodel_apis
     ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
 
-drop table if exists datamodel_domain;
+drop table if exists datamodel_domain cascade;
 CREATE TABLE datamodel_domain
 (
     domainname        varchar(64) NOT NULL,
@@ -522,7 +523,7 @@ ALTER TABLE datamodel_domain
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-drop table if exists datamodel_datatables;
+drop table if exists datamodel_datatables cascade;
 CREATE TABLE datamodel_datatables
 (
     tablename        varchar(64) NOT NULL,
@@ -542,7 +543,7 @@ ALTER TABLE datamodel_datatables
         REFERENCES refdata_status (status_id);
 
 -- DataTier
-drop table if exists datatier_crawler;
+drop table if exists datatier_crawler cascade;
 CREATE TABLE datatier_crawler
 (
     datacrawler_id      integer     DEFAULT nextval('datatier_crawler_seq'::regclass) NOT NULL,
@@ -567,7 +568,7 @@ ALTER TABLE datatier_crawler
     ADD FOREIGN KEY (organization_guid)
         REFERENCES refdata_organization (organization_guid);
 
-drop table if exists datatier_sdp_dataattributes;
+drop table if exists datatier_sdp_dataattributes cascade;
 create table datatier_sdp_dataattributes
 (
     datatier_id      integer default nextval('datatier_sdp_dataattribute_seq'::regclass) not null primary key,
@@ -599,11 +600,7 @@ ALTER TABLE datatier_sdp_dataattributes
     ADD FOREIGN KEY (dataattribute_id)
         REFERENCES refdata_dataattributes (dataattribute_id);
 
-ALTER TABLE datatier_sdp_dataattributes
-    ADD FOREIGN KEY (datagentype_id)
-        REFERENCES platform_datageneration_dataattributes (datagentype_id);
-
-drop table if exists datatier_sdp_datastructures;
+drop table if exists datatier_sdp_datastructures cascade;
 CREATE TABLE datatier_sdp_datastructures
 (
     datastructure_core_id  integer     DEFAULT nextval('datatier_sdp_datastructure_seq'::regclass) NOT NULL,
@@ -649,11 +646,7 @@ ALTER TABLE datatier_tokens
     ADD FOREIGN KEY (organization_guid)
         REFERENCES refdata_organization (organization_guid);
 
-ALTER TABLE datatier_tokens
-    ADD FOREIGN KEY (datasource_id)
-        REFERENCES platform_datasources (datasource_id);
-
-drop table if exists platform_codesets;
+drop table if exists platform_codesets cascade;
 CREATE TABLE platform_codesets
 (
     platform_codeset_id  integer      DEFAULT nextval('platform_codesets_seq'::regclass) NOT NULL,
@@ -665,7 +658,7 @@ CREATE TABLE platform_codesets
     created_user        varchar(20)  DEFAULT 'NULL'::character varying,
     originalcode_value  varchar(40),
     originalcode_desc   varchar(149),
-    PRIMARY KEY (codeset_id)
+    PRIMARY KEY (codesets_id)
 );
 
 ALTER TABLE platform_codesets
@@ -693,11 +686,11 @@ ALTER TABLE platform_codesets_industrystd
     ADD FOREIGN KEY (terminologystd_id)
         REFERENCES refdata_terminologystd (terminologystd_id);
 
-ALTER TABLE platform_codeset_industrystd
+ALTER TABLE platform_codesets_industrystd
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-drop table if exists platform_codesets_xmap;
+drop table if exists platform_codesets_xmap cascade;
 CREATE TABLE platform_codesets_xmap
 (
     codesetcrossmap_id  integer      DEFAULT nextval('platform_codesets_xmaps_seq'::regclass) NOT NULL,
@@ -724,7 +717,7 @@ ALTER TABLE platform_codesets_xmap
 
 ALTER TABLE platform_codesets_xmap
     ADD FOREIGN KEY (terminologystd_from)
-        REFERENCES refdata_codeset (terminologystd_id);
+        REFERENCES refdata_terminologystd (terminologystd_id);
 
 ALTER TABLE platform_codesets_xmap
     ADD FOREIGN KEY (terminologystd_to)
@@ -734,7 +727,7 @@ ALTER TABLE platform_codesets_xmap
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-drop table if exists platform_datageneration_dataattributes;
+drop table if exists platform_datageneration_dataattributes cascade;
 CREATE TABLE platform_datageneration_dataattributes
 (
     datagentype_id          integer      DEFAULT nextval('platform_datageneration_seq'::regclass) NOT NULL,
@@ -767,7 +760,7 @@ ALTER TABLE platform_datageneration_dataattributes
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-drop table if exists platform_databuilding_dataattributes;
+drop table if exists platform_databuilding_dataattributes cascade;
 CREATE TABLE platform_databuilding_dataattributes
 (
     databuild_dataattribute_id          integer      DEFAULT nextval('platform_databuilding_dataattributes_seq'::regclass) NOT NULL,
@@ -811,7 +804,7 @@ ALTER TABLE platform_databuilding_dataattributes
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-drop table if exists platform_databuilding_datastructures;
+drop table if exists platform_databuilding_datastructures cascade;
 CREATE TABLE platform_databuilding_datastructures
 (
     datagentype_datastructures_id          integer      DEFAULT nextval('platform_databuilding_datastructures_seq'::regclass) NOT NULL,
@@ -844,7 +837,7 @@ ALTER TABLE platform_databuilding_datastructures
     ADD FOREIGN KEY (datastructure_id)
         REFERENCES  refdata_datastructures(datastructure_id)
 
-drop table if exists platform_datasources;
+drop table if exists platform_datasources cascade;
 create table platform_datasources
 (
     platform_datasources_id integer     default nextval('platform_datasources_seq'::regclass) not null,
@@ -869,11 +862,15 @@ ALTER TABLE platform_datasources
 ALTER TABLE platform_datasources
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
+-- Added to ensure a reference to it occurs in table created well before in script
+ALTER TABLE datatier_tokens
+    ADD FOREIGN KEY (datasource_id)
+        REFERENCES platform_datasources (platform_datasources_id);
 
-drop table if exists platform_datastructures_dtl;
+drop table if exists platform_datastructures_dtl cascade;
 CREATE TABLE platform_datastructures_dtl
 (
-    platform_datastructuresdtl_id                  integer     DEFAULT nextval('platform_datastructures_seq'::regclass) NOT NULL,
+    platform_datastructuresdtl_id                  integer     DEFAULT nextval('refdata_datastructures_seq'::regclass) NOT NULL,
     datastructure_id                     integer,
     composite_datastructure_name                   varchar(50) DEFAULT 'NULL'::character varying,
     sensitivityflag_id                            integer     DEFAULT 1,
@@ -887,10 +884,6 @@ CREATE TABLE platform_datastructures_dtl
 );
 
 ALTER TABLE platform_datastructures_dtl
-    ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
-
-ALTER TABLE platform_datastructures_dtl
     ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_application (app_guid);
 
@@ -900,13 +893,13 @@ ALTER TABLE platform_datastructures_dtl
 
 ALTER TABLE platform_datastructures_dtl
     ADD FOREIGN KEY (datastructure_id)
-        REFERENCES  refdata_datastructures(datastructure_id)
+        REFERENCES  refdata_datastructures(datastructure_id);
 
 ALTER TABLE platform_datastructures_dtl
     ADD FOREIGN KEY (dataattribute_id)
-        REFERENCES  refdata_dataattributes(dataattribute_id)
+        REFERENCES  refdata_dataattributes(dataattribute_id);
 
-drop table if exists platform_xmap_tokens_attributes_dtl;
+drop table if exists platform_xmap_tokens_attributes_dtl cascade;
 CREATE TABLE platform_xmap_tokens_attributes_dtl
 (
     platform_xmap_tokens_attributesdtl_id integer      DEFAULT nextval('platform_xmap_tokens_dataattributes_seq'::regclass) NOT NULL,
@@ -924,7 +917,7 @@ CREATE TABLE platform_xmap_tokens_attributes_dtl
 
 ALTER TABLE platform_xmap_tokens_attributes_dtl
     ADD FOREIGN KEY (dataattribute_id)
-        REFERENCES  refdata_dataattributes(dataattribute_id)
+        REFERENCES  refdata_dataattributes(dataattribute_id);
 
 ALTER TABLE platform_xmap_tokens_attributes_dtl
     ADD FOREIGN KEY (organization_guid)

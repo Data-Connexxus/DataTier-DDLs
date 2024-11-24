@@ -247,13 +247,12 @@ CREATE TABLE refdata_status
 drop table if exists refdata_terminologystd;
 CREATE TABLE refdata_terminologystd
 (
-    terminologystd_id      INT IDENTITY(1,1) NOT NULL,
-    terminologystd         varchar(25) NOT NULL,
+    terminology_std         varchar(6) NOT NULL,
     terminologystd_version varchar(10) NOT NULL,
     terminologystd_desc    varchar(129),
     created_date           datetime DEFAULT (GETUTCDATE()),
     status_id              INT      default 1,
-    PRIMARY KEY (terminologystd_id)
+    PRIMARY KEY (terminology_std)
 );
 
 drop table if exists refdata_timezones;
@@ -622,13 +621,13 @@ CREATE TABLE platform_codesets_industrystd
     code_value        varchar(20),
     code_desc         varchar(129),
     industry_std      varchar(6),
-    terminologystd_id INT,
+    terminology_std varchar(6),
     PRIMARY KEY (termcodeset_id)
 );
 
 ALTER TABLE platform_codesets_industrystd
-    ADD FOREIGN KEY (terminologystd_id)
-        REFERENCES refdata_terminologystd (terminologystd_id);
+    ADD FOREIGN KEY (terminology_std)
+        REFERENCES refdata_terminologystd (terminology_std);
 
 ALTER TABLE platform_codesets_industrystd
     ADD FOREIGN KEY (status_id)

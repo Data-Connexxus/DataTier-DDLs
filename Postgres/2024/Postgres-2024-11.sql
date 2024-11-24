@@ -307,13 +307,12 @@ CREATE TABLE refdata_status
 drop table if exists refdata_terminologystd cascade;
 CREATE TABLE refdata_terminologystd
 (
-    terminologystd_id      integer      DEFAULT nextval('refdata_terminologystd_seq'::regclass) NOT NULL,
-    terminologystd         varchar(25)                                                          NOT NULL,
+    terminology_std         varchar(6)  NOT NULL,
     terminologystd_version varchar(10)                                                          NOT NULL,
     terminologystd_desc    varchar(129) DEFAULT 'NULL'::character varying,
     created_date           timestamp    DEFAULT CURRENT_TIMESTAMP,
     status_id              integer      DEFAULT 1,
-    PRIMARY KEY (terminologystd_id)
+    PRIMARY KEY (terminology_std)
 );
 
 drop table if exists refdata_timezones cascade;
@@ -680,13 +679,13 @@ CREATE TABLE platform_codesets_industrystd
     code_value         varchar(20)  DEFAULT 'NULL'::character varying,
     code_desc          varchar(129) DEFAULT 'NULL'::character varying,
     industry_std      varchar(6)   DEFAULT 'UNDF'::character varying,
-    terminologystd_id integer,
+    terminology_std varchar(6),
     PRIMARY KEY (termcodeset_id)
 );
 
 ALTER TABLE platform_codesets_industrystd
-    ADD FOREIGN KEY (terminologystd_id)
-        REFERENCES refdata_terminologystd (terminologystd_id);
+    ADD FOREIGN KEY (terminology_std)
+        REFERENCES refdata_terminologystd (terminology_std);
 
 ALTER TABLE platform_codesets_industrystd
     ADD FOREIGN KEY (status_id)

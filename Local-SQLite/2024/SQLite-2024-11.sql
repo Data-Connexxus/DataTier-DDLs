@@ -114,7 +114,7 @@ CREATE TABLE platform_codesets_industrystd
     code_value        TEXT,
     code_desc         TEXT,
     industry_std      TEXT,
-    terminologystd_id integer
+    terminology_std TEXT
 );
 
 DROP TABLE if exists platform_codesets_crossmaps;
@@ -467,8 +467,7 @@ CREATE TABLE refdata_status
 drop table if exists refdata_terminologystd;
 CREATE TABLE refdata_terminologystd
 (
-    terminologystd_id      integer primary key autoincrement,
-    terminologystd         TEXT(25)                                                          NOT NULL,
+    terminologystd         TEXT(6) primary key,,
     terminologystd_version TEXT                                                              NOT NULL,
     terminologystd_desc    TEXT,
     created_date           TEXT default (datetime('now', 'localtime')),

@@ -697,8 +697,8 @@ CREATE TABLE platform_codesets_xmap
     codesetcrossmap_id  integer      DEFAULT nextval('platform_codesets_xmaps_seq'::regclass) NOT NULL,
     application_guid      CHAR(38),
     organization_guid      CHAR(38),
-    terminologystd_from     integer,
-    terminologystd_to   integer,
+    terminologystd_from     varchar(25),
+    terminologystd_to   varchar(25),
     created_date        timestamp    DEFAULT CURRENT_TIMESTAMP,
     status_id           integer      DEFAULT 1,
     created_user        varchar(20)  DEFAULT 'NULL'::character varying,
@@ -718,11 +718,11 @@ ALTER TABLE platform_codesets_xmap
 
 ALTER TABLE platform_codesets_xmap
     ADD FOREIGN KEY (terminologystd_from)
-        REFERENCES refdata_terminologystd (terminologystd_id);
+        REFERENCES refdata_terminologystd (terminology_std);
 
 ALTER TABLE platform_codesets_xmap
     ADD FOREIGN KEY (terminologystd_to)
-        REFERENCES refdata_terminologystd (terminologystd_id);
+        REFERENCES refdata_terminologystd (terminology_std);
 
 ALTER TABLE platform_codesets_xmap
     ADD FOREIGN KEY (status_id)
@@ -819,7 +819,7 @@ CREATE TABLE platform_databuilding_datastructures
     maxrecords_in_source      integer,
     registeredapp_guid          char(38)     DEFAULT 'NULL'::character varying,
     organization_guid       char(38)     DEFAULT 'NULL'::character varying,
-    PRIMARY KEY (datagentype_datastructures_id)
+    PRIMARY KEY (databuild_datastructures_id)
 );
 
 ALTER TABLE platform_databuilding_datastructures
@@ -937,3 +937,4 @@ create index if not exists datatier_sdp_dataattributes_index
 --CREATE INDEX terms_codeset_industrystd_index ON terms_codeset_industrystd USING btree (termcodeset_id, codesets_id, created_date, status_id, code_value, code_desc, industry_std);
 
 --CREATE UNIQUE INDEX terms_codeset_industrystd_uindex ON terms_codeset_industrystd USING btree (codesets_id, code_value, code_desc, industry_std);
+

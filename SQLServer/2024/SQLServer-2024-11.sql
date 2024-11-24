@@ -872,3 +872,9 @@ ALTER TABLE platform_tokens_xmap
 ALTER TABLE platform_tokens_xmap
     ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_application (app_guid);
+
+-- Indexes
+create index if not exists datatier_sdp_dataattributes_index
+    on datatier_sdp_dataattributes (datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4,
+                                    supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
+                                    datagentype_id, status_id, created_user, registeredapp_guid);

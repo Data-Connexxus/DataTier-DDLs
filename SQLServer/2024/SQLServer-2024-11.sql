@@ -753,8 +753,8 @@ ALTER TABLE platform_databuilding_dataattributes
 drop table if exists platform_databuilding_datastructures;
 CREATE TABLE platform_databuilding_datastructures
 (
-    datagentype_datastructures_id          INT IDENTITY(1,1) NOT NULL,
-    datagentype_description varchar(65),
+    databuild_datastructures_id          INT IDENTITY(1,1) NOT NULL,
+    databuild_description varchar(65),
     definition             varchar(255),
     datastructure_id       INT,
     created_date           datetime DEFAULT (GETUTCDATE()),
@@ -845,10 +845,10 @@ ALTER TABLE platform_datastructures_dtl
     ADD FOREIGN KEY (dataattribute_id)
         REFERENCES  refdata_dataattributes(dataattribute_id);
 
-DROP TABLE if exists platform_xmap_tokens_attributes_dtl;
-CREATE TABLE platform_xmap_tokens_attributes_dtl
+DROP TABLE if exists platform_tokens_xmap;
+CREATE TABLE platform_tokens_xmap
 (
-    platform_xmap_tokensattributesdtl_id INT IDENTITY(1,1) NOT NULL,
+    platform_tokens_xmap_id INT IDENTITY(1,1) NOT NULL,
     datastructure_id           int,
     xmap_details                         varchar(149),
     dataattribute_id                     int      DEFAULT 1,
@@ -858,17 +858,17 @@ CREATE TABLE platform_xmap_tokens_attributes_dtl
     created_user                         varchar(20),
     registeredapp_guid                   char(38),
     organization_guid                    char(38),
-    PRIMARY KEY (platform_xmap_tokensattributesdtl_id)
+    PRIMARY KEY (platform_tokens_xmap_id)
 );
 
-ALTER TABLE platform_xmap_tokens_attributes_dtl
+ALTER TABLE platform_tokens_xmap
     ADD FOREIGN KEY (dataattribute_id)
         REFERENCES  refdata_dataattributes(dataattribute_id);
 
-ALTER TABLE platform_xmap_tokens_attributes_dtl
+ALTER TABLE platform_tokens_xmap
     ADD FOREIGN KEY (organization_guid)
         REFERENCES refdata_organization (organization_guid);
 
-ALTER TABLE platform_xmap_tokens_attributes_dtl
+ALTER TABLE platform_tokens_xmap
     ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_application (app_guid);

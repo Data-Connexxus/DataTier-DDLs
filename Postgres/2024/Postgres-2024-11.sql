@@ -808,8 +808,8 @@ ALTER TABLE platform_databuilding_dataattributes
 drop table if exists platform_databuilding_datastructures cascade;
 CREATE TABLE platform_databuilding_datastructures
 (
-    datagentype_datastructures_id          integer      DEFAULT nextval('platform_databuilding_datastructures_seq'::regclass) NOT NULL,
-    datagentype_description varchar(65)  DEFAULT 'NULL'::character varying,
+    databuild_datastructures_id          integer      DEFAULT nextval('platform_databuilding_datastructures_seq'::regclass) NOT NULL,
+    databuild_description varchar(65)  DEFAULT 'NULL'::character varying,
     definition              varchar(255) DEFAULT 'NULL'::character varying,
     datastructure_id        integer,
     created_date            timestamp    DEFAULT CURRENT_TIMESTAMP,
@@ -900,10 +900,10 @@ ALTER TABLE platform_datastructures_dtl
     ADD FOREIGN KEY (dataattribute_id)
         REFERENCES  refdata_dataattributes(dataattribute_id);
 
-drop table if exists platform_xmap_tokens_attributes_dtl cascade;
-CREATE TABLE platform_xmap_tokens_attributes_dtl
+drop table if exists platform_tokens_xmap cascade;
+CREATE TABLE platform_tokens_xmap
 (
-    platform_xmap_tokens_attributesdtl_id integer      DEFAULT nextval('platform_xmap_tokens_dataattributes_seq'::regclass) NOT NULL,
+    platform_tokens_xmap_id integer      DEFAULT nextval('platform_xmap_tokens_dataattributes_seq'::regclass) NOT NULL,
     datastructures_id          integer,
     xmap_details                       varchar(149) DEFAULT 'NULL'::character varying,
     dataattribute_id                   integer      DEFAULT 1,
@@ -913,18 +913,18 @@ CREATE TABLE platform_xmap_tokens_attributes_dtl
     created_user                       varchar(20)  DEFAULT 'NULL'::character varying,
     registeredapp_guid                     char(38)     DEFAULT 'NULL'::bpchar,
     organization_guid                  char(38)     default NULL::bpchar,
-    PRIMARY KEY (platform_xmap_tokens_attributesdtl_id)
+    PRIMARY KEY (platform_tokens_xmap_id)
 );
 
-ALTER TABLE platform_xmap_tokens_attributes_dtl
+ALTER TABLE platform_tokens_xmap
     ADD FOREIGN KEY (dataattribute_id)
         REFERENCES  refdata_dataattributes(dataattribute_id);
 
-ALTER TABLE platform_xmap_tokens_attributes_dtl
+ALTER TABLE platform_tokens_xmap
     ADD FOREIGN KEY (organization_guid)
         REFERENCES refdata_organization (organization_guid);
 
-ALTER TABLE platform_xmap_tokens_attributes_dtl
+ALTER TABLE platform_tokens_xmap
     ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_application (app_guid);
 

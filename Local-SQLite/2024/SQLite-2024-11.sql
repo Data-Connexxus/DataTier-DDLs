@@ -182,8 +182,8 @@ CREATE TABLE platform_databuilding_dataattributes
 DROP TABLE if exists platform_databuilding_datastructures;
 CREATE TABLE platform_databuilding_datastructures
 (
-    datagentype_datastructures_id          integer primary key autoincrement,
-    datagentype_description TEXT,
+    databuild_datastructures_id          integer primary key autoincrement,
+    databuild_description TEXT,
     definition              TEXT,
     datastructure_id        integer,
     created_date            TEXT default (datetime('now', 'localtime')),
@@ -223,10 +223,10 @@ CREATE TABLE platform_datastructures_dtl
     dataattribute_id                     integer
 );
 
-drop table if exists platform_xmap_tokens_attributes_dtl;
-CREATE TABLE platform_xmap_tokens_attributes_dtl
+drop table if exists platform_tokens_xmap;
+CREATE TABLE platform_tokens_xmap
 (
-    platform_xmap_tokens_attributesdtl_id integer primary key autoincrement,
+    platform_tokens_xmap_id integer primary key autoincrement,
     datastructure_id            integer,
     xmap_details                          TEXT,
     dataattribute_id                      integer   DEFAULT 1,

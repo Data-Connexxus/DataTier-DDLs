@@ -646,6 +646,8 @@ ALTER TABLE datatier_tokens
     ADD FOREIGN KEY (organization_guid)
         REFERENCES refdata_organization (organization_guid);
 
+-- Platform
+
 drop table if exists platform_codesets cascade;
 CREATE TABLE platform_codesets
 (

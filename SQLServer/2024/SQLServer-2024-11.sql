@@ -247,7 +247,7 @@ CREATE TABLE refdata_status
 drop table if exists refdata_terminologystd;
 CREATE TABLE refdata_terminologystd
 (
-    terminology_std         varchar(6) NOT NULL,
+    terminology_std         varchar(25) NOT NULL,
     terminologystd_version varchar(10) NOT NULL,
     terminologystd_desc    varchar(129),
     created_date           datetime DEFAULT (GETUTCDATE()),
@@ -621,7 +621,7 @@ CREATE TABLE platform_codesets_industrystd
     code_value        varchar(20),
     code_desc         varchar(129),
     industry_std      varchar(6),
-    terminology_std varchar(6),
+    terminology_std varchar(25),
     PRIMARY KEY (termcodeset_id)
 );
 

@@ -307,7 +307,7 @@ CREATE TABLE refdata_status
 drop table if exists refdata_terminologystd cascade;
 CREATE TABLE refdata_terminologystd
 (
-    terminology_std         varchar(6)  NOT NULL,
+    terminology_std         varchar(25)  NOT NULL,
     terminologystd_version varchar(10)                                                          NOT NULL,
     terminologystd_desc    varchar(129) DEFAULT 'NULL'::character varying,
     created_date           timestamp    DEFAULT CURRENT_TIMESTAMP,
@@ -679,7 +679,7 @@ CREATE TABLE platform_codesets_industrystd
     code_value         varchar(20)  DEFAULT 'NULL'::character varying,
     code_desc          varchar(129) DEFAULT 'NULL'::character varying,
     industry_std      varchar(6)   DEFAULT 'UNDF'::character varying,
-    terminology_std varchar(6),
+    terminology_std varchar(25),
     PRIMARY KEY (termcodeset_id)
 );
 

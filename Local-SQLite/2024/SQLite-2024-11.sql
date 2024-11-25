@@ -200,7 +200,7 @@ CREATE TABLE refdata_status
 drop table if exists refdata_terminologystds;
 CREATE TABLE refdata_terminologystds
 (
-    terminologystd         TEXT(6) primary key,
+    terminology_std         TEXT(6) primary key,
     terminologystd_version TEXT                                                              NOT NULL,
     terminologystd_desc    TEXT,
     created_date           TEXT default (datetime('now', 'localtime')),

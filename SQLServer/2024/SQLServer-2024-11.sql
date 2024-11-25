@@ -2,13 +2,13 @@
 drop table if exists refdata_applications;
 CREATE TABLE refdata_applications
 (
-    app_guid               char(38) default newguid() NOT NULL,
+    app_guid               char(38) default newid() NOT NULL,
     application_customcode varchar(15),
     application_desc       varchar(50),
     created_user           varchar(20),
     created_date           datetime DEFAULT (GETUTCDATE()),
     status_id              INT      default 1,
-    vendor_id              INT,
+    vendor_id              char(38),
     industry_oid           varchar(49),
     organization_guid      char(38),
     PRIMARY KEY (app_guid)
@@ -17,7 +17,7 @@ CREATE TABLE refdata_applications
 drop table if exists refdata_codesets;
 CREATE TABLE refdata_codesets
 (
-    codesets_id        char(38) default newguid() NOT NULL,
+    codesets_id        char(38) default newid() NOT NULL,
     codeset_name       varchar(50),
     industry_std       varchar(6),
     status_id          INT      default 1,
@@ -75,7 +75,7 @@ create table refdata_datastructures
 drop table if exists refdata_devicetypes;
 CREATE TABLE refdata_devicetypes
 (
-    devicetype_id char(38) default newguid() NOT NULL,
+    devicetype_id char(38) default newid() NOT NULL,
     devicetype    varchar(30),
     created_date  datetime DEFAULT (GETUTCDATE()),
     status_id     INT      default 1,
@@ -85,7 +85,7 @@ CREATE TABLE refdata_devicetypes
 drop table if exists refdata_industries;
 CREATE TABLE refdata_industries
 (
-    industry_id   char(38) default newguid() NOT NULL,
+    industry_id   char(38) default newid() NOT NULL,
     industry_name varchar(45),
     created_date  datetime DEFAULT (GETUTCDATE()),
     status_id     INT      default 1,
@@ -95,7 +95,7 @@ CREATE TABLE refdata_industries
 drop table if exists refdata_industries_business;
 CREATE TABLE refdata_industries_business
 (
-    industrytobusiness_id char(38) default newguid() NOT NULL,
+    industrytobusiness_id char(38) default newid() NOT NULL,
     industry_id           char(38),
     business_area          varchar(50),
     created_date          datetime DEFAULT (GETUTCDATE()),
@@ -127,7 +127,7 @@ CREATE TABLE refdata_industrystds_eventtypes
 drop table if exists refdata_legalentities;
 CREATE TABLE refdata_legalentities
 (
-    legalentity_guid char(38) default newguid() NOT NULL,
+    legalentity_guid char(38) default newid() NOT NULL,
     location_name    varchar(50),
     address          varchar(75),
     city             varchar(60),
@@ -151,10 +151,10 @@ CREATE TABLE refdata_operationtypes
     PRIMARY KEY (operationtype_id)
 );
 
-drop table if exists refdata_organization;
-CREATE TABLE refdata_organization
+drop table if exists refdata_organizations;
+CREATE TABLE refdata_organizations
 (
-    organization_guid          char(38) default newguid() NOT NULL,
+    organization_guid          char(38) default newid() NOT NULL,
     organization_internal_code varchar(10),
     organization_internal_id   varchar(10),
     organization_name          varchar(50),
@@ -172,7 +172,7 @@ CREATE TABLE refdata_organization
 drop table if exists refdata_professiontypes;
 CREATE TABLE refdata_professiontypes
 (
-    professiontype_id  char(38) default newguid() NOT NULL,
+    professiontype_id  char(38) default newid() NOT NULL,
     professiontypename varchar(65),
     createduser        varchar(20),
     created_date       datetime DEFAULT (GETUTCDATE()),
@@ -183,7 +183,7 @@ CREATE TABLE refdata_professiontypes
 drop table if exists refdata_rulesets;
 CREATE TABLE refdata_rulesets
 (
-    rule_id        char(38) default newguid() NOT NULL,
+    rule_id        char(38) default newid() NOT NULL,
     rule_name      varchar(65),
     created_user   varchar(20),
     created_date   datetime DEFAULT (GETUTCDATE()),
@@ -249,7 +249,7 @@ CREATE TABLE refdata_usstates
 drop table if exists refdata_vendors;
 CREATE TABLE refdata_vendors
 (
-    vendor_id    default newguid() NOT NULL,
+    vendor_id    char(38) default newid() NOT NULL,
     vendor_name   varchar(50),
     created_date datetime DEFAULT (GETUTCDATE()),
     status_id    INT      default 1,
@@ -264,15 +264,15 @@ ALTER TABLE refdata_applications
 
 ALTER TABLE refdata_applications
     ADD FOREIGN KEY (vendor_id)
-        REFERENCES refdata_vendor (vendor_id);
+        REFERENCES refdata_vendors (vendor_id);
 
 ALTER TABLE refdata_applications
     ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
+        REFERENCES refdata_organizations (organization_guid);
 
 ALTER TABLE refdata_codesets
     ADD FOREIGN KEY (industry_std)
-        REFERENCES refdata_industrystd (industry_std);
+        REFERENCES refdata_industrystds (industry_std);
 
 ALTER TABLE refdata_codesets
     ADD FOREIGN KEY (status_id)
@@ -280,7 +280,7 @@ ALTER TABLE refdata_codesets
 
 ALTER TABLE refdata_codesets
     ADD FOREIGN KEY (sensitivityflag_id)
-        REFERENCES refdata_sensitivityflag (sensitiveflag_id);
+        REFERENCES refdata_sensitivityflags (sensitiveflag_id);
 
 ALTER TABLE refdata_countries
     ADD FOREIGN KEY  (status_id)
@@ -296,7 +296,7 @@ ALTER TABLE refdata_industrystds_eventtypes
 
 ALTER TABLE refdata_industrystds_eventtypes
     ADD FOREIGN KEY  (industry_std)
-        REFERENCES refdata_industrystd(industry_std);
+        REFERENCES refdata_industrystds(industry_std);
 
 ALTER TABLE refdata_industries
     ADD FOREIGN KEY  (status_id)
@@ -342,10 +342,6 @@ ALTER TABLE refdata_rulesets
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE platform_rulesets_definitions
-    ADD FOREIGN KEY (status_id)
-        REFERENCES refdata_status (status_id);
-
 ALTER TABLE refdata_sensitivityflags
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
@@ -371,7 +367,7 @@ ALTER TABLE refdata_vendors
 drop table if exists datamodel_apis;
 CREATE TABLE datamodel_apis
 (
-    api_id             char(38) default newguid(),
+    api_id             char(38) default newid(),
     technology         varchar(30),
     dataattributes_id  INT,
     baseurllocation    varchar(99),
@@ -426,7 +422,7 @@ ALTER TABLE datamodel_datatables
 drop table if exists datatier_crawlers;
 CREATE TABLE datatier_crawlers
 (
-    datacrawler_id      char(38) default newguid(),
+    datacrawler_id      char(38) default newid(),
     token               char(128),
     crawledtext_details text,
     created_date        datetime DEFAULT (GETUTCDATE()),
@@ -451,7 +447,7 @@ ALTER TABLE datatier_crawlers
 drop table if exists datatier_sdp_dataattributes;
 CREATE TABLE datatier_sdp_dataattributes
 (
-    datatier_id        char(38) default newguid() NOT NULL,
+    datatier_id        char(38) default newid() NOT NULL,
     basevalue          varchar(99),
     supportingvalue1   varchar(169),
     supportingvalue2   varchar(50),
@@ -484,7 +480,7 @@ ALTER TABLE datatier_sdp_dataattributes
 drop table if exists datatier_sdp_datastructures;
 CREATE TABLE datatier_sdp_datastructures
 (
-    datastructure_core_id char(38) default newguid() NOT NULL,
+    datastructure_core_id char(38) default newid() NOT NULL,
     datastructure_name    varchar(29),
     datastructure_details text,
     created_date          datetime DEFAULT (GETUTCDATE()),
@@ -495,7 +491,7 @@ CREATE TABLE datatier_sdp_datastructures
 
 ALTER TABLE datatier_sdp_datastructures
     ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
 ALTER TABLE datatier_sdp_datastructures
     ADD FOREIGN KEY (status_id)
@@ -504,14 +500,14 @@ ALTER TABLE datatier_sdp_datastructures
 DROP TABLE if exists datatier_tokens;
 CREATE TABLE datatier_tokens
 (
-    datatoken_id      char(38) default newguid() NOT NULL,
+    datatoken_id      char(38) default newid() NOT NULL,
     token              char(128),
     created_date       datetime    DEFAULT (GETUTCDATE()),
     status_id          INT         DEFAULT 1,
     registeredapp_guid char(38),
     organization_guid  char(38),
     intfc_type         varchar(10) DEFAULT 'API',
-    datasource_id      INT,
+    datasource_id      char(38),
     PRIMARY KEY (datatoken_id)
 );
 
@@ -526,13 +522,13 @@ ALTER TABLE datatier_tokens
 ALTER TABLE datatier_tokens
     ADD FOREIGN KEY (organization_guid)
         REFERENCES refdata_organizations (organization_guid);
-    
+
 -- Platform
 
 drop table if exists platform_codesets;
 CREATE TABLE platform_codesets
 (
-    codeset_id  char(38) default newguid() NOT NULL,
+    codeset_id  char(38) default newid() NOT NULL,
     application_guid    CHAR(38),
     organization_guid   CHAR(38),
     codesets_id  char(38),
@@ -555,7 +551,7 @@ ALTER TABLE platform_codesets
 drop table if exists platform_codesets_industrystd;
 CREATE TABLE platform_codesets_industrystd
 (
-    termcodeset_id    char(38) default newguid() NOT NULL,
+    termcodeset_id    char(38) default newid() NOT NULL,
     created_date      datetime DEFAULT (GETUTCDATE()),
     status_id         INT      default 1,
     code_value        varchar(20),
@@ -576,7 +572,7 @@ ALTER TABLE platform_codesets_industrystd
 drop table if exists platform_codesets_xmap;
 CREATE TABLE platform_codesets_xmap
 (
-    codesetcrossmap_id  char(38) default newguid() NOT NULL,
+    codesetcrossmap_id  char(38) default newid() NOT NULL,
     application_guid    CHAR(38),
     organization_guid   CHAR(38),
     terminologystd_from   varchar(25),
@@ -601,11 +597,11 @@ ALTER TABLE platform_codesets_xmap
 
 ALTER TABLE platform_codesets_xmap
     ADD FOREIGN KEY (terminologystd_from)
-        REFERENCES refdata_terminologystds (terminologystd_id);
+        REFERENCES refdata_terminologystds (terminology_std);
 
 ALTER TABLE platform_codesets_xmap
     ADD FOREIGN KEY (terminologystd_to)
-        REFERENCES refdata_terminologystds (terminologystd_id);
+        REFERENCES refdata_terminologystds (terminology_std);
 
 ALTER TABLE platform_codesets_xmap
     ADD FOREIGN KEY (status_id)
@@ -614,7 +610,7 @@ ALTER TABLE platform_codesets_xmap
 drop table if exists platform_datageneration_dataattributes;
 CREATE TABLE platform_datageneration_dataattributes
 (
-    datagentype_id         char(38) default newguid() NOT NULL,
+    datagentype_id         char(38) default newid() NOT NULL,
     datagentype_description varchar(65),
     definition             varchar(255),
     dataattribute_id       INT,
@@ -648,7 +644,7 @@ ALTER TABLE platform_datageneration_dataattributes
 drop table if exists platform_databuilding_dataattributes;
 CREATE TABLE platform_databuilding_dataattributes
 (
-    databuild_dataattribute_id        char(38) default newguid() NOT NULL,
+    databuild_dataattribute_id        char(38) default newid() NOT NULL,
     databuild_description varchar(65),
     definition             varchar(255),
     dataattribute_id       INT,
@@ -693,7 +689,7 @@ ALTER TABLE platform_databuilding_dataattributes
 drop table if exists platform_databuilding_datastructures;
 CREATE TABLE platform_databuilding_datastructures
 (
-    databuild_datastructures_id  char(38) default newguid() NOT NULL,
+    databuild_datastructures_id  char(38) default newid() NOT NULL,
     databuild_description varchar(65),
     definition             varchar(255),
     datastructure_id       INT,
@@ -704,16 +700,16 @@ CREATE TABLE platform_databuilding_datastructures
     maxrecords_in_source     int,
     registeredapp_guid     char(38),
     organization_guid      char(38),
-    PRIMARY KEY (datagentype_datastructures_id)
+    PRIMARY KEY (databuild_datastructures_id)
 );
 
 ALTER TABLE platform_databuilding_datastructures
     ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
+        REFERENCES refdata_organizations (organization_guid);
 
 ALTER TABLE platform_databuilding_datastructures
     ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
 ALTER TABLE platform_databuilding_datastructures
     ADD FOREIGN KEY (status_id)
@@ -723,10 +719,10 @@ ALTER TABLE platform_databuilding_datastructures
     ADD FOREIGN KEY (datastructure_id)
         REFERENCES  refdata_datastructures(datastructure_id)
 
-drop table if exists platform_datasources cascade;
+drop table if exists platform_datasources;
 create table platform_datasources
 (
-    platform_datasources_id char(38) default newguid() NOT NULL,
+    platform_datasources_id char(38) default newid() NOT NULL,
     datasource_name        varchar(50) ,
     datasource_type        varchar(10),
     created_date           datetime DEFAULT (GETUTCDATE()),
@@ -756,7 +752,7 @@ ALTER TABLE datatier_tokens
 drop table if exists platform_datastructures_dtl;
 CREATE TABLE platform_datastructures_dtl
 (
-    platform_datastructuresdtl_id    char(38) default newguid() NOT NULL,
+    platform_datastructuresdtl_id    char(38) default newid() NOT NULL,
     datastructure_id                     INT,
     composite_datastructure_name                   varchar(50),
     sensitivityflag_id                             INT,
@@ -784,7 +780,7 @@ ALTER TABLE platform_datastructures_dtl
 drop table if exists platform_rulesets_definitions;
 CREATE TABLE platform_rulesets_definitions
 (
-    rulesetdefinitions_id  char(38) default newguid() NOT NULL,
+    rulesetdefinitions_id  char(38) default newid() NOT NULL,
     rulesetdefinition_name varchar(50),
     ruleset_id             char(38),
     steporder_id           INT,
@@ -815,10 +811,14 @@ ALTER TABLE platform_rulesets_definitions
     ADD FOREIGN KEY (operationtype_id)
         REFERENCES refdata_operationtypes (operationtype_id);
 
+ALTER TABLE platform_rulesets_definitions
+    ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
+
 DROP TABLE if exists platform_tokens_xmaps;
 CREATE TABLE platform_tokens_xmaps
 (
-    platform_tokens_xmap_id char(38) default newguid() NOT NULL,
+    platform_tokens_xmap_id char(38) default newid() NOT NULL,
     datastructure_id           int,
     xmap_details                         varchar(149),
     dataattribute_id                     int      DEFAULT 1,
@@ -831,20 +831,21 @@ CREATE TABLE platform_tokens_xmaps
     PRIMARY KEY (platform_tokens_xmap_id)
 );
 
-ALTER TABLE platform_tokens_xmap
+ALTER TABLE platform_tokens_xmaps
     ADD FOREIGN KEY (dataattribute_id)
         REFERENCES  refdata_dataattributes(dataattribute_id);
 
-ALTER TABLE platform_tokens_xmap
+ALTER TABLE platform_tokens_xmaps
     ADD FOREIGN KEY (organization_guid)
         REFERENCES refdata_organizations (organization_guid);
 
-ALTER TABLE platform_tokens_xmap
+ALTER TABLE platform_tokens_xmaps
     ADD FOREIGN KEY (registeredapp_guid)
         REFERENCES refdata_applications (app_guid);
 
 -- Indexes
-create index if not exists datatier_sdp_dataattributes_index
+drop index if exists datatier_sdp_dataattributes_index on datatier_sdp_dataattributes;
+create index datatier_sdp_dataattributes_index
     on datatier_sdp_dataattributes (datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4,
                                     supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
                                     datagentype_id, status_id, created_user, registeredapp_guid);

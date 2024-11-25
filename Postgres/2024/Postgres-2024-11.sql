@@ -795,6 +795,10 @@ ALTER TABLE platform_datastructures_dtl
     ADD FOREIGN KEY (dataattribute_id)
         REFERENCES  refdata_dataattributes(dataattribute_id);
 
+ALTER TABLE platform_datastructures_dtl
+    ADD FOREIGN KEY (sensitivityflag_id)
+        REFERENCES  refdata_sensitivityflags(sensitiveflag_id);
+
 drop table if exists platform_rulesets_definitions cascade;
 CREATE TABLE platform_rulesets_definitions
 (

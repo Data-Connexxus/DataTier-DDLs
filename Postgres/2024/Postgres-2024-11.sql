@@ -1,14 +1,8 @@
 -- Create Sequences First
--- Need to create for all serial datatypes
-drop sequence if exists refdata_countries_seq cascade;
-create sequence refdata_countries_seq;
-drop sequence if exists refdata_dataattributes_seq cascade;
-create sequence refdata_dataattributes_seq;
-drop sequence if exists refdata_eventtypes_seq cascade;
-create sequence refdata_eventtypes_seq;
-
+-- All have been moved to varchar, chars, or guids to simplify cross platform data technologies
 
 -- Create Tables
+--- -------------------
 -- Reference Tables
 drop table if exists refdata_applications cascade;
 CREATE TABLE refdata_applications
@@ -43,21 +37,10 @@ CREATE TABLE refdata_codesets
     PRIMARY KEY (codesets_id)
 );
 
-drop table if exists refdata_countries cascade;
-CREATE TABLE refdata_countries
-(
-    country_id   integer     DEFAULT nextval('refdata_countries_seq'::regclass) NOT NULL,
-    idd          varchar(5)  DEFAULT 'NULL'::character varying,
-    country_name varchar(59) DEFAULT 'NULL'::character varying,
-    created_date timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id varchar(10) DEFAULT 'Active',
-    PRIMARY KEY (country_id)
-);
-
 drop table if exists refdata_dataattributes cascade;
 CREATE TABLE refdata_dataattributes
 (
-    dataattribute_id  integer     DEFAULT nextval('refdata_dataattributes_seq'::regclass) NOT NULL,
+    dataattribute_id  char(38)     DEFAULT gen_random_uuid() NOT NULL,
     dataattribute_name         varchar(50) DEFAULT 'NULL'::character varying,
     sensitivityflag_id         varchar(5) DEFAULT 'UNDF',
     created_date               timestamp   DEFAULT CURRENT_TIMESTAMP,
@@ -380,7 +363,7 @@ CREATE TABLE datamodel_apis
 (
     api_id             char(38)   DEFAULT gen_random_uuid() NOT NULL,
     technology         varchar(30),
-    dataattribute_id  integer,
+    dataattribute_id  char(38),
     baseurllocation    varchar(99),
     apiname            varchar(79),
     created_date       timestamp DEFAULT CURRENT_TIMESTAMP,
@@ -469,7 +452,7 @@ create table datatier_sdp_dataattributes
     supportingvalue7 varchar(50),
     created_date     timestamp,
     status_id varchar(10) DEFAULT 'Active',
-    dataattribute_id integer,
+    dataattribute_id  char(38),
     created_user     varchar(20),
     registeredapp_guid   char(38),
     datagentype_id   integer,
@@ -623,7 +606,7 @@ CREATE TABLE platform_datageneration_dataattributes
     datagentype_id          char(38) DEFAULT gen_random_uuid() NOT NULL,
     datagentype_description varchar(65)  DEFAULT 'NULL'::character varying,
     definition              varchar(255) DEFAULT 'NULL'::character varying,
-    dataattribute_id        integer,
+    dataattribute_id        char(38),
     created_date            timestamp    DEFAULT CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',
     created_user            varchar(20)  DEFAULT 'NULL'::character varying,
@@ -656,7 +639,7 @@ CREATE TABLE platform_databuilding_dataattributes
     databuild_dataattribute_id  char(38) DEFAULT gen_random_uuid() NOT NULL,
     databuild_description varchar(65)  DEFAULT 'NULL'::character varying,
     definition              varchar(255) DEFAULT 'NULL'::character varying,
-    dataattribute_id        integer,
+    dataattribute_id        char(38),
     created_date            timestamp    DEFAULT CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',
     created_user            varchar(20)  DEFAULT 'NULL'::character varying,
@@ -769,7 +752,7 @@ CREATE TABLE platform_datastructures_dtl
     created_user                                  varchar(20) DEFAULT 'NULL'::character varying,
     platform_datastructures_to_dataattributes_guid char(38)    DEFAULT 'NULL'::bpchar,
     registeredapp_guid                                char(38)    DEFAULT 'NULL'::bpchar,
-    dataattribute_id                     integer,
+    dataattribute_id                    char(38),
     PRIMARY KEY (platform_datastructuresdtl_id)
 );
 
@@ -807,7 +790,7 @@ CREATE TABLE platform_rulesets_definitions
     effective_date          timestamp,
     application_guid        char(38)    DEFAULT 'NULL'::character varying,
     term_date               timestamp,
-    dataattribute_id        integer,
+    dataattribute_id        char(38),
     PRIMARY KEY (rulesetdefinitions_id)
 );
 
@@ -837,7 +820,7 @@ CREATE TABLE platform_tokens_xmaps
     platform_tokens_xmap_id char(38) DEFAULT gen_random_uuid() ,
     datastructures_id          integer,
     xmap_details                       varchar(149) DEFAULT 'NULL'::character varying,
-    dataattribute_id                   integer      DEFAULT 1,
+    dataattribute_id                  char(38),
     fieldorder_id                      integer      DEFAULT 1,
     created_date                       timestamp    DEFAULT CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',

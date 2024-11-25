@@ -1,83 +1,41 @@
 -- Create Sequences First
 -- Need to create for all serial datatypes
-drop sequence if exists datatier_sdp_datastructure_seq cascade;
-create sequence datatier_sdp_datastructure_seq;
-drop sequence if exists datatier_sdp_dataattribute_seq cascade;
-create sequence datatier_sdp_dataattribute_seq;
-drop sequence if exists datatier_tokens_seq cascade;
-create sequence datatier_tokens_seq;
-drop sequence if exists datatier_crawler_seq cascade;
-create sequence datatier_crawler_seq;
-drop sequence if exists apis_seq cascade;
-create sequence apis_seq;
-drop sequence if exists platform_codeset_industrystd_seq cascade;
-create sequence platform_codeset_industrystd_seq;
-drop sequence if exists platform_codesets_seq cascade;
-create sequence platform_codesets_seq;
-drop sequence if exists platform_codesets_xmaps_seq cascade;
-create sequence platform_codesets_xmaps_seq;
-drop sequence if exists platform_datasources_seq cascade;
-create sequence platform_datasources_seq;
-drop sequence if exists platform_xmap_tokens_dataattributes_seq cascade;
-create sequence platform_xmap_tokens_dataattributes_seq;
-drop sequence if exists platform_datageneration_seq cascade;
-create sequence platform_datageneration_seq;
-drop sequence if exists platform_databuilding_dataattributes_seq cascade;
-create sequence platform_databuilding_dataattributes_seq
-drop sequence if exists platform_databuilding_datastructures_seq cascade;
-create sequence platform_databuilding_datastructures_seq;
-drop sequence if exists refdata_codeset_seq cascade;
-create sequence refdata_codeset_seq;
 drop sequence if exists refdata_countries_seq cascade;
 create sequence refdata_countries_seq;
 drop sequence if exists refdata_dataattributes_seq cascade;
 create sequence refdata_dataattributes_seq;
 drop sequence if exists refdata_datastructures_seq cascade;
 create sequence refdata_datastructures_seq;
-drop sequence if exists refdata_devicetypes_seq cascade;
-create sequence refdata_devicetypes_seq;
 drop sequence if exists refdata_eventtypes_seq cascade;
 create sequence refdata_eventtypes_seq;
-drop sequence if exists refdata_industries_seq cascade;
-create sequence refdata_industries_seq;
-drop sequence if exists refdata_industriestobusiness_seq cascade;
-create sequence refdata_industriestobusiness_seq;
-drop sequence if exists refdata_professiontypes_seq cascade;
-create sequence refdata_professiontypes_seq;
-drop sequence if exists refdata_regextypes_seq cascade;
-create sequence refdata_regextypes_seq;
-drop sequence if exists refdata_rulesets_seq cascade;
-create sequence refdata_rulesets_seq;
 drop sequence if exists refdata_sensitivityflag_seq cascade;
 create sequence refdata_sensitivityflag_seq;
 drop sequence if exists refdata_status_seq cascade;
 create sequence refdata_status_seq;
-drop sequence if exists refdata_terminologystd_seq cascade;
-create sequence refdata_terminologystd_seq;
 drop sequence if exists refdata_vendor_seq cascade;
 create sequence refdata_vendor_seq;
 
 -- Create Tables
 -- Reference Tables
-drop table if exists refdata_application cascade;
-CREATE TABLE refdata_application
+drop table if exists refdata_applications cascade;
+CREATE TABLE refdata_applications
 (
-    app_guid               char(38)    DEFAULT 'gen_random_uuid()' NOT NULL,
+    app_guid               char(38)    DEFAULT gen_random_uuid() NOT NULL,
     application_customcode varchar(15) DEFAULT 'NULL'::character varying,
     application_desc       varchar(50) DEFAULT 'NULL'::character varying,
     created_user           varchar(20) DEFAULT 'NULL'::character varying,
     created_date           timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id              integer     DEFAULT 1,
-    vendor_id              integer,
+    vendor_id              char(38),
     industry_oid           varchar(49),
     organization_guid       varchar(49),
     PRIMARY KEY (app_guid)
 );
 
-drop table if exists refdata_codeset cascade;
-CREATE TABLE refdata_codeset
+drop table if exists refdata_codesets cascade;
+CREATE TABLE refdata_codesets
 (
-    codesets_id        integer      DEFAULT nextval('refdata_codeset_seq'::regclass) NOT NULL,
+    codesets_id        char(38)     DEFAULT gen_random_uuid() NOT NULL,
     codeset_name       varchar(50)  DEFAULT 'NULL'::character varying,
     industry_std       varchar(6)   DEFAULT 'NULL'::character varying,
     status_id          integer      DEFAULT 1,
@@ -103,7 +61,6 @@ CREATE TABLE refdata_countries
     PRIMARY KEY (country_id)
 );
 
-drop table if exists platform_dataattributes cascade;
 drop table if exists refdata_dataattributes cascade;
 CREATE TABLE refdata_dataattributes
 (
@@ -129,7 +86,7 @@ create table refdata_datastructures
     created_date                timestamp   default CURRENT_TIMESTAMP,
     status_id                   integer     default 1,
     created_user                varchar(20) default 'NULL'::character varying,
-    platform_datastructures_guid char(38)    default 'gen_random_uuid()'::bpchar,
+    platform_datastructures_guid char(38)    default gen_random_uuid()::bpchar,
     registeredapp_guid              char(38)    DEFAULT 'NULL'::character varying,
     PRIMARY KEY (datastructure_id)
 );
@@ -137,7 +94,7 @@ create table refdata_datastructures
 drop table if exists refdata_devicetypes cascade;
 CREATE TABLE refdata_devicetypes
 (
-    devicetype_id integer   DEFAULT nextval('refdata_devicetypes_seq'::regclass) NOT NULL,
+    devicetype_id CHAR(38)   DEFAULT gen_random_uuid() NOT NULL,
     devicetype    varchar(30),
     created_date  timestamp DEFAULT CURRENT_TIMESTAMP,
     status_id     integer   DEFAULT 1,
@@ -158,26 +115,26 @@ CREATE TABLE refdata_industrystd_eventtypes
 drop table if exists refdata_industries cascade;
 CREATE TABLE refdata_industries
 (
-    industry_id   integer   DEFAULT nextval('refdata_industries_seq'::regclass) NOT NULL,
+    industry_id   char(38)   DEFAULT gen_random_uuid() NOT NULL,
     industry_name varchar(45),
     created_date  timestamp DEFAULT CURRENT_TIMESTAMP,
     status_id     integer   DEFAULT 1,
     PRIMARY KEY (industry_id)
 );
 
-drop table if exists refdata_industriestobusiness cascade;
-CREATE TABLE refdata_industriestobusiness
+drop table if exists refdata_industries_business cascade;
+CREATE TABLE refdata_industries_business
 (
-    industrytobusiness_id integer   DEFAULT nextval('refdata_industriestobusiness_seq'::regclass) NOT NULL,
-    industry_id           integer DEFAULT 1,
+    industrytobusiness_id CHAR(38)   DEFAULT gen_random_uuid() NOT NULL,
+    industry_id           char(38),
     business_area         varchar(50),
     created_date          timestamp DEFAULT CURRENT_TIMESTAMP,
     status_id             integer   DEFAULT 1,
     PRIMARY KEY (industrytobusiness_id)
 );
 
-drop table if exists refdata_industrystd cascade;
-CREATE TABLE refdata_industrystd
+drop table if exists refdata_industrystds cascade;
+CREATE TABLE refdata_industrystds
 (
     industry_std     varchar(6) NOT NULL,
     industrystd_desc varchar(30) DEFAULT 'NULL'::character varying,
@@ -189,7 +146,7 @@ CREATE TABLE refdata_industrystd
 drop table if exists refdata_legalentities cascade;
 CREATE TABLE refdata_legalentities
 (
-    legalentity_guid char(38)                              NOT NULL,
+    legalentity_guid char(38)  DEFAULT gen_random_uuid()   NOT NULL,
     location_name    varchar(50) DEFAULT 'NULL'::character varying,
     address          varchar(75) DEFAULT 'NULL'::character varying,
     city             varchar(60) DEFAULT 'NULL'::character varying,
@@ -213,10 +170,10 @@ CREATE TABLE refdata_operationtype
     PRIMARY KEY (operationtype_id)
 );
 
-drop table if exists refdata_organization cascade;
-CREATE TABLE refdata_organization
+drop table if exists refdata_organizations cascade;
+CREATE TABLE refdata_organizations
 (
-    organization_guid          char(38)                              NOT NULL,
+    organization_guid          char(38) DEFAULT gen_random_uuid() NOT NULL,
     organization_internal_code varchar(10) DEFAULT 'NULL'::character varying,
     organization_internal_id   varchar(10) DEFAULT 'NULL'::character varying,
     organization_name          varchar(50) DEFAULT 'NULL'::character varying,
@@ -234,7 +191,7 @@ CREATE TABLE refdata_organization
 drop table if exists refdata_professiontypes cascade;
 CREATE TABLE refdata_professiontypes
 (
-    professiontype_id   integer     DEFAULT nextval('refdata_professiontypes_seq'::regclass) NOT NULL,
+    professiontype_id   char(38)    DEFAULT gen_random_uuid() NOT NULL,
     professiontype_name varchar(65) DEFAULT 'NULL'::character varying,
     created_user        varchar(20) DEFAULT 'NULL'::character varying,
     created_date        timestamp   DEFAULT CURRENT_TIMESTAMP,
@@ -242,22 +199,10 @@ CREATE TABLE refdata_professiontypes
     PRIMARY KEY (professiontype_id)
 );
 
-drop table if exists refdata_regextypes cascade;
-CREATE TABLE refdata_regextypes
-(
-    regextype_id     integer   DEFAULT nextval('refdata_regextypes_seq'::regclass) NOT NULL,
-    regextype_desc   varchar(69),
-    created_date     timestamp DEFAULT CURRENT_TIMESTAMP,
-    status_id        integer   DEFAULT 1,
-    organization_guid  char(38)  DEFAULT 'NULL'::character varying,
-    application_guid char(38)  DEFAULT 'NULL'::character varying,
-    PRIMARY KEY (regextype_id)
-);
-
 drop table if exists refdata_rulesets cascade;
 CREATE TABLE refdata_rulesets
 (
-    rule_id        integer     DEFAULT nextval('refdata_rulesets_seq'::regclass) NOT NULL,
+    rule_id        char(38)     DEFAULT gen_random_uuid() NOT NULL,
     rule_name      varchar(65) DEFAULT 'NULL'::character varying,
     created_user   varchar(20) DEFAULT 'NULL'::character varying,
     created_date   timestamp   DEFAULT CURRENT_TIMESTAMP,
@@ -266,26 +211,8 @@ CREATE TABLE refdata_rulesets
     PRIMARY KEY (rule_id)
 );
 
-drop table if exists refdata_rulesetsdefinitions cascade;
-CREATE TABLE refdata_rulesetsdefinitions
-(
-    rulesetdefinitions_id   char(38) NOT NULL,
-    rulesetdefinitions_name varchar(50) DEFAULT 'NULL'::character varying,
-    ruleset_id              integer,
-    steporder_id            integer,
-    operationtype_id        varchar(7)  DEFAULT 'NULL'::character varying,
-    ruleset_defvalue        char(40)    DEFAULT 'NULL'::bpchar,
-    status_id               integer     DEFAULT 1,
-    created_date            timestamp   DEFAULT CURRENT_TIMESTAMP,
-    effective_date          timestamp,
-    application_guid        char(38)    DEFAULT 'NULL'::character varying,
-    term_date               timestamp,
-    dataattribute_id        integer,
-    PRIMARY KEY (rulesetdefinitions_id)
-);
-
-drop table if exists refdata_sensitivityflag cascade;
-CREATE TABLE refdata_sensitivityflag
+drop table if exists refdata_sensitivityflags cascade;
+CREATE TABLE refdata_sensitivityflags
 (
     sensitiveflag_id   integer     DEFAULT nextval('refdata_sensitivityflag_seq'::regclass) NOT NULL,
     sensitiveflag_desc varchar(30) DEFAULT 'NULL'::character varying,
@@ -304,8 +231,8 @@ CREATE TABLE refdata_status
     PRIMARY KEY (status_id)
 );
 
-drop table if exists refdata_terminologystd cascade;
-CREATE TABLE refdata_terminologystd
+drop table if exists refdata_terminologystds cascade;
+CREATE TABLE refdata_terminologystds
 (
     terminology_std         varchar(25)  NOT NULL,
     terminologystd_version varchar(10)                                                          NOT NULL,
@@ -338,10 +265,10 @@ CREATE TABLE refdata_usstates
     PRIMARY KEY (state_id)
 );
 
-drop table if exists refdata_vendor cascade;
-CREATE TABLE refdata_vendor
+drop table if exists refdata_vendors cascade;
+CREATE TABLE refdata_vendors
 (
-    vendor_id    integer     DEFAULT nextval('refdata_vendor_seq'::regclass) NOT NULL,
+    vendor_id    varchar(38)     DEFAULT gen_random_uuid() NOT NULL,
     vendor_name  varchar(50) DEFAULT 'NULL'::character varying,
     created_date timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id    integer     DEFAULT 1,
@@ -350,29 +277,29 @@ CREATE TABLE refdata_vendor
     PRIMARY KEY (vendor_id)
 );
 
-ALTER TABLE refdata_application
+ALTER TABLE refdata_applications
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE refdata_application
+ALTER TABLE refdata_applications
     ADD FOREIGN KEY (vendor_id)
-        REFERENCES refdata_vendor (vendor_id);
+        REFERENCES refdata_vendors (vendor_id);
 
-ALTER TABLE refdata_application
+ALTER TABLE refdata_applications
     ADD FOREIGN KEY (organization_guid)
         REFERENCES refdata_organization (organization_guid);
 
-ALTER TABLE refdata_codeset
+ALTER TABLE refdata_codesets
     ADD FOREIGN KEY (industry_std)
-        REFERENCES refdata_industrystd (industry_std);
+        REFERENCES refdata_industrystds (industry_std);
 
-ALTER TABLE refdata_codeset
+ALTER TABLE refdata_codesets
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE refdata_codeset
+ALTER TABLE refdata_codesets
     ADD FOREIGN KEY (sensitivityflag_id)
-        REFERENCES refdata_sensitivityflag (sensitiveflag_id);
+        REFERENCES refdata_sensitivityflags (sensitiveflag_id);
 
 ALTER TABLE refdata_countries
     ADD FOREIGN KEY  (status_id)
@@ -382,27 +309,27 @@ ALTER TABLE refdata_devicetypes
     ADD FOREIGN KEY  (status_id)
         REFERENCES refdata_status(status_id);
 
-ALTER TABLE refdata_industrystd_eventtypes
+ALTER TABLE refdata_industrystds_eventtypes
     ADD FOREIGN KEY  (status_id)
         REFERENCES refdata_status(status_id);
 
-ALTER TABLE refdata_industrystd_eventtypes
+ALTER TABLE refdata_industrystds_eventtypes
     ADD FOREIGN KEY  (industry_std)
-        REFERENCES refdata_industrystd(industry_std);
+        REFERENCES refdata_industrystds(industry_std);
 
 ALTER TABLE refdata_industries
     ADD FOREIGN KEY  (status_id)
         REFERENCES refdata_status(status_id);
 
-ALTER TABLE refdata_industriestobusiness
+ALTER TABLE refdata_industries_business
     ADD FOREIGN KEY  (status_id)
         REFERENCES refdata_status(status_id);
 
-ALTER TABLE refdata_industriestobusiness
+ALTER TABLE refdata_industries_business
     ADD FOREIGN KEY  (industry_id)
         REFERENCES refdata_industries(industry_id);
 
-ALTER TABLE refdata_industrystd
+ALTER TABLE refdata_industrystds
     ADD FOREIGN KEY  (status_id)
         REFERENCES refdata_status(status_id);
 
@@ -430,47 +357,15 @@ ALTER TABLE refdata_professiontypes
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE refdata_regextypes
-    ADD FOREIGN KEY (application_guid)
-        REFERENCES refdata_application (app_guid);
-
-ALTER TABLE refdata_regextypes
-    ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
-
-ALTER TABLE refdata_regextypes
-    ADD FOREIGN KEY (status_id)
-        REFERENCES refdata_status (status_id);
-
 ALTER TABLE refdata_rulesets
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE refdata_rulesetsdefinitions
-    ADD FOREIGN KEY (application_guid)
-        REFERENCES refdata_application (app_guid);
-
-ALTER TABLE refdata_rulesetsdefinitions
-    ADD FOREIGN KEY (ruleset_id)
-        REFERENCES refdata_rulesets (rule_id);
-
-ALTER TABLE refdata_rulesetsdefinitions
-    ADD FOREIGN KEY (dataattribute_id)
-        REFERENCES refdata_dataattributes (dataattribute_id);
-
-ALTER TABLE refdata_rulesetsdefinitions
-    ADD FOREIGN KEY (operationtype_id)
-        REFERENCES refdata_operationtype (operationtype_id);
-
-ALTER TABLE refdata_rulesetsdefinitions
+ALTER TABLE refdata_sensitivityflags
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE refdata_sensitivityflag
-    ADD FOREIGN KEY (status_id)
-        REFERENCES refdata_status (status_id);
-
-ALTER TABLE refdata_terminologystd
+ALTER TABLE refdata_terminologystds
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
@@ -482,7 +377,7 @@ ALTER TABLE refdata_usstates
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE refdata_vendor
+ALTER TABLE refdata_vendors
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
@@ -490,7 +385,7 @@ ALTER TABLE refdata_vendor
 drop table if exists datamodel_apis cascade;
 CREATE TABLE datamodel_apis
 (
-    api_id             integer   DEFAULT nextval('apis_seq'::regclass) NOT NULL,
+    api_id             char(38)   DEFAULT gen_random_uuid() NOT NULL,
     technology         varchar(30),
     dataattribute_id  integer,
     baseurllocation    varchar(99),
@@ -508,8 +403,8 @@ ALTER TABLE datamodel_apis
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-drop table if exists datamodel_domain cascade;
-CREATE TABLE datamodel_domain
+drop table if exists datamodel_domains cascade;
+CREATE TABLE datamodel_domains
 (
     domainname        varchar(64) NOT NULL,
     domaininformation varchar(249) DEFAULT 'NULL'::character varying,
@@ -518,7 +413,7 @@ CREATE TABLE datamodel_domain
     PRIMARY KEY (domainname)
 );
 
-ALTER TABLE datamodel_domain
+ALTER TABLE datamodel_domains
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
@@ -535,17 +430,17 @@ CREATE TABLE datamodel_datatables
 
 ALTER TABLE datamodel_datatables
     ADD FOREIGN KEY (datadomain)
-        REFERENCES datamodel_domain (domainname);
+        REFERENCES datamodel_domains (domainname);
 
 ALTER TABLE datamodel_datatables
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
 -- DataTier
-drop table if exists datatier_crawler cascade;
-CREATE TABLE datatier_crawler
+drop table if exists datatier_crawlers cascade;
+CREATE TABLE datatier_crawlers
 (
-    datacrawler_id      integer     DEFAULT nextval('datatier_crawler_seq'::regclass) NOT NULL,
+    datacrawler_id      char(38) default gen_random_uuid() NOT NULL,
     token               char(128)   DEFAULT 'NULL'::character varying,
     crawledtext_details text        DEFAULT 'NULL'::character varying,
     created_date        timestamp   DEFAULT CURRENT_TIMESTAMP,
@@ -555,22 +450,22 @@ CREATE TABLE datatier_crawler
     PRIMARY KEY (datacrawler_id)
 );
 
-ALTER TABLE datatier_crawler
+ALTER TABLE datatier_crawlers
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE datatier_crawler
+ALTER TABLE datatier_crawlers
     ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
-ALTER TABLE datatier_crawler
+ALTER TABLE datatier_crawlers
     ADD FOREIGN KEY (organization_guid)
         REFERENCES refdata_organization (organization_guid);
 
 drop table if exists datatier_sdp_dataattributes cascade;
 create table datatier_sdp_dataattributes
 (
-    datatier_id      integer default nextval('datatier_sdp_dataattribute_seq'::regclass) not null primary key,
+    datatier_id      char(38) default gen_random_uuid() NOT NULL,
     basevalue        varchar(99),
     supportingvalue1 varchar(169),
     supportingvalue2 varchar(50),
@@ -589,7 +484,7 @@ create table datatier_sdp_dataattributes
 
 ALTER TABLE datatier_sdp_dataattributes
     ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
 ALTER TABLE datatier_sdp_dataattributes
     ADD FOREIGN KEY (status_id)
@@ -602,7 +497,7 @@ ALTER TABLE datatier_sdp_dataattributes
 drop table if exists datatier_sdp_datastructures cascade;
 CREATE TABLE datatier_sdp_datastructures
 (
-    datastructure_core_id  integer     DEFAULT nextval('datatier_sdp_datastructure_seq'::regclass) NOT NULL,
+    datastructure_core_id  char(38) DEFAULT gen_random_uuid() NOT NULL,
     datastructure_name    varchar(29) DEFAULT 'NULL'::character varying,
     datastructure_details text        DEFAULT 'NULL'::character varying,
     created_date          timestamp   DEFAULT CURRENT_TIMESTAMP,
@@ -613,7 +508,7 @@ CREATE TABLE datatier_sdp_datastructures
 
 ALTER TABLE datatier_sdp_datastructures
     ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
 ALTER TABLE datatier_sdp_datastructures
     ADD FOREIGN KEY (status_id)
@@ -622,14 +517,14 @@ ALTER TABLE datatier_sdp_datastructures
 drop table if exists datatier_tokens;
 CREATE TABLE datatier_tokens
 (
-    datatoken_id      integer     DEFAULT nextval('datatier_tokens_seq'::regclass) NOT NULL,
+    datatoken_id      char(38)    DEFAULT gen_random_uuid() NOT NULL,
     token             char(128)   DEFAULT 'NULL'::character varying,
     created_date      timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id         integer     DEFAULT 1,
     registeredapp_guid    char(38) DEFAULT 'NULL'::character varying,
     organization_guid char(38) DEFAULT 'NULL'::character varying,
     intfc_type        varchar(10) DEFAULT 'API',
-    datasource_id     integer,
+    datasource_id     varchar(38),
     PRIMARY KEY (datatoken_id)
 );
 
@@ -639,7 +534,7 @@ ALTER TABLE datatier_tokens
 
 ALTER TABLE datatier_tokens
     ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
 ALTER TABLE datatier_tokens
     ADD FOREIGN KEY (organization_guid)
@@ -650,10 +545,10 @@ ALTER TABLE datatier_tokens
 drop table if exists platform_codesets cascade;
 CREATE TABLE platform_codesets
 (
-    platform_codeset_id  integer      DEFAULT nextval('platform_codesets_seq'::regclass) NOT NULL,
+    platform_codeset_id  char(38)    DEFAULT gen_random_uuid() NOT NULL,
     application_guid      CHAR(38),
     organization_guid      CHAR(38),
-    codesets_id  integer,
+    codesets_id  char(38),
     created_date        timestamp    DEFAULT CURRENT_TIMESTAMP,
     status_id           integer      DEFAULT 1,
     created_user        varchar(20)  DEFAULT 'NULL'::character varying,
@@ -668,12 +563,12 @@ ALTER TABLE platform_codesets
 
 ALTER TABLE platform_codesets
     ADD FOREIGN KEY (codesets_id)
-        REFERENCES refdata_codeset (codesets_id);
+        REFERENCES refdata_codesets (codesets_id);
 
-drop table if exists platform_codesets_industrystd;
-CREATE TABLE platform_codesets_industrystd
+drop table if exists platform_codesets_industrystds;
+CREATE TABLE platform_codesets_industrystds
 (
-    termcodeset_id    integer      DEFAULT nextval('platform_codeset_industrystd_seq'::regclass) NOT NULL,
+    termcodeset_id    char(38)    DEFAULT gen_random_uuid() NOT NULL,
     created_date      timestamp    DEFAULT CURRENT_TIMESTAMP,
     status_id         integer      DEFAULT 1,
     code_value         varchar(20)  DEFAULT 'NULL'::character varying,
@@ -683,18 +578,18 @@ CREATE TABLE platform_codesets_industrystd
     PRIMARY KEY (termcodeset_id)
 );
 
-ALTER TABLE platform_codesets_industrystd
+ALTER TABLE platform_codesets_industrystds
     ADD FOREIGN KEY (terminology_std)
-        REFERENCES refdata_terminologystd (terminology_std);
+        REFERENCES refdata_terminologystds (terminology_std);
 
-ALTER TABLE platform_codesets_industrystd
+ALTER TABLE platform_codesets_industrystds
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-drop table if exists platform_codesets_xmap cascade;
-CREATE TABLE platform_codesets_xmap
+drop table if exists platform_codesets_xmaps cascade;
+CREATE TABLE platform_codesets_xmaps
 (
-    codesetcrossmap_id  integer      DEFAULT nextval('platform_codesets_xmaps_seq'::regclass) NOT NULL,
+    codesetcrossmap_id  char(38) DEFAULT gen_random_uuid() NOT NULL,
     application_guid      CHAR(38),
     organization_guid      CHAR(38),
     terminologystd_from     varchar(25),
@@ -708,30 +603,30 @@ CREATE TABLE platform_codesets_xmap
     originalcode_desc   varchar(40),
     PRIMARY KEY (codesetcrossmap_id)
 );
-ALTER TABLE platform_codesets_xmap
+ALTER TABLE platform_codesets_xmaps
     ADD FOREIGN KEY (application_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
-ALTER TABLE platform_codesets_xmap
+ALTER TABLE platform_codesets_xmaps
     ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
+        REFERENCES refdata_organizations (organization_guid);
 
-ALTER TABLE platform_codesets_xmap
+ALTER TABLE platform_codesets_xmaps
     ADD FOREIGN KEY (terminologystd_from)
-        REFERENCES refdata_terminologystd (terminology_std);
+        REFERENCES refdata_terminologystds (terminology_std);
 
-ALTER TABLE platform_codesets_xmap
+ALTER TABLE platform_codesets_xmaps
     ADD FOREIGN KEY (terminologystd_to)
-        REFERENCES refdata_terminologystd (terminology_std);
+        REFERENCES refdata_terminologystds (terminology_std);
 
-ALTER TABLE platform_codesets_xmap
+ALTER TABLE platform_codesets_xmaps
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
 drop table if exists platform_datageneration_dataattributes cascade;
 CREATE TABLE platform_datageneration_dataattributes
 (
-    datagentype_id          integer      DEFAULT nextval('platform_datageneration_seq'::regclass) NOT NULL,
+    datagentype_id          char(38) DEFAULT gen_random_uuid() NOT NULL,
     datagentype_description varchar(65)  DEFAULT 'NULL'::character varying,
     definition              varchar(255) DEFAULT 'NULL'::character varying,
     dataattribute_id        integer,
@@ -755,7 +650,7 @@ ALTER TABLE platform_datageneration_dataattributes
 
 ALTER TABLE platform_datageneration_dataattributes
     ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
 ALTER TABLE platform_datageneration_dataattributes
     ADD FOREIGN KEY (status_id)
@@ -764,7 +659,7 @@ ALTER TABLE platform_datageneration_dataattributes
 drop table if exists platform_databuilding_dataattributes cascade;
 CREATE TABLE platform_databuilding_dataattributes
 (
-    databuild_dataattribute_id          integer      DEFAULT nextval('platform_databuilding_dataattributes_seq'::regclass) NOT NULL,
+    databuild_dataattribute_id  char(38) DEFAULT gen_random_uuid() NOT NULL,
     databuild_description varchar(65)  DEFAULT 'NULL'::character varying,
     definition              varchar(255) DEFAULT 'NULL'::character varying,
     dataattribute_id        integer,
@@ -799,7 +694,7 @@ ALTER TABLE platform_databuilding_dataattributes
 
 ALTER TABLE platform_databuilding_dataattributes
     ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
 ALTER TABLE platform_databuilding_dataattributes
     ADD FOREIGN KEY (status_id)
@@ -808,7 +703,7 @@ ALTER TABLE platform_databuilding_dataattributes
 drop table if exists platform_databuilding_datastructures cascade;
 CREATE TABLE platform_databuilding_datastructures
 (
-    databuild_datastructures_id          integer      DEFAULT nextval('platform_databuilding_datastructures_seq'::regclass) NOT NULL,
+    databuild_datastructures_id  varchar(38) DEFAULT gen_random_uuid() NOT NULL,
     databuild_description varchar(65)  DEFAULT 'NULL'::character varying,
     definition              varchar(255) DEFAULT 'NULL'::character varying,
     datastructure_id        integer,
@@ -828,7 +723,7 @@ ALTER TABLE platform_databuilding_datastructures
 
 ALTER TABLE platform_databuilding_datastructures
     ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
 ALTER TABLE platform_databuilding_datastructures
     ADD FOREIGN KEY (status_id)
@@ -836,12 +731,12 @@ ALTER TABLE platform_databuilding_datastructures
 
 ALTER TABLE platform_databuilding_datastructures
     ADD FOREIGN KEY (datastructure_id)
-        REFERENCES  refdata_datastructures(datastructure_id)
+        REFERENCES  refdata_datastructures(datastructure_id);
 
 drop table if exists platform_datasources cascade;
 create table platform_datasources
 (
-    platform_datasources_id integer     default nextval('platform_datasources_seq'::regclass) not null,
+    platform_datasources_id char(38) DEFAULT gen_random_uuid() NOT NULL,
     datasource_name        varchar(50) default 'NULL'::character varying,
     datasource_type        varchar(10),
     created_date           timestamp   default CURRENT_TIMESTAMP,
@@ -858,7 +753,7 @@ ALTER TABLE platform_datasources
 
 ALTER TABLE platform_datasources
     ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
 ALTER TABLE platform_datasources
     ADD FOREIGN KEY (status_id)
@@ -871,7 +766,7 @@ ALTER TABLE datatier_tokens
 drop table if exists platform_datastructures_dtl cascade;
 CREATE TABLE platform_datastructures_dtl
 (
-    platform_datastructuresdtl_id                  integer     DEFAULT nextval('refdata_datastructures_seq'::regclass) NOT NULL,
+    platform_datastructuresdtl_id     char(38) DEFAULT gen_random_uuid() NOT NULL,
     datastructure_id                     integer,
     composite_datastructure_name                   varchar(50) DEFAULT 'NULL'::character varying,
     sensitivityflag_id                            integer     DEFAULT 1,
@@ -886,7 +781,7 @@ CREATE TABLE platform_datastructures_dtl
 
 ALTER TABLE platform_datastructures_dtl
     ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
 ALTER TABLE platform_datastructures_dtl
     ADD FOREIGN KEY (status_id)
@@ -900,10 +795,48 @@ ALTER TABLE platform_datastructures_dtl
     ADD FOREIGN KEY (dataattribute_id)
         REFERENCES  refdata_dataattributes(dataattribute_id);
 
-drop table if exists platform_tokens_xmap cascade;
-CREATE TABLE platform_tokens_xmap
+drop table if exists platform_rulesets_definitions cascade;
+CREATE TABLE platform_rulesets_definitions
 (
-    platform_tokens_xmap_id integer      DEFAULT nextval('platform_xmap_tokens_dataattributes_seq'::regclass) NOT NULL,
+    rulesetdefinitions_id   char(38) DEFAULT gen_random_uuid() NOT NULL,
+    rulesetdefinitions_name varchar(50) DEFAULT 'NULL'::character varying,
+    ruleset_id              char(38),
+    steporder_id            integer,
+    operationtype_id        varchar(7)  DEFAULT 'NULL'::character varying,
+    ruleset_defvalue        char(40)    DEFAULT 'NULL'::bpchar,
+    status_id               integer     DEFAULT 1,
+    created_date            timestamp   DEFAULT CURRENT_TIMESTAMP,
+    effective_date          timestamp,
+    application_guid        char(38)    DEFAULT 'NULL'::character varying,
+    term_date               timestamp,
+    dataattribute_id        integer,
+    PRIMARY KEY (rulesetdefinitions_id)
+);
+
+ALTER TABLE platform_rulesets_definitions
+    ADD FOREIGN KEY (application_guid)
+        REFERENCES refdata_applications (app_guid);
+
+ALTER TABLE platform_rulesets_definitions
+    ADD FOREIGN KEY (ruleset_id)
+        REFERENCES refdata_rulesets (rule_id);
+
+ALTER TABLE platform_rulesets_definitions
+    ADD FOREIGN KEY (dataattribute_id)
+        REFERENCES refdata_dataattributes (dataattribute_id);
+
+ALTER TABLE platform_rulesets_definitions
+    ADD FOREIGN KEY (operationtype_id)
+        REFERENCES refdata_operationtype (operationtype_id);
+
+ALTER TABLE platform_rulesets_definitions
+    ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
+
+drop table if exists platform_tokens_xmaps cascade;
+CREATE TABLE platform_tokens_xmaps
+(
+    platform_tokens_xmap_id char(38) DEFAULT gen_random_uuid() ,
     datastructures_id          integer,
     xmap_details                       varchar(149) DEFAULT 'NULL'::character varying,
     dataattribute_id                   integer      DEFAULT 1,
@@ -916,17 +849,17 @@ CREATE TABLE platform_tokens_xmap
     PRIMARY KEY (platform_tokens_xmap_id)
 );
 
-ALTER TABLE platform_tokens_xmap
+ALTER TABLE platform_tokens_xmaps
     ADD FOREIGN KEY (dataattribute_id)
         REFERENCES  refdata_dataattributes(dataattribute_id);
 
-ALTER TABLE platform_tokens_xmap
+ALTER TABLE platform_tokens_xmaps
     ADD FOREIGN KEY (organization_guid)
         REFERENCES refdata_organization (organization_guid);
 
-ALTER TABLE platform_tokens_xmap
+ALTER TABLE platform_tokens_xmaps
     ADD FOREIGN KEY (registeredapp_guid)
-        REFERENCES refdata_application (app_guid);
+        REFERENCES refdata_applications (app_guid);
 
 -- Indexes
 create index if not exists datatier_sdp_dataattributes_index
@@ -934,7 +867,7 @@ create index if not exists datatier_sdp_dataattributes_index
                                     supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
                                     datagentype_id, status_id, created_user, registeredapp_guid);
 
---CREATE INDEX terms_codeset_industrystd_index ON terms_codeset_industrystd USING btree (termcodeset_id, codesets_id, created_date, status_id, code_value, code_desc, industry_std);
+CREATE INDEX platform_codesets_industrystds_index ON platform_codesets_industrystds(industry_std, created_date, status_id, code_value, code_desc);
 
---CREATE UNIQUE INDEX terms_codeset_industrystd_uindex ON terms_codeset_industrystd USING btree (codesets_id, code_value, code_desc, industry_std);
+CREATE UNIQUE INDEX platform_codesets_industrystds_uindex ON platform_codesets_industrystds(industry_std, code_value, code_desc);
 

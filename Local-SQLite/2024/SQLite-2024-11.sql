@@ -1,247 +1,10 @@
 -- Create Tables
-drop table if exists datatier_crawler;
-CREATE TABLE datatier_crawler
-(
-    datacrawler_id      integer primary key autoincrement,
-    token               TEXT,
-    crawledtext_details text,
-    created_date        TEXT    default (datetime('now', 'localtime')),
-    status_id           integer DEFAULT 1,
-    registeredapp_guid  TEXT,
-    organization_guid   TEXT
-);
 
-DROP TABLE if exists datatier_sdp_datastructures;
-CREATE TABLE datatier_sdp_datastructures
+-- Reference Data
+drop table if exists refdata_applications;
+CREATE TABLE refdata_applications
 (
-    datastructure_core_id integer primary key autoincrement,
-    datastructure_name    TEXT,
-    datastructure_details text,
-    created_date          TEXT default (datetime('now', 'localtime')),
-    status_id             integer   DEFAULT 1,
-    registeredapp_guid    TEXT
-);
-
-drop table if exists datatier_sdp_dataattributes;
-create table datatier_sdp_dataattributes
-(
-    datatier_id        integer primary key autoincrement,
-    basevalue          TEXT,
-    supportingvalue1   TEXT,
-    supportingvalue2   TEXT,
-    supportingvalue3   TEXT,
-    supportingvalue4   TEXT,
-    supportingvalue5   TEXT,
-    supportingvalue6   TEXT,
-    supportingvalue7   TEXT,
-    created_date       TEXT,
-    status_id          integer,
-    dataattribute_id   integer,
-    created_user       TEXT,
-    registeredapp_guid TEXT,
-    datagentype_id     integer
-);
-
-drop table if exists datatier_tokens;
-CREATE TABLE datatier_tokens
-(
-    datatoken_id       integer primary key autoincrement,
-    token              char(128),
-    created_date       TEXT default (datetime('now', 'localtime')),
-    status_id          integer   DEFAULT 1,
-    registeredapp_guid TEXT,
-    organization_guid  TEXT,
-    intfc_type         TEXT      DEFAULT 'API',
-    datasource_id      integer
-);
-
-DROP TABLE if exists datamodel_apis;
-CREATE TABLE datamodel_apis
-(
-    api_id             integer primary key autoincrement,
-    technology         TEXT,
-    dataattribute_id  integer,
-    baseurllocation    TEXT,
-    apiname            TEXT,
-    created_date       TEXT default (datetime('now', 'localtime')),
-    status_id          integer   DEFAULT 1,
-    purpose            TEXT,
-    datmodel_tablename TEXT,
-    apiparams          TEXT,
-    apiexample         TEXT
-);
-
-DROP TABLE if exists datamodel_datatables;
-CREATE TABLE datamodel_datatables
-(
-    tablename        TEXT NOT NULL,
-    tableinformation TEXT,
-    status_id        integer   DEFAULT 1,
-    created_date     TEXT default (datetime('now', 'localtime')),
-    datadomain       TEXT
-);
-
-DROP TABLE if exists datamodel_domain;
-CREATE TABLE datamodel_domain
-(
-    domainname        TEXT NOT NULL,
-    domaininformation TEXT,
-    status_id         integer   DEFAULT 1,
-    created_date      TEXT default (datetime('now', 'localtime'))
-);
-
-DROP TABLE if exists platform_codesets;
-CREATE TABLE platform_codesets
-(
-    platform_codeset_id  integer primary key autoincrement,
-    application_guid    TEXT,
-    organization_guid   TEXT,
-    codesets_id INT,
-    created_date        TEXT default (datetime('now', 'localtime')),
-    status_id           integer   DEFAULT 1,
-    created_user        TEXT,
-    originalcode_value  TEXT,
-    originalcode_desc   TEXT
-);
-
-drop table if exists terms_codesets_industrystd;
-drop table if exists platform_codesets_industrystd;
-CREATE TABLE platform_codesets_industrystd
-(
-    termcodeset_id    integer  primary key autoincrement,
-    created_date      TEXT default (datetime('now', 'localtime')),
-    status_id         integer   DEFAULT 1,
-    code_value        TEXT,
-    code_desc         TEXT,
-    industry_std      TEXT,
-    terminology_std TEXT
-);
-
-DROP TABLE if exists platform_codesets_crossmaps;
-DROP TABLE if exists platform_codesets_xmap;
-CREATE TABLE platform_codesets_xmap
-(
-    codesetcrossmap_id  integer primary key autoincrement,
-    application_guid    TEXT,
-    organization_guid   TEXT,
-    terminologystd_from     integer,
-    terminologystd_to   integer,
-    created_date        TEXT default (datetime('now', 'localtime')),
-    status_id           integer   DEFAULT 1,
-    created_user        TEXT,
-    transformcode_value TEXT,
-    transformcode_desc  TEXT,
-    originalcode_value  TEXT,
-    originalcode_desc   TEXT
-);
-
-DROP TABLE if exists platform_datageneration_dataattributes;
-CREATE TABLE platform_datageneration_dataattributes
-(
-    datagentype_id          integer primary key autoincrement,
-    datagentype_description TEXT,
-    definition              TEXT,
-    dataattribute_id        integer,
-    created_date            TEXT default (datetime('now', 'localtime')),
-    status_id               integer   DEFAULT 1,
-    created_user            TEXT,
-    quantity                integer,
-    maxrecords_in_source      integer,
-    registeredapp_guid      TEXT,
-    organization_guid       TEXT
-);
-
-DROP TABLE if exists platform_databuilding_dataattributes;
-CREATE TABLE platform_databuilding_dataattributes
-(
-    databuild_dataattribute_id          integer primary key autoincrement,
-    databuild_description TEXT,
-    definition              TEXT,
-    dataattribute_id        integer,
-    created_date            TEXT default (datetime('now', 'localtime')),
-    status_id               integer   DEFAULT 1,
-    created_user            TEXT,
-    quantity                integer,
-    maxrecords_in_source      integer,
-    registeredapp_guid      TEXT,
-    organization_guid       TEXT,
-    param1 TEXT,
-    param1_operator TEXT,
-    param1_value TEXT,
-    param2 TEXT,
-    param2_operator TEXT,
-    param2_value TEXT,
-    param3 TEXT,
-    param3_operator TEXT,
-    param3_value TEXT,
-    param4 TEXT,
-    param4_operator TEXT,
-    param4_value TEXT
-);
-
-DROP TABLE if exists platform_databuilding_datastructures;
-CREATE TABLE platform_databuilding_datastructures
-(
-    databuild_datastructures_id          integer primary key autoincrement,
-    databuild_description TEXT,
-    definition              TEXT,
-    datastructure_id        integer,
-    created_date            TEXT default (datetime('now', 'localtime')),
-    status_id               integer   DEFAULT 1,
-    created_user            TEXT,
-    quantity                integer,
-    maxrecords_in_source      integer,
-    registeredapp_guid      TEXT,
-    organization_guid       TEXT
-);
-
-drop table if exists platform_datasources;
-create table platform_datasources
-(
-    platform_datasources_id integer primary key autoincrement,
-    datasource_name         TEXT,
-    datasource_type         TEXT,
-    created_date            TEXT default (datetime('now', 'localtime')),
-    status_id               integer   default 1,
-    created_user            TEXT,
-    organization_guid       TEXT,
-    registeredapp_guid      TEXT
-);
-
-drop table if exists platform_datastructures_dtl;
-CREATE TABLE platform_datastructures_dtl
-(
-    platform_datastructuresdtl_id                  integer primary key autoincrement,
-    datastructure_id                     integer,
-    composite_datastructure_name                   TEXT,
-    sensitivityflag_id                             integer   DEFAULT 1,
-    created_date                                   TEXT default (datetime('now', 'localtime')),
-    status_id                                      integer   DEFAULT 1,
-    created_user                                   TEXT,
-    platform_datastructures_to_dataattributes_guid TEXT,
-    registeredapp_guid                             TEXT,
-    dataattribute_id                     integer
-);
-
-drop table if exists platform_tokens_xmap;
-CREATE TABLE platform_tokens_xmap
-(
-    platform_tokens_xmap_id integer primary key autoincrement,
-    datastructure_id            integer,
-    xmap_details                          TEXT,
-    dataattribute_id                      integer   DEFAULT 1,
-    fieldorder_id                         integer   DEFAULT 1,
-    created_date                          TEXT default (datetime('now', 'localtime')),
-    status_id                             integer   DEFAULT 1,
-    created_user                          TEXT,
-    registeredapp_guid                    TEXT,
-    organization_guid                     TEXT
-);
-
-drop table if exists refdata_application;
-CREATE TABLE refdata_application
-(
-    app_guid               TEXT primary key,
+    app_guid               TEXT primary key default  (lower(hex(randomblob(16)))),
     application_customcode TEXT,
     application_desc       TEXT,
     created_user           TEXT,
@@ -252,10 +15,10 @@ CREATE TABLE refdata_application
     organization_guid      TEXT
 );
 
-drop table if exists refdata_codeset;
-CREATE TABLE refdata_codeset
+drop table if exists refdata_codesets;
+CREATE TABLE refdata_codesets
 (
-    codesets_id        integer primary key autoincrement,
+    codesets_id        TEXT primary key default  (lower(hex(randomblob(16)))),
     codeset_name       TEXT,
     industry_std       TEXT,
     status_id          integer   DEFAULT 1,
@@ -279,7 +42,6 @@ CREATE TABLE refdata_countries
     status_id    integer   DEFAULT 1
 );
 
-DROP TABLE if exists platform_dataattributes;
 DROP TABLE if exists refdata_dataattributes;
 CREATE TABLE refdata_dataattributes
 (
@@ -294,7 +56,6 @@ CREATE TABLE refdata_dataattributes
     attribute_type              TEXT
 );
 
-drop table if exists platform_datastructures;
 drop table if exists refdata_datastructures;
 create table refdata_datastructures
 (
@@ -311,7 +72,7 @@ create table refdata_datastructures
 drop table if exists refdata_devicetypes;
 CREATE TABLE refdata_devicetypes
 (
-    devicetype_id integer primary key autoincrement,
+    devicetype_id TEXT primary key default  (lower(hex(randomblob(16)))),
     devicetype    TEXT,
     created_date  TEXT default (datetime('now', 'localtime')),
     status_id     integer   DEFAULT 1
@@ -330,24 +91,24 @@ CREATE TABLE refdata_industrystd_eventtypes
 drop table if exists refdata_industries;
 CREATE TABLE refdata_industries
 (
-    industry_id   integer primary key autoincrement ,
+    industry_id   TEXT primary key default  (lower(hex(randomblob(16)))) ,
     industry_name TEXT(45),
     created_date  TEXT default (datetime('now', 'localtime')),
     status_id     integer   DEFAULT 1
 );
 
-drop table if exists refdata_industriestobusiness;
-CREATE TABLE refdata_industriestobusiness
+drop table if exists refdata_industries_business;
+CREATE TABLE refdata_industries_business
 (
-    industrytobusiness_id integer primary key autoincrement,
-    industry_id           integer,
+    industrytobusiness_id TEXT primary key default  (lower(hex(randomblob(16)))),
+    industry_id           TEXT,
     business_area         TEXT,
     created_date          TEXT default (datetime('now', 'localtime')),
     status_id             integer   DEFAULT 1
 );
 
-drop table if exists refdata_industrystd;
-CREATE TABLE refdata_industrystd
+drop table if exists refdata_industrystds;
+CREATE TABLE refdata_industrystds
 (
     industry_std     TEXT primary key,
     industrystd_desc TEXT,
@@ -358,7 +119,7 @@ CREATE TABLE refdata_industrystd
 drop table if exists refdata_legalentities;
 CREATE TABLE refdata_legalentities
 (
-    legalentity_guid TEXT  primary key,
+    legalentity_guid TEXT  primary key default  (lower(hex(randomblob(16)))),
     location_name    TEXT,
     address          TEXT,
     city             TEXT,
@@ -371,8 +132,8 @@ CREATE TABLE refdata_legalentities
     location_phone   TEXT
 );
 
-drop table if exists refdata_operationtype;
-CREATE TABLE refdata_operationtype
+drop table if exists refdata_operationtypes;
+CREATE TABLE refdata_operationtypes
 (
     operationtype_id   TEXT primary key,
     operationtype_name TEXT,
@@ -380,10 +141,10 @@ CREATE TABLE refdata_operationtype
     status_id          integer   DEFAULT 1
 );
 
-drop table if exists refdata_organization;
-CREATE TABLE refdata_organization
+drop table if exists refdata_organizations;
+CREATE TABLE refdata_organizations
 (
-    organization_guid          TEXT primary key,
+    organization_guid          TEXT primary key default  (lower(hex(randomblob(16)))),
     organization_internal_code TEXT,
     organization_internal_id   TEXT,
     organization_name          TEXT,
@@ -397,21 +158,10 @@ CREATE TABLE refdata_organization
     legalentity_guid           TEXT
 );
 
-drop table if exists refdata_regextypes;
-CREATE TABLE refdata_regextypes
-(
-    regextype_id      integer  primary key autoincrement,
-    regextype_desc    TEXT,
-    created_date      TEXT default (datetime('now', 'localtime')),
-    status_id         integer   DEFAULT 1,
-    organization_guid TEXT,
-    application_guid  TEXT
-);
-
 drop table if exists refdata_rulesets;
 CREATE TABLE refdata_rulesets
 (
-    rule_id         integer  primary key autoincrement,
+    rule_id         TEXT primary key default  (lower(hex(randomblob(16)))),
     rule_name       TEXT(65),
     created_user    TEXT,
     created_date    TEXT default (datetime('now', 'localtime')),
@@ -419,35 +169,18 @@ CREATE TABLE refdata_rulesets
     expiration_date TEXT
 );
 
-drop table if exists refdata_rulesetsdefinitions;
-CREATE TABLE refdata_rulesetsdefinitions
-(
-    rulesetdefinitions_id   TEXT NOT NULL,
-    rulesetdefinitions_name TEXT,
-    ruleset_id              integer,
-    steporder_id            integer,
-    operationtype_id        TEXT,
-    ruleset_defvalue        char,
-    status_id               integer   DEFAULT 1,
-    created_date            TEXT default (datetime('now', 'localtime')),
-    effective_date          TEXT,
-    application_guid        TEXT,
-    term_date               TEXT,
-    dataattribute_id        integer
-);
-
 drop table if exists refdata_professiontypes;
 CREATE TABLE refdata_professiontypes
 (
-    professiontype_id   integer primary key autoincrement,
+    professiontype_id   TEXT primary key default  (lower(hex(randomblob(16)))),
     professiontype_name TEXT(65),
     created_user        TEXT,
     created_date        TEXT default (datetime('now', 'localtime')),
     status_id           integer   DEFAULT 1
 );
 
-drop table if exists refdata_sensitivityflag;
-CREATE TABLE refdata_sensitivityflag
+drop table if exists refdata_sensitivityflags;
+CREATE TABLE refdata_sensitivityflags
 (
     sensitiveflag_id   integer primary key autoincrement,
     sensitiveflag_desc TEXT,
@@ -464,10 +197,10 @@ CREATE TABLE refdata_status
     created_user       TEXT
 );
 
-drop table if exists refdata_terminologystd;
-CREATE TABLE refdata_terminologystd
+drop table if exists refdata_terminologystds;
+CREATE TABLE refdata_terminologystds
 (
-    terminologystd         TEXT(6) primary key,,
+    terminologystd         TEXT(6) primary key,
     terminologystd_version TEXT                                                              NOT NULL,
     terminologystd_desc    TEXT,
     created_date           TEXT default (datetime('now', 'localtime')),
@@ -495,10 +228,10 @@ CREATE TABLE refdata_usstates
     created_user      TEXT
 );
 
-drop table if exists refdata_vendor;
-CREATE TABLE refdata_vendor
+drop table if exists refdata_vendors;
+CREATE TABLE refdata_vendors
 (
-    vendor_id    integer   primary key autoincrement,
+    vendor_id    TEXT   primary key DEFAULT  (lower(hex(randomblob(16)))) ,
     vendor_name  TEXT,
     created_date TEXT default (datetime('now', 'localtime')),
     status_id    integer   DEFAULT 1,
@@ -506,12 +239,272 @@ CREATE TABLE refdata_vendor
     vendor_guid  TEXT
 );
 
+-- DataModel
+
+DROP TABLE if exists datamodel_apis;
+CREATE TABLE datamodel_apis
+(
+    api_id             TEXT primary key DEFAULT  (lower(hex(randomblob(16)))),
+    technology         TEXT,
+    dataattribute_id  integer,
+    baseurllocation    TEXT,
+    apiname            TEXT,
+    created_date       TEXT default (datetime('now', 'localtime')),
+    status_id          integer   DEFAULT 1,
+    purpose            TEXT,
+    datmodel_tablename TEXT,
+    apiparams          TEXT,
+    apiexample         TEXT
+
+);
+
+DROP TABLE if exists datamodel_datatables;
+CREATE TABLE datamodel_datatables
+(
+    tablename        TEXT NOT NULL,
+    tableinformation TEXT,
+    status_id        integer   DEFAULT 1,
+    created_date     TEXT default (datetime('now', 'localtime')),
+    datadomain       TEXT
+);
+
+DROP TABLE if exists datamodel_domains;
+CREATE TABLE datamodel_domains
+(
+    domainname        TEXT NOT NULL,
+    domaininformation TEXT,
+    status_id         integer   DEFAULT 1,
+    created_date      TEXT default (datetime('now', 'localtime'))
+);
+
+-- Data Tier
+drop table if exists datatier_crawlers;
+CREATE TABLE datatier_crawlers
+(
+    datacrawler_id      TEXT primary key default  (lower(hex(randomblob(16)))),
+    token               TEXT,
+    crawledtext_details text,
+    created_date        TEXT    default (datetime('now', 'localtime')),
+    status_id           integer DEFAULT 1,
+    registeredapp_guid  TEXT,
+    organization_guid   TEXT
+);
+
+DROP TABLE if exists datatier_sdp_datastructures;
+CREATE TABLE datatier_sdp_datastructures
+(
+    datastructure_core_id TEXT primary key DEFAULT  (lower(hex(randomblob(16)))),
+    datastructure_name    TEXT,
+    datastructure_details text,
+    created_date          TEXT default (datetime('now', 'localtime')),
+    status_id             integer   DEFAULT 1,
+    registeredapp_guid    TEXT
+);
+
+drop table if exists datatier_sdp_dataattributes;
+create table datatier_sdp_dataattributes
+(
+    datatier_id        TEXT primary key default  (lower(hex(randomblob(16)))),
+    basevalue          TEXT,
+    supportingvalue1   TEXT,
+    supportingvalue2   TEXT,
+    supportingvalue3   TEXT,
+    supportingvalue4   TEXT,
+    supportingvalue5   TEXT,
+    supportingvalue6   TEXT,
+    supportingvalue7   TEXT,
+    created_date       TEXT,
+    status_id          integer,
+    dataattribute_id   integer,
+    created_user       TEXT,
+    registeredapp_guid TEXT,
+    datagentype_id     integer
+);
+
+drop table if exists datatier_tokens;
+CREATE TABLE datatier_tokens
+(
+    datatoken_id       TEXT primary key default  (lower(hex(randomblob(16)))),
+    token              char(128),
+    created_date       TEXT default (datetime('now', 'localtime')),
+    status_id          integer   DEFAULT 1,
+    registeredapp_guid TEXT,
+    organization_guid  TEXT,
+    intfc_type         TEXT      DEFAULT 'API',
+    datasource_id      integer
+);
+
+-- Platform
+
+DROP TABLE if exists platform_codesets;
+CREATE TABLE platform_codesets
+(
+    platform_codeset_id  TEXT primary key default  (lower(hex(randomblob(16)))),
+    application_guid    TEXT,
+    organization_guid   TEXT,
+    codesets_id INT,
+    created_date        TEXT default (datetime('now', 'localtime')),
+    status_id           integer   DEFAULT 1,
+    created_user        TEXT,
+    originalcode_value  TEXT,
+    originalcode_desc   TEXT
+);
+
+drop table if exists platform_codesets_industrystds;
+CREATE TABLE platform_codesets_industrystds
+(
+    term_codeset_id  TEXT  primary key default  (lower(hex(randomblob(16)))),
+    created_date      TEXT default (datetime('now', 'localtime')),
+    status_id         integer   DEFAULT 1,
+    code_value        TEXT,
+    code_desc         TEXT,
+    industry_std      TEXT,
+    terminology_std TEXT
+);
+
+DROP TABLE if exists platform_codesets_xmaps;
+CREATE TABLE platform_codesets_xmaps
+(
+    codesetcrossmap_id  TEXT primary key default  (lower(hex(randomblob(16)))),
+    application_guid    TEXT,
+    organization_guid   TEXT,
+    terminologystd_from     integer,
+    terminologystd_to   integer,
+    created_date        TEXT default (datetime('now', 'localtime')),
+    status_id           integer   DEFAULT 1,
+    created_user        TEXT,
+    transformcode_value TEXT,
+    transformcode_desc  TEXT,
+    originalcode_value  TEXT,
+    originalcode_desc   TEXT
+);
+
+DROP TABLE if exists platform_datageneration_dataattributes;
+CREATE TABLE platform_datageneration_dataattributes
+(
+    datagentype_id          TEXT primary key default  (lower(hex(randomblob(16)))),
+    datagentype_description TEXT,
+    definition              TEXT,
+    dataattribute_id        integer,
+    created_date            TEXT default (datetime('now', 'localtime')),
+    status_id               integer   DEFAULT 1,
+    created_user            TEXT,
+    quantity                integer,
+    maxrecords_in_source      integer,
+    registeredapp_guid      TEXT,
+    organization_guid       TEXT
+);
+
+DROP TABLE if exists platform_databuilding_dataattributes;
+CREATE TABLE platform_databuilding_dataattributes
+(
+    databuild_dataattribute_id TEXT primary key default  (lower(hex(randomblob(16)))),
+    databuild_description TEXT,
+    definition              TEXT,
+    dataattribute_id        integer,
+    created_date            TEXT default (datetime('now', 'localtime')),
+    status_id               integer   DEFAULT 1,
+    created_user            TEXT,
+    quantity                integer,
+    maxrecords_in_source      integer,
+    registeredapp_guid      TEXT,
+    organization_guid       TEXT,
+    param1 TEXT,
+    param1_operator TEXT,
+    param1_value TEXT,
+    param2 TEXT,
+    param2_operator TEXT,
+    param2_value TEXT,
+    param3 TEXT,
+    param3_operator TEXT,
+    param3_value TEXT,
+    param4 TEXT,
+    param4_operator TEXT,
+    param4_value TEXT
+);
+
+DROP TABLE if exists platform_databuilding_datastructures;
+CREATE TABLE platform_databuilding_datastructures
+(
+    databuild_datastructures_id  TEXT primary key default  (lower(hex(randomblob(16)))),
+    databuild_description TEXT,
+    definition              TEXT,
+    datastructure_id        integer,
+    created_date            TEXT default (datetime('now', 'localtime')),
+    status_id               integer   DEFAULT 1,
+    created_user            TEXT,
+    quantity                integer,
+    maxrecords_in_source      integer,
+    registeredapp_guid      TEXT,
+    organization_guid       TEXT
+);
+
+drop table if exists platform_datasources;
+create table platform_datasources
+(
+    platform_datasources_id TEXT primary key default  (lower(hex(randomblob(16)))),
+    datasource_name         TEXT,
+    datasource_type         TEXT,
+    created_date            TEXT default (datetime('now', 'localtime')),
+    status_id               integer   default 1,
+    created_user            TEXT,
+    organization_guid       TEXT,
+    registeredapp_guid      TEXT
+);
+
+drop table if exists platform_datastructures_dtl;
+CREATE TABLE platform_datastructures_dtl
+(
+    platform_datastructuresdtl_id    TEXT primary key default  (lower(hex(randomblob(16)))),
+    datastructure_id                     integer,
+    composite_datastructure_name                   TEXT,
+    sensitivityflag_id                             integer   DEFAULT 1,
+    created_date                                   TEXT default (datetime('now', 'localtime')),
+    status_id                                      integer   DEFAULT 1,
+    created_user                                   TEXT,
+    platform_datastructures_to_dataattributes_guid TEXT,
+    registeredapp_guid                             TEXT,
+    dataattribute_id                     integer
+);
+
+drop table if exists platform_rulesets_definitions;
+CREATE TABLE platform_rulesets_definitions
+(
+    ruleset_definitions_id   TEXT primary key default  (lower(hex(randomblob(16)))),
+    ruleset_definitions_name TEXT,
+    ruleset_id              TEXT,
+    steporder_id            integer,
+    operationtype_id        TEXT,
+    ruleset_defvalue        char,
+    status_id               integer   DEFAULT 1,
+    created_date            TEXT default (datetime('now', 'localtime')),
+    effective_date          TEXT,
+    application_guid        TEXT,
+    term_date               TEXT,
+    dataattribute_id        integer
+);
+
+drop table if exists platform_tokens_xmaps;
+CREATE TABLE platform_tokens_xmaps
+(
+    platform_tokens_xmap_id TEXT primary key default  (lower(hex(randomblob(16)))),
+    datastructure_id            integer,
+    xmap_details                          TEXT,
+    dataattribute_id                      integer   DEFAULT 1,
+    fieldorder_id                         integer   DEFAULT 1,
+    created_date                          TEXT default (datetime('now', 'localtime')),
+    status_id                             integer   DEFAULT 1,
+    created_user                          TEXT,
+    registeredapp_guid                    TEXT,
+    organization_guid                     TEXT
+);
+
 -- Indexes
-create index if not exists datatiersdp_dataattributes_index
+create index if not exists datatier_sdp_dataattributes_uindex
     on datatier_sdp_dataattributes (datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4,
-    supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
-    datagentype_id, status_id, created_user, registeredapp_guid);
+                                    supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
+                                    datagentype_id, status_id, created_user, registeredapp_guid);
 
-CREATE INDEX terms_codeset_industrystd_index ON terms_codeset_industrystd(termcodeset_id, codesets_id, created_date, status_id, code_value, code_desc, industry_std);
+CREATE INDEX platform_codesets_industrystds_index ON platform_codesets_industrystds(term_codeset_id, created_date, status_id, code_value, code_desc, industry_std);
 
-CREATE UNIQUE INDEX terms_codeset_industrystd_uindex ON terms_codeset_industrystd(codesets_id, code_value, code_desc, industry_std);
+CREATE UNIQUE INDEX platform_codesets_industrystds_uindex ON platform_codesets_industrystds(industry_std, code_value, code_desc);

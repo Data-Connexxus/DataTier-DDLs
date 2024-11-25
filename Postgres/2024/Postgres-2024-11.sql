@@ -4,16 +4,9 @@ drop sequence if exists refdata_countries_seq cascade;
 create sequence refdata_countries_seq;
 drop sequence if exists refdata_dataattributes_seq cascade;
 create sequence refdata_dataattributes_seq;
-drop sequence if exists refdata_datastructures_seq cascade;
-create sequence refdata_datastructures_seq;
 drop sequence if exists refdata_eventtypes_seq cascade;
 create sequence refdata_eventtypes_seq;
-drop sequence if exists refdata_sensitivityflag_seq cascade;
-create sequence refdata_sensitivityflag_seq;
-drop sequence if exists refdata_status_seq cascade;
-create sequence refdata_status_seq;
-drop sequence if exists refdata_vendor_seq cascade;
-create sequence refdata_vendor_seq;
+
 
 -- Create Tables
 -- Reference Tables
@@ -25,7 +18,7 @@ CREATE TABLE refdata_applications
     application_desc       varchar(50) DEFAULT 'NULL'::character varying,
     created_user           varchar(20) DEFAULT 'NULL'::character varying,
     created_date           timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id              integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     vendor_id              char(38),
     industry_oid           varchar(49),
     organization_guid       varchar(49),
@@ -38,12 +31,12 @@ CREATE TABLE refdata_codesets
     codesets_id        char(38)     DEFAULT gen_random_uuid() NOT NULL,
     codeset_name       varchar(50)  DEFAULT 'NULL'::character varying,
     industry_std       varchar(6)   DEFAULT 'NULL'::character varying,
-    status_id          integer      DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_date       timestamp    DEFAULT CURRENT_TIMESTAMP,
     created_user       varchar(20)  DEFAULT 'NULL'::character varying,
     codeset_guid       char(38)     DEFAULT 'NULL'::bpchar,
     field_mapping      varchar(40)  DEFAULT 'NULL'::character varying,
-    sensitivityflag_id integer,
+    sensitivityflag_id varchar(5) DEFAULT 'UNDF',
     externaltable_id   varchar(20)  DEFAULT 'NULL'::character varying,
     external_notes     varchar(149) DEFAULT 'NULL'::character varying,
     external_link      varchar(99)  DEFAULT 'NULL'::character varying,
@@ -57,7 +50,7 @@ CREATE TABLE refdata_countries
     idd          varchar(5)  DEFAULT 'NULL'::character varying,
     country_name varchar(59) DEFAULT 'NULL'::character varying,
     created_date timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id    integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     PRIMARY KEY (country_id)
 );
 
@@ -66,9 +59,9 @@ CREATE TABLE refdata_dataattributes
 (
     dataattribute_id  integer     DEFAULT nextval('refdata_dataattributes_seq'::regclass) NOT NULL,
     dataattribute_name         varchar(50) DEFAULT 'NULL'::character varying,
-    sensitivityflag_id         integer,
+    sensitivityflag_id         varchar(5) DEFAULT 'UNDF',
     created_date               timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id                  integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_user               varchar(20) DEFAULT 'NULL'::character varying,
     platform_dataattribute_guid char(38)    DEFAULT 'NULL'::bpchar,
     registeredapp_guid             char(38)    DEFAULT 'NULL'::character varying,
@@ -80,11 +73,11 @@ drop table if exists platform_datastructures cascade;
 drop table if exists refdata_datastructures cascade;
 create table refdata_datastructures
 (
-    datastructure_id   integer     default nextval('refdata_datastructures_seq'::regclass) not null,
+    datastructure_id   CHAR(38)   DEFAULT gen_random_uuid() NOT NULL,
     datastructure_name          varchar(50) default 'NULL'::character varying,
-    sensitivityflag_id          integer,
+    sensitivityflag_id          varchar(5) DEFAULT 'UNDF',
     created_date                timestamp   default CURRENT_TIMESTAMP,
-    status_id                   integer     default 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_user                varchar(20) default 'NULL'::character varying,
     platform_datastructures_guid char(38)    default gen_random_uuid()::bpchar,
     registeredapp_guid              char(38)    DEFAULT 'NULL'::character varying,
@@ -97,7 +90,7 @@ CREATE TABLE refdata_devicetypes
     devicetype_id CHAR(38)   DEFAULT gen_random_uuid() NOT NULL,
     devicetype    varchar(30),
     created_date  timestamp DEFAULT CURRENT_TIMESTAMP,
-    status_id     integer   DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     PRIMARY KEY (devicetype_id)
 );
 
@@ -108,7 +101,7 @@ CREATE TABLE refdata_industrystd_eventtypes
     eventtype_desc varchar(30) default 'NULL'::character varying,
     industry_std    varchar(6),
     created_date    timestamp   default CURRENT_TIMESTAMP,
-    status_id       integer     default 1,
+    status_id varchar(10) DEFAULT 'Active',
     PRIMARY KEY (eventtype_id)
 );
 
@@ -118,7 +111,7 @@ CREATE TABLE refdata_industries
     industry_id   char(38)   DEFAULT gen_random_uuid() NOT NULL,
     industry_name varchar(45),
     created_date  timestamp DEFAULT CURRENT_TIMESTAMP,
-    status_id     integer   DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     PRIMARY KEY (industry_id)
 );
 
@@ -129,7 +122,7 @@ CREATE TABLE refdata_industries_business
     industry_id           char(38),
     business_area         varchar(50),
     created_date          timestamp DEFAULT CURRENT_TIMESTAMP,
-    status_id             integer   DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     PRIMARY KEY (industrytobusiness_id)
 );
 
@@ -139,7 +132,7 @@ CREATE TABLE refdata_industrystds
     industry_std     varchar(6) NOT NULL,
     industrystd_desc varchar(30) DEFAULT 'NULL'::character varying,
     created_date     timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id        integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     PRIMARY KEY (industry_std)
 );
 
@@ -153,7 +146,7 @@ CREATE TABLE refdata_legalentities
     state_id         varchar(2)  DEFAULT 'NULL'::character varying,
     zipcode          varchar(12) DEFAULT 'NULL'::character varying,
     created_user     varchar(20) DEFAULT 'NULL'::character varying,
-    status_id        integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_date     timestamp   DEFAULT CURRENT_TIMESTAMP NOT NULL,
     location_url     varchar(99) DEFAULT 'NULL'::character varying,
     location_phone   varchar(12) DEFAULT 'NULL'::character varying,
@@ -166,7 +159,7 @@ CREATE TABLE refdata_operationtype
     operationtype_id   varchar(7) NOT NULL,
     operationtype_name varchar(60) DEFAULT 'NULL'::character varying,
     created_date       timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id          integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     PRIMARY KEY (operationtype_id)
 );
 
@@ -182,7 +175,7 @@ CREATE TABLE refdata_organizations
     state_id                   varchar(2)  DEFAULT 'NULL'::character varying,
     zipcode                    varchar(12) DEFAULT 'NULL'::character varying,
     created_user               varchar(20) DEFAULT 'NULL'::character varying,
-    status_id                  integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_date               timestamp   DEFAULT CURRENT_TIMESTAMP NOT NULL,
     legalentity_guid           char(38) DEFAULT 'NULL'::character varying,
     PRIMARY KEY (organization_guid)
@@ -195,7 +188,7 @@ CREATE TABLE refdata_professiontypes
     professiontype_name varchar(65) DEFAULT 'NULL'::character varying,
     created_user        varchar(20) DEFAULT 'NULL'::character varying,
     created_date        timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id           integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     PRIMARY KEY (professiontype_id)
 );
 
@@ -206,7 +199,7 @@ CREATE TABLE refdata_rulesets
     rule_name      varchar(65) DEFAULT 'NULL'::character varying,
     created_user   varchar(20) DEFAULT 'NULL'::character varying,
     created_date   timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id      integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     expiration_date timestamp,
     PRIMARY KEY (rule_id)
 );
@@ -214,17 +207,17 @@ CREATE TABLE refdata_rulesets
 drop table if exists refdata_sensitivityflags cascade;
 CREATE TABLE refdata_sensitivityflags
 (
-    sensitiveflag_id   integer     DEFAULT nextval('refdata_sensitivityflag_seq'::regclass) NOT NULL,
+    sensitivityflag_id   varchar(5) NOT NULL,
     sensitiveflag_desc varchar(30) DEFAULT 'NULL'::character varying,
     created_date       timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id          integer     DEFAULT 1,
-    PRIMARY KEY (sensitiveflag_id)
+    status_id varchar(10) DEFAULT 'Active',
+    PRIMARY KEY (sensitivityflag_id)
 );
 
 drop table if exists refdata_status cascade;
 CREATE TABLE refdata_status
 (
-    status_id          integer     DEFAULT nextval('refdata_status_seq'::regclass) NOT NULL,
+    status_id          varchar(10) NOT NULL,
     status_description varchar(45)                                                 NOT NULL,
     created_date       timestamp   DEFAULT CURRENT_TIMESTAMP,
     created_user       varchar(20) DEFAULT 'NULL'::character varying,
@@ -238,7 +231,7 @@ CREATE TABLE refdata_terminologystds
     terminologystd_version varchar(10)                                                          NOT NULL,
     terminologystd_desc    varchar(129) DEFAULT 'NULL'::character varying,
     created_date           timestamp    DEFAULT CURRENT_TIMESTAMP,
-    status_id              integer      DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     PRIMARY KEY (terminology_std)
 );
 
@@ -248,7 +241,7 @@ CREATE TABLE refdata_timezones
     timezone_value varchar(3) NOT NULL,
     timezone_desc  varchar(25) DEFAULT 'NULL'::character varying,
     created_date   timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id      integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     PRIMARY KEY (timezone_value)
 );
 
@@ -260,7 +253,7 @@ CREATE TABLE refdata_usstates
     lattitude         varchar(12) DEFAULT 'NULL'::character varying,
     longitude         varchar(12) DEFAULT 'NULL'::character varying,
     created_date      timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id         integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_user      varchar(20) DEFAULT 'NULL'::character varying,
     PRIMARY KEY (state_id)
 );
@@ -271,7 +264,7 @@ CREATE TABLE refdata_vendors
     vendor_id    char(38)     DEFAULT gen_random_uuid() NOT NULL,
     vendor_name  varchar(50) DEFAULT 'NULL'::character varying,
     created_date timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id    integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_user varchar(20) DEFAULT 'NULL'::character varying,
     vendor_guid  char(38)    DEFAULT 'NULL'::bpchar,
     PRIMARY KEY (vendor_id)
@@ -299,7 +292,7 @@ ALTER TABLE refdata_codesets
 
 ALTER TABLE refdata_codesets
     ADD FOREIGN KEY (sensitivityflag_id)
-        REFERENCES refdata_sensitivityflags (sensitiveflag_id);
+        REFERENCES refdata_sensitivityflags (sensitivityflag_id);
 
 ALTER TABLE refdata_countries
     ADD FOREIGN KEY  (status_id)
@@ -391,7 +384,7 @@ CREATE TABLE datamodel_apis
     baseurllocation    varchar(99),
     apiname            varchar(79),
     created_date       timestamp DEFAULT CURRENT_TIMESTAMP,
-    status_id          integer   DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     purpose            varchar(49),
     datmodel_tablename varchar(99),
     apiparams          varchar(59),
@@ -408,7 +401,7 @@ CREATE TABLE datamodel_domains
 (
     domainname        varchar(64) NOT NULL,
     domaininformation varchar(249) DEFAULT 'NULL'::character varying,
-    status_id         integer      DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_date      timestamp    DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (domainname)
 );
@@ -422,7 +415,7 @@ CREATE TABLE datamodel_datatables
 (
     tablename        varchar(64) NOT NULL,
     tableinformation varchar(249) DEFAULT 'NULL'::character varying,
-    status_id        integer      DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_date     timestamp    DEFAULT CURRENT_TIMESTAMP,
     datadomain       varchar(64),
     PRIMARY KEY (tablename)
@@ -444,7 +437,7 @@ CREATE TABLE datatier_crawlers
     token               char(128)   DEFAULT 'NULL'::character varying,
     crawledtext_details text        DEFAULT 'NULL'::character varying,
     created_date        timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id           integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     registeredapp_guid      char(38) DEFAULT 'NULL'::character varying,
     organization_guid   char(38) DEFAULT 'NULL'::character varying,
     PRIMARY KEY (datacrawler_id)
@@ -475,11 +468,12 @@ create table datatier_sdp_dataattributes
     supportingvalue6 varchar(50),
     supportingvalue7 varchar(50),
     created_date     timestamp,
-    status_id        integer,
+    status_id varchar(10) DEFAULT 'Active',
     dataattribute_id integer,
     created_user     varchar(20),
     registeredapp_guid   char(38),
-    datagentype_id   integer
+    datagentype_id   integer,
+    dataattribute_guid char(38) DEFAULT 'UNDF'
 );
 
 ALTER TABLE datatier_sdp_dataattributes
@@ -501,7 +495,7 @@ CREATE TABLE datatier_sdp_datastructures
     datastructure_name    varchar(29) DEFAULT 'NULL'::character varying,
     datastructure_details text        DEFAULT 'NULL'::character varying,
     created_date          timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id             integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     registeredapp_guid        char(38) DEFAULT 'NULL'::character varying,
     PRIMARY KEY (datastructure_core_id)
 );
@@ -520,11 +514,11 @@ CREATE TABLE datatier_tokens
     datatoken_id      char(38)    DEFAULT gen_random_uuid() NOT NULL,
     token             char(128)   DEFAULT 'NULL'::character varying,
     created_date      timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id         integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     registeredapp_guid    char(38) DEFAULT 'NULL'::character varying,
     organization_guid char(38) DEFAULT 'NULL'::character varying,
     intfc_type        varchar(10) DEFAULT 'API',
-    datasource_id     varchar(38),
+    datasource_id     char(38),
     PRIMARY KEY (datatoken_id)
 );
 
@@ -550,7 +544,7 @@ CREATE TABLE platform_codesets
     organization_guid      CHAR(38),
     codesets_id  char(38),
     created_date        timestamp    DEFAULT CURRENT_TIMESTAMP,
-    status_id           integer      DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_user        varchar(20)  DEFAULT 'NULL'::character varying,
     originalcode_value  varchar(40),
     originalcode_desc   varchar(149),
@@ -570,7 +564,7 @@ CREATE TABLE platform_codesets_industrystds
 (
     termcodeset_id    char(38)    DEFAULT gen_random_uuid() NOT NULL,
     created_date      timestamp    DEFAULT CURRENT_TIMESTAMP,
-    status_id         integer      DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     code_value         varchar(20)  DEFAULT 'NULL'::character varying,
     code_desc          varchar(129) DEFAULT 'NULL'::character varying,
     industry_std      varchar(6)   DEFAULT 'UNDF'::character varying,
@@ -595,7 +589,7 @@ CREATE TABLE platform_codesets_xmaps
     terminologystd_from     varchar(25),
     terminologystd_to   varchar(25),
     created_date        timestamp    DEFAULT CURRENT_TIMESTAMP,
-    status_id           integer      DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_user        varchar(20)  DEFAULT 'NULL'::character varying,
     transformcode_value varchar(40)  DEFAULT 'NULL'::character varying,
     transformcode_desc  varchar(129) DEFAULT 'NULL'::character varying,
@@ -631,7 +625,7 @@ CREATE TABLE platform_datageneration_dataattributes
     definition              varchar(255) DEFAULT 'NULL'::character varying,
     dataattribute_id        integer,
     created_date            timestamp    DEFAULT CURRENT_TIMESTAMP,
-    status_id               integer      DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_user            varchar(20)  DEFAULT 'NULL'::character varying,
     quantity                integer,
     maxrecords_in_source      integer,
@@ -664,7 +658,7 @@ CREATE TABLE platform_databuilding_dataattributes
     definition              varchar(255) DEFAULT 'NULL'::character varying,
     dataattribute_id        integer,
     created_date            timestamp    DEFAULT CURRENT_TIMESTAMP,
-    status_id               integer      DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_user            varchar(20)  DEFAULT 'NULL'::character varying,
     quantity                integer,
     maxrecords_in_source      integer,
@@ -708,7 +702,7 @@ CREATE TABLE platform_databuilding_datastructures
     definition              varchar(255) DEFAULT 'NULL'::character varying,
     datastructure_id        integer,
     created_date            timestamp    DEFAULT CURRENT_TIMESTAMP,
-    status_id               integer      DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_user            varchar(20)  DEFAULT 'NULL'::character varying,
     quantity                integer,
     maxrecords_in_source      integer,
@@ -740,7 +734,7 @@ create table platform_datasources
     datasource_name        varchar(50) default 'NULL'::character varying,
     datasource_type        varchar(10),
     created_date           timestamp   default CURRENT_TIMESTAMP,
-    status_id              integer     default 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_user           varchar(20) default 'NULL'::character varying,
     organization_guid      char(38)    DEFAULT 'NULL'::character varying,
     registeredapp_guid         char(38)    DEFAULT 'NULL'::character varying,
@@ -769,9 +763,9 @@ CREATE TABLE platform_datastructures_dtl
     platform_datastructuresdtl_id     char(38) DEFAULT gen_random_uuid() NOT NULL,
     datastructure_id                     integer,
     composite_datastructure_name                   varchar(50) DEFAULT 'NULL'::character varying,
-    sensitivityflag_id                            integer     DEFAULT 1,
+    sensitivityflag_id                            varchar(5) DEFAULT 'UNDF',
     created_date                                  timestamp   DEFAULT CURRENT_TIMESTAMP,
-    status_id                                     integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_user                                  varchar(20) DEFAULT 'NULL'::character varying,
     platform_datastructures_to_dataattributes_guid char(38)    DEFAULT 'NULL'::bpchar,
     registeredapp_guid                                char(38)    DEFAULT 'NULL'::bpchar,
@@ -797,7 +791,7 @@ ALTER TABLE platform_datastructures_dtl
 
 ALTER TABLE platform_datastructures_dtl
     ADD FOREIGN KEY (sensitivityflag_id)
-        REFERENCES  refdata_sensitivityflags(sensitiveflag_id);
+        REFERENCES  refdata_sensitivityflags(sensitivityflag_id);
 
 drop table if exists platform_rulesets_definitions cascade;
 CREATE TABLE platform_rulesets_definitions
@@ -808,7 +802,7 @@ CREATE TABLE platform_rulesets_definitions
     steporder_id            integer,
     operationtype_id        varchar(7)  DEFAULT 'NULL'::character varying,
     ruleset_defvalue        char(40)    DEFAULT 'NULL'::bpchar,
-    status_id               integer     DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_date            timestamp   DEFAULT CURRENT_TIMESTAMP,
     effective_date          timestamp,
     application_guid        char(38)    DEFAULT 'NULL'::character varying,
@@ -846,7 +840,7 @@ CREATE TABLE platform_tokens_xmaps
     dataattribute_id                   integer      DEFAULT 1,
     fieldorder_id                      integer      DEFAULT 1,
     created_date                       timestamp    DEFAULT CURRENT_TIMESTAMP,
-    status_id                          integer      DEFAULT 1,
+    status_id varchar(10) DEFAULT 'Active',
     created_user                       varchar(20)  DEFAULT 'NULL'::character varying,
     registeredapp_guid                     char(38)     DEFAULT 'NULL'::bpchar,
     organization_guid                  char(38)     default NULL::bpchar,

@@ -77,8 +77,8 @@ CREATE TABLE refdata_devicetypes
     PRIMARY KEY (devicetype_id)
 );
 
-drop table if exists refdata_industrystd_eventtypes cascade;
-CREATE TABLE refdata_industrystd_eventtypes
+drop table if exists refdata_industrystds_eventtypes cascade;
+CREATE TABLE refdata_industrystds_eventtypes
 (
     eventtype_id    varchar(10) NOT NULL,
     eventtype_desc varchar(30) default 'NULL'::character varying,
@@ -158,7 +158,7 @@ CREATE TABLE refdata_organizations
     state_id                   varchar(2)  DEFAULT 'NULL'::character varying,
     zipcode                    varchar(12) DEFAULT 'NULL'::character varying,
     created_user               varchar(20) DEFAULT 'NULL'::character varying,
-    status_id varchar(10) DEFAULT 'Active',
+    status_id                       varchar(10) DEFAULT 'Active',
     created_date               timestamp   DEFAULT CURRENT_TIMESTAMP NOT NULL,
     legalentity_guid           char(38) DEFAULT 'NULL'::character varying,
     PRIMARY KEY (organization_guid)
@@ -263,7 +263,7 @@ ALTER TABLE refdata_applications
 
 ALTER TABLE refdata_applications
     ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
+        REFERENCES refdata_organizations (organization_guid);
 
 ALTER TABLE refdata_codesets
     ADD FOREIGN KEY (industry_std)
@@ -276,10 +276,6 @@ ALTER TABLE refdata_codesets
 ALTER TABLE refdata_codesets
     ADD FOREIGN KEY (sensitivityflag_id)
         REFERENCES refdata_sensitivityflags (sensitivityflag_id);
-
-ALTER TABLE refdata_countries
-    ADD FOREIGN KEY  (status_id)
-        REFERENCES refdata_status(status_id);
 
 ALTER TABLE refdata_devicetypes
     ADD FOREIGN KEY  (status_id)
@@ -317,15 +313,15 @@ ALTER TABLE refdata_legalentities
     ADD FOREIGN KEY (state_id)
         REFERENCES refdata_usstates (state_id);
 
-ALTER TABLE refdata_organization
+ALTER TABLE refdata_organizations
     ADD FOREIGN KEY (legalentity_guid)
         REFERENCES refdata_legalentities (legalentity_guid);
 
-ALTER TABLE refdata_organization
+ALTER TABLE refdata_organizations
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
-ALTER TABLE refdata_organization
+ALTER TABLE refdata_organizations
     ADD FOREIGN KEY (state_id)
         REFERENCES refdata_usstates (state_id);
 
@@ -436,7 +432,7 @@ ALTER TABLE datatier_crawlers
 
 ALTER TABLE datatier_crawlers
     ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
+        REFERENCES refdata_organizations (organization_guid);
 
 drop table if exists datatier_sdp_dataattributes cascade;
 create table datatier_sdp_dataattributes
@@ -515,7 +511,7 @@ ALTER TABLE datatier_tokens
 
 ALTER TABLE datatier_tokens
     ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
+        REFERENCES refdata_organizations (organization_guid);
 
 -- Platform
 
@@ -623,7 +619,7 @@ ALTER TABLE platform_datageneration_dataattributes
 
 ALTER TABLE platform_datageneration_dataattributes
     ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
+        REFERENCES refdata_organizations (organization_guid);
 
 ALTER TABLE platform_datageneration_dataattributes
     ADD FOREIGN KEY (registeredapp_guid)
@@ -667,7 +663,7 @@ ALTER TABLE platform_databuilding_dataattributes
 
 ALTER TABLE platform_databuilding_dataattributes
     ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
+        REFERENCES refdata_organizations (organization_guid);
 
 ALTER TABLE platform_databuilding_dataattributes
     ADD FOREIGN KEY (registeredapp_guid)
@@ -683,7 +679,7 @@ CREATE TABLE platform_databuilding_datastructures
     databuild_datastructures_id  char(38) DEFAULT gen_random_uuid() NOT NULL,
     databuild_description varchar(65)  DEFAULT 'NULL'::character varying,
     definition              varchar(255) DEFAULT 'NULL'::character varying,
-    datastructure_id        integer,
+    datastructure_id        char(38),
     created_date            timestamp    DEFAULT CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',
     created_user            varchar(20)  DEFAULT 'NULL'::character varying,
@@ -696,7 +692,7 @@ CREATE TABLE platform_databuilding_datastructures
 
 ALTER TABLE platform_databuilding_datastructures
     ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
+        REFERENCES refdata_organizations (organization_guid);
 
 ALTER TABLE platform_databuilding_datastructures
     ADD FOREIGN KEY (registeredapp_guid)
@@ -726,7 +722,7 @@ create table platform_datasources
 
 ALTER TABLE platform_datasources
     ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
+        REFERENCES refdata_organizations (organization_guid);
 
 ALTER TABLE platform_datasources
     ADD FOREIGN KEY (registeredapp_guid)
@@ -744,7 +740,7 @@ drop table if exists platform_datastructures_dtl cascade;
 CREATE TABLE platform_datastructures_dtl
 (
     platform_datastructuresdtl_id     char(38) DEFAULT gen_random_uuid() NOT NULL,
-    datastructure_id                     integer,
+    datastructure_id                     char(38),
     composite_datastructure_name                   varchar(50) DEFAULT 'NULL'::character varying,
     sensitivityflag_id                            varchar(5) DEFAULT 'UNDF',
     created_date                                  timestamp   DEFAULT CURRENT_TIMESTAMP,
@@ -836,7 +832,7 @@ ALTER TABLE platform_tokens_xmaps
 
 ALTER TABLE platform_tokens_xmaps
     ADD FOREIGN KEY (organization_guid)
-        REFERENCES refdata_organization (organization_guid);
+        REFERENCES refdata_organizations (organization_guid);
 
 ALTER TABLE platform_tokens_xmaps
     ADD FOREIGN KEY (registeredapp_guid)

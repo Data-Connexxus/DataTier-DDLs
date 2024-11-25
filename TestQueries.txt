@@ -1,0 +1,7 @@
+--select count(*) from datatier_sdp_dataattributes
+--select * into datatier_sdp_dataattributes_master from datatier_sdp_dataattributes
+--select dataattribute_id, status_id, status_text, dataattribute_guid, count(*) from datatier_sdp_dataattributes_master
+--                                            group by dataattribute_id, status_id, status_text, dataattribute_guid
+--                                             order by dataattribute_id, status_id, status_text, dataattribute_guid
+
+--update datatier_sdp_dataattributes_master set dataattribute_guid='' where dataattribute_id=1

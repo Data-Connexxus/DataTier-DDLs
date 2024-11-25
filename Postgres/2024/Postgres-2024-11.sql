@@ -268,7 +268,7 @@ CREATE TABLE refdata_usstates
 drop table if exists refdata_vendors cascade;
 CREATE TABLE refdata_vendors
 (
-    vendor_id    varchar(38)     DEFAULT gen_random_uuid() NOT NULL,
+    vendor_id    char(38)     DEFAULT gen_random_uuid() NOT NULL,
     vendor_name  varchar(50) DEFAULT 'NULL'::character varying,
     created_date timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id    integer     DEFAULT 1,
@@ -703,7 +703,7 @@ ALTER TABLE platform_databuilding_dataattributes
 drop table if exists platform_databuilding_datastructures cascade;
 CREATE TABLE platform_databuilding_datastructures
 (
-    databuild_datastructures_id  varchar(38) DEFAULT gen_random_uuid() NOT NULL,
+    databuild_datastructures_id  char(38) DEFAULT gen_random_uuid() NOT NULL,
     databuild_description varchar(65)  DEFAULT 'NULL'::character varying,
     definition              varchar(255) DEFAULT 'NULL'::character varying,
     datastructure_id        integer,

@@ -136,8 +136,8 @@ CREATE TABLE refdata_legalentities
     PRIMARY KEY (legalentity_guid)
 );
 
-drop table if exists refdata_operationtype cascade;
-CREATE TABLE refdata_operationtype
+drop table if exists refdata_operationtypes cascade;
+CREATE TABLE refdata_operationtypes
 (
     operationtype_id   varchar(7) NOT NULL,
     operationtype_name varchar(60) DEFAULT 'NULL'::character varying,
@@ -191,7 +191,7 @@ drop table if exists refdata_sensitivityflags cascade;
 CREATE TABLE refdata_sensitivityflags
 (
     sensitivityflag_id   varchar(5) NOT NULL,
-    sensitiveflag_desc varchar(30) DEFAULT 'NULL'::character varying,
+    sensitivityflag_desc varchar(50) DEFAULT 'NULL'::character varying,
     created_date       timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',
     PRIMARY KEY (sensitivityflag_id)

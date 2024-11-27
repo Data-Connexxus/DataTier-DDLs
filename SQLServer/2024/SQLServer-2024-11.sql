@@ -407,14 +407,13 @@ ALTER TABLE datamodel_datatables
 drop table if exists datatier_crawlers;
 CREATE TABLE datatier_crawlers
 (
-    datacrawler_id      char(38) default newid(),
+    datacrawler_id      INT IDENTITY(1,1) PRIMARY KEY,
     token               char(128),
     crawledtext_details text,
     created_date        datetime DEFAULT (GETUTCDATE()),
     status_id           varchar(10) DEFAULT 'Active',
     registeredapp_guid  char(38),
-    organization_guid   char(38),
-    PRIMARY KEY (datacrawler_id)
+    organization_guid   char(38)
 );
 
 ALTER TABLE datatier_crawlers
@@ -432,7 +431,7 @@ ALTER TABLE datatier_crawlers
 drop table if exists datatier_sdp_dataattributes;
 CREATE TABLE datatier_sdp_dataattributes
 (
-    datatier_id        char(38) default newid() NOT NULL,
+    datatier_id        INT IDENTITY(1,1) PRIMARY KEY,
     basevalue          varchar(99),
     supportingvalue1   varchar(169),
     supportingvalue2   varchar(50),
@@ -446,8 +445,7 @@ CREATE TABLE datatier_sdp_dataattributes
     dataattribute_id   char(38),
     created_user        varchar(20),
     registeredapp_guid char(38),
-    datagentype_id     INT,
-    PRIMARY KEY (datatier_id)
+    datagentype_id     INT
 );
 
 ALTER TABLE datatier_sdp_dataattributes
@@ -465,13 +463,12 @@ ALTER TABLE datatier_sdp_dataattributes
 drop table if exists datatier_sdp_datastructures;
 CREATE TABLE datatier_sdp_datastructures
 (
-    datastructure_core_id char(38) default newid() NOT NULL,
+    datastructure_core_id INT IDENTITY(1,1) PRIMARY KEY,
     datastructure_name    varchar(29),
     datastructure_details text,
     created_date          datetime DEFAULT (GETUTCDATE()),
     status_id             varchar(10) DEFAULT 'Active',
-    registeredapp_guid    char(38),
-    PRIMARY KEY (datastructure_core_id)
+    registeredapp_guid    char(38)
 );
 
 ALTER TABLE datatier_sdp_datastructures
@@ -485,15 +482,14 @@ ALTER TABLE datatier_sdp_datastructures
 DROP TABLE if exists datatier_tokens;
 CREATE TABLE datatier_tokens
 (
-    datatoken_id      char(38) default newid() NOT NULL,
+    datatoken_id       INT IDENTITY(1,1) PRIMARY KEY,
     token              char(128),
     created_date       datetime    DEFAULT (GETUTCDATE()),
     status_id          varchar(10) DEFAULT 'Active',
     registeredapp_guid char(38),
     organization_guid  char(38),
     intfc_type         varchar(10) DEFAULT 'API',
-    datasource_id      char(38),
-    PRIMARY KEY (datatoken_id)
+    datasource_id      char(38)
 );
 
 ALTER TABLE datatier_tokens
@@ -846,3 +842,60 @@ create index datatier_sdp_dataattributes_index
     on datatier_sdp_dataattributes (datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4,
                                     supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
                                     datagentype_id, status_id, created_user, registeredapp_guid);
+
+CREATE INDEX platform_codesets_industrystds_index ON platform_codesets_industrystds(industry_std, created_date, status_id, code_value, code_desc);
+CREATE UNIQUE INDEX platform_codesets_industrystds_uindex ON platform_codesets_industrystds(industry_std, code_value, code_desc);
+
+DROP INDEX if exists datatier_crawler_indx ON datatier_crawlers;
+CREATE INDEX datatier_crawler_indx ON datatier_crawlers
+(
+	datacrawler_id ASC,
+	token ASC,
+	created_date ASC,
+	status_id ASC,
+	registeredapp_guid ASC,
+	organization_guid ASC
+)
+
+drop index if exists datatier_sdp_dataattributes_indx on datatier_sdp_dataattributes;
+create index datatier_sdp_dataattributes_indx on datatier_sdp_dataattributes
+(
+    datatier_id        ASC,
+    basevalue          ASC,
+    supportingvalue1   ASC,
+    supportingvalue2   ASC,
+    supportingvalue3   ASC,
+    supportingvalue4   ASC,
+    supportingvalue5   ASC,
+    supportingvalue6   ASC,
+    supportingvalue7   ASC,
+    created_date       ASC,
+    status_id          ASC,
+    dataattribute_id   ASC,
+    created_user       ASC,
+    registeredapp_guid ASC,
+    datagentype_id     ASC
+);
+
+drop index if exists datatier_sdp_datastructures_indx on datatier_sdp_datastructures;
+create index datatier_sdp_datastructures_index on datatier_sdp_datastructures
+(
+    datastructure_core_id ASC,
+    datastructure_name    ASC,
+    created_date          ASC,
+    status_id             ASC,
+    registeredapp_guid    ASC
+);
+
+drop index if exists datatier_tokens_indx on datatier_tokens;
+create index datatier_tokens_index on datatier_tokens
+(
+    datatoken_id       ASC,
+    token              ASC,
+    created_date       ASC,
+    status_id          ASC,
+    registeredapp_guid ASC,
+    organization_guid  ASC,
+    intfc_type         ASC,
+    datasource_id      ASC
+);

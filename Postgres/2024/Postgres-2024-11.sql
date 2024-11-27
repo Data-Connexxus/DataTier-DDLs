@@ -845,6 +845,58 @@ create index if not exists datatier_sdp_dataattributes_index
                                     datagentype_id, status_id, created_user, registeredapp_guid);
 
 CREATE INDEX platform_codesets_industrystds_index ON platform_codesets_industrystds(industry_std, created_date, status_id, code_value, code_desc);
-
 CREATE UNIQUE INDEX platform_codesets_industrystds_uindex ON platform_codesets_industrystds(industry_std, code_value, code_desc);
 
+DROP INDEX if exists datatier_crawler_indx ON datatier_crawlers;
+CREATE INDEX datatier_crawler_indx ON datatier_crawlers
+(
+	datacrawler_id ASC,
+	token ASC,
+	created_date ASC,
+	status_id ASC,
+	registeredapp_guid ASC,
+	organization_guid ASC
+)
+
+drop index if exists datatier_sdp_dataattributes_indx on datatier_sdp_dataattributes;
+create index datatier_sdp_dataattributes_indx on datatier_sdp_dataattributes
+(
+    datatier_id        ASC,
+    basevalue          ASC,
+    supportingvalue1   ASC,
+    supportingvalue2   ASC,
+    supportingvalue3   ASC,
+    supportingvalue4   ASC,
+    supportingvalue5   ASC,
+    supportingvalue6   ASC,
+    supportingvalue7   ASC,
+    created_date       ASC,
+    status_id          ASC,
+    dataattribute_id   ASC,
+    created_user       ASC,
+    registeredapp_guid ASC,
+    datagentype_id     ASC
+);
+
+drop index if exists datatier_sdp_datastructures_indx on datatier_sdp_datastructures;
+create index datatier_sdp_datastructures_index on datatier_sdp_datastructures
+(
+    datastructure_core_id ASC,
+    datastructure_name    ASC,
+    created_date          ASC,
+    status_id             ASC,
+    registeredapp_guid    ASC
+);
+
+drop index if exists datatier_tokens_indx on datatier_tokens;
+create index datatier_tokens_index on datatier_tokens
+(
+    datatoken_id       ASC,
+    token              ASC,
+    created_date       ASC,
+    status_id          ASC,
+    registeredapp_guid ASC,
+    organization_guid  ASC,
+    intfc_type         ASC,
+    datasource_id      ASC
+);

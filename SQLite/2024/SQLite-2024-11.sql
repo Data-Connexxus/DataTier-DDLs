@@ -1,670 +1,663 @@
--- Create Tables
--- Reference Data Tables are loaded based on usage
-drop table if exists refdata_status;
-CREATE TABLE refdata_status
+-- CREATE TABLES
+-- REFERENCE DATA TABLES ARE LOADED BASED ON USAGE
+DROP TABLE IF EXISTS REFDATA_STATUS;
+CREATE TABLE REFDATA_STATUS
 (
-    status_id          VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    status_description varchar(45) NOT NULL,
-    created_date       VARCHAR(20) default (datetime('now', 'localtime')),
-    created_user       VARCHAR(20)
+    STATUS_ID          VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    STATUS_DESCRIPTION VARCHAR(45) NOT NULL,
+    CREATED_DATE       VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    CREATED_USER       VARCHAR(20)
 );
 
-drop table if exists refdata_vendors;
-CREATE TABLE refdata_vendors
+DROP TABLE IF EXISTS REFDATA_VENDORS;
+CREATE TABLE REFDATA_VENDORS
 (
-    vendor_id    VARCHAR(38)  primary key DEFAULT  (lower(hex(randomblob(16)))) ,
-    vendor_name  VARCHAR(50),
-    created_date VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id    VARCHAR(38),
-    created_user VARCHAR(20),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    VENDOR_ID    VARCHAR(38)  PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))) ,
+    VENDOR_NAME  VARCHAR(50),
+    CREATED_DATE VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID    VARCHAR(38),
+    CREATED_USER VARCHAR(20),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
-drop table if exists refdata_usstates;
-CREATE TABLE refdata_usstates
+DROP TABLE IF EXISTS REFDATA_USSTATES;
+CREATE TABLE REFDATA_USSTATES
 (
-    state_id          VARCHAR(2) primary key,
-    state_description VARCHAR(65),
-    lattitude         VARCHAR(12),
-    longitude         VARCHAR(12),
-    created_date      VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id         VARCHAR(38),
-    created_user      VARCHAR(20),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    STATE_ID          VARCHAR(2) PRIMARY KEY,
+    STATE_DESCRIPTION VARCHAR(65),
+    LATTITUDE         VARCHAR(12),
+    LONGITUDE         VARCHAR(12),
+    CREATED_DATE      VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID         VARCHAR(38),
+    CREATED_USER      VARCHAR(20),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
-drop table if exists refdata_legalentities;
-CREATE TABLE refdata_legalentities
+DROP TABLE IF EXISTS REFDATA_LEGALENTITIES;
+CREATE TABLE REFDATA_LEGALENTITIES
 (
-    legalentity_guid VARCHAR(38)  primary key default  (lower(hex(randomblob(16)))),
-    location_name    VARCHAR(50),
-    address          VARCHAR(75),
-    city             VARCHAR(60),
-    state_id         VARCHAR(2),
-    zipcode          VARCHAR(12),
-    created_user     VARCHAR(20),
-    status_id        VARCHAR(38),
-    created_date     VARCHAR(20) default (datetime('now', 'localtime')),
-    location_url     VARCHAR(99),
-    location_phone   VARCHAR(12),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY (state_id) REFERENCES refdata_usstates(state_id)
+    LEGALENTITY_GUID VARCHAR(38)  PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    LOCATION_NAME    VARCHAR(50),
+    ADDRESS          VARCHAR(75),
+    CITY             VARCHAR(60),
+    STATE_ID         VARCHAR(2),
+    ZIPCODE          VARCHAR(12),
+    CREATED_USER     VARCHAR(20),
+    STATUS_ID        VARCHAR(38),
+    CREATED_DATE     VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    LOCATION_URL     VARCHAR(99),
+    LOCATION_PHONE   VARCHAR(12),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY (STATE_ID) REFERENCES REFDATA_USSTATES(STATE_ID)
 );
 
-drop table if exists refdata_organizations;
-CREATE TABLE refdata_organizations
+DROP TABLE IF EXISTS REFDATA_ORGANIZATIONS;
+CREATE TABLE REFDATA_ORGANIZATIONS
 (
-    organization_guid          VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    organization_internal_code VARCHAR(10),
-    organization_internal_id   VARCHAR(10),
-    organization_name          VARCHAR(50),
-    address                   VARCHAR(75),
-    city                       VARCHAR(60),
-    state_id                   VARCHAR(2),
-    zipcode                    VARCHAR(12),
-    created_user               VARCHAR(20),
-    status_id                  VARCHAR(38),
-    created_date               VARCHAR(20) default (datetime('now', 'localtime')),
-    legalentity_guid           VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY (state_id) REFERENCES refdata_usstates(state_id),
-    FOREIGN KEY (legalentity_guid) REFERENCES refdata_legalentities(legalentity_guid)
+    ORGANIZATION_GUID          VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    ORGANIZATION_INTERNAL_CODE VARCHAR(10),
+    ORGANIZATION_INTERNAL_ID   VARCHAR(10),
+    ORGANIZATION_NAME          VARCHAR(50),
+    ADDRESS                   VARCHAR(75),
+    CITY                       VARCHAR(60),
+    STATE_ID                   VARCHAR(2),
+    ZIPCODE                    VARCHAR(12),
+    CREATED_USER               VARCHAR(20),
+    STATUS_ID                  VARCHAR(38),
+    CREATED_DATE               VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    LEGALENTITY_GUID           VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY (STATE_ID) REFERENCES REFDATA_USSTATES(STATE_ID),
+    FOREIGN KEY (LEGALENTITY_GUID) REFERENCES REFDATA_LEGALENTITIES(LEGALENTITY_GUID)
 );
 
-drop table if exists refdata_applications;
-CREATE TABLE refdata_applications
+DROP TABLE IF EXISTS REFDATA_APPLICATIONS;
+CREATE TABLE REFDATA_APPLICATIONS
 (
-    app_guid               VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    application_customcode VARCHAR(15),
-    application_desc       VARCHAR(50),
-    created_user           VARCHAR(20),
-    created_date           VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id              VARCHAR(38),
-    vendor_id              VARCHAR(38),
-    industry_oid           VARCHAR(49),
-    organization_guid      VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(vendor_id) REFERENCES refdata_vendors(vendor_id),
-    FOREIGN KEY(organization_guid) REFERENCES refdata_organizations(organization_guid)
+    APP_GUID               VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    APPLICATION_CUSTOMCODE VARCHAR(15),
+    APPLICATION_DESC       VARCHAR(50),
+    CREATED_USER           VARCHAR(20),
+    CREATED_DATE           VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID              VARCHAR(38),
+    VENDOR_ID              VARCHAR(38),
+    INDUSTRY_OID           VARCHAR(49),
+    ORGANIZATION_GUID      VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(VENDOR_ID) REFERENCES REFDATA_VENDORS(VENDOR_ID),
+    FOREIGN KEY(ORGANIZATION_GUID) REFERENCES REFDATA_ORGANIZATIONS(ORGANIZATION_GUID)
 );
 
-drop table if exists refdata_sensitivityflags;
-CREATE TABLE refdata_sensitivityflags
+DROP TABLE IF EXISTS REFDATA_SENSITIVITYFLAGS;
+CREATE TABLE REFDATA_SENSITIVITYFLAGS
 (
-    sensitivityflag_id   VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    sensitivityflag_desc VARCHAR(30),
-    created_date       VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id           VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    SENSITIVITYFLAG_ID   VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    SENSITIVITYFLAG_DESC VARCHAR(30),
+    CREATED_DATE       VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID           VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
-drop table if exists refdata_codesets;
-CREATE TABLE refdata_codesets
+DROP TABLE IF EXISTS REFDATA_CODESETS;
+CREATE TABLE REFDATA_CODESETS
 (
-    codesets_id        VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    codeset_name       VARCHAR(50),
-    industry_std       VARCHAR(6),
-    status_id          VARCHAR(38),
-    created_date       VARCHAR(20) default (datetime('now', 'localtime')),
-    created_user       VARCHAR(20),
-    field_mapping      VARCHAR(40),
-    sensitivityflag_id VARCHAR(38),
-    externaltable_id   VARCHAR(20),
-    external_notes     VARCHAR(149),
-    external_link      VARCHAR(99),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY (sensitivityflag_id) REFERENCES refdata_sensitivityflags(sensitivityflag_id)
+    CODESETS_ID        VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    CODESET_NAME       VARCHAR(50),
+    INDUSTRY_STD       VARCHAR(6),
+    STATUS_ID          VARCHAR(38),
+    CREATED_DATE       VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    CREATED_USER       VARCHAR(20),
+    FIELD_MAPPING      VARCHAR(40),
+    SENSITIVITYFLAG_ID VARCHAR(38),
+    EXTERNALTABLE_ID   VARCHAR(20),
+    EXTERNAL_NOTES     VARCHAR(149),
+    EXTERNAL_LINK      VARCHAR(99),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY (SENSITIVITYFLAG_ID) REFERENCES REFDATA_SENSITIVITYFLAGS(SENSITIVITYFLAG_ID)
 );
 
-DROP TABLE if exists refdata_dataattributes;
-CREATE TABLE refdata_dataattributes
+DROP TABLE IF EXISTS REFDATA_DATAATTRIBUTES;
+CREATE TABLE REFDATA_DATAATTRIBUTES
 (
-    dataattribute_id  TEXT primary key default (lower(hex(randomblob(16)))),
-    dataattribute_name         VARCHAR(50),
-    sensitivityflag_id          VARCHAR(38),
-    created_date                VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id                   VARCHAR(38),
-    created_user                VARCHAR(20),
-    registeredapp_guid          VARCHAR(38),
-    attribute_type              VARCHAR(10),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY (sensitivityflag_id) REFERENCES refdata_sensitivityflags(sensitivityflag_id)
+    DATAATTRIBUTE_ID  TEXT PRIMARY KEY DEFAULT (LOWER(HEX(RANDOMBLOB(16)))),
+    DATAATTRIBUTE_NAME         VARCHAR(50),
+    SENSITIVITYFLAG_ID          VARCHAR(38),
+    CREATED_DATE                VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID                   VARCHAR(38),
+    CREATED_USER                VARCHAR(20),
+    REGISTEREDAPP_GUID          VARCHAR(38),
+    ATTRIBUTE_TYPE              VARCHAR(10),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY (SENSITIVITYFLAG_ID) REFERENCES REFDATA_SENSITIVITYFLAGS(SENSITIVITYFLAG_ID)
 );
 
-drop table if exists refdata_datastructures;
-create table refdata_datastructures
+DROP TABLE IF EXISTS REFDATA_DATASTRUCTURES;
+CREATE TABLE REFDATA_DATASTRUCTURES
 (
-    datastructure_id   VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    datastructure_name           VARCHAR(50),
-    sensitivityflag_id           VARCHAR(38),
-    created_date                 VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id                    VARCHAR(38),
-    created_user                 VARCHAR(20),
-    registeredapp_guid           VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY (sensitivityflag_id) REFERENCES refdata_sensitivityflags(sensitivityflag_id),
-    FOREIGN KEY (registeredapp_guid) REFERENCES refdata_applications(app_guid)
+    DATASTRUCTURE_ID   VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    DATASTRUCTURE_NAME           VARCHAR(50),
+    SENSITIVITYFLAG_ID           VARCHAR(38),
+    CREATED_DATE                 VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID                    VARCHAR(38),
+    CREATED_USER                 VARCHAR(20),
+    REGISTEREDAPP_GUID           VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY (SENSITIVITYFLAG_ID) REFERENCES REFDATA_SENSITIVITYFLAGS(SENSITIVITYFLAG_ID),
+    FOREIGN KEY (REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID)
 );
 
-drop table if exists refdata_devicetypes;
-CREATE TABLE refdata_devicetypes
+DROP TABLE IF EXISTS REFDATA_DEVICETYPES;
+CREATE TABLE REFDATA_DEVICETYPES
 (
-    devicetype_id VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    devicetype    VARCHAR(30),
-    created_date  VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id     VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    DEVICETYPE_ID VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    DEVICETYPE    VARCHAR(30),
+    CREATED_DATE  VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID     VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
-drop table if exists refdata_industrystds;
-CREATE TABLE refdata_industrystds
+DROP TABLE IF EXISTS REFDATA_INDUSTRYSTDS;
+CREATE TABLE REFDATA_INDUSTRYSTDS
 (
-    industry_std     VARCHAR(6) primary key,
-    industrystd_desc VARCHAR(30),
-    created_date     VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id        VARCHAR(38)
+    INDUSTRY_STD     VARCHAR(6) PRIMARY KEY,
+    INDUSTRYSTD_DESC VARCHAR(30),
+    CREATED_DATE     VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID        VARCHAR(38)
 );
 
-drop table if exists refdata_industrystd_eventtypes;
-CREATE TABLE refdata_industrystd_eventtypes
+DROP TABLE IF EXISTS REFDATA_INDUSTRYSTD_EVENTTYPES;
+CREATE TABLE REFDATA_INDUSTRYSTD_EVENTTYPES
 (
-    eventtype_id   VARCHAR(10) NOT NULL,
-    eventtype_desc VARCHAR(30),
-    industry_std   VARCHAR(6),
-    created_date   VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id      VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(industry_std) REFERENCES refdata_industrystds(industry_std)
+    EVENTTYPE_ID   VARCHAR(10) NOT NULL,
+    EVENTTYPE_DESC VARCHAR(30),
+    INDUSTRY_STD   VARCHAR(6),
+    CREATED_DATE   VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID      VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(INDUSTRY_STD) REFERENCES REFDATA_INDUSTRYSTDS(INDUSTRY_STD)
 );
 
-drop table if exists refdata_industries;
-CREATE TABLE refdata_industries
+DROP TABLE IF EXISTS REFDATA_INDUSTRIES;
+CREATE TABLE REFDATA_INDUSTRIES
 (
-    industry_id   VARCHAR(38) primary key default  (lower(hex(randomblob(16)))) ,
-    industry_name VARCHAR(45),
-    created_date  VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id     VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    INDUSTRY_ID   VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))) ,
+    INDUSTRY_NAME VARCHAR(45),
+    CREATED_DATE  VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID     VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
-drop table if exists refdata_industries_business;
-CREATE TABLE refdata_industries_business
+DROP TABLE IF EXISTS REFDATA_INDUSTRIES_BUSINESS;
+CREATE TABLE REFDATA_INDUSTRIES_BUSINESS
 (
-    industrytobusiness_id VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    industry_id           VARCHAR(38),
-    business_area         VARCHAR(50),
-    created_date          VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id             VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(industry_id) REFERENCES refdata_industries(industry_id)
+    INDUSTRYTOBUSINESS_ID VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    INDUSTRY_ID           VARCHAR(38),
+    BUSINESS_AREA         VARCHAR(50),
+    CREATED_DATE          VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID             VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(INDUSTRY_ID) REFERENCES REFDATA_INDUSTRIES(INDUSTRY_ID)
 );
 
-drop table if exists refdata_operationtypes;
-CREATE TABLE refdata_operationtypes
+DROP TABLE IF EXISTS REFDATA_OPERATIONTYPES;
+CREATE TABLE REFDATA_OPERATIONTYPES
 (
-    operationtype_id   VARCHAR(7) primary key,
-    operationtype_name VARCHAR(60),
-    created_date       VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id          VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    OPERATIONTYPE_ID   VARCHAR(7) PRIMARY KEY,
+    OPERATIONTYPE_NAME VARCHAR(60),
+    CREATED_DATE       VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID          VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
-drop table if exists refdata_professiontypes;
-CREATE TABLE refdata_professiontypes
+DROP TABLE IF EXISTS REFDATA_PROFESSIONTYPES;
+CREATE TABLE REFDATA_PROFESSIONTYPES
 (
-    professiontype_id   VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    professiontype_name VARCHAR(65),
-    created_user       VARCHAR(20),
-    created_date        VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id           VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    PROFESSIONTYPE_ID   VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    PROFESSIONTYPE_NAME VARCHAR(65),
+    CREATED_USER       VARCHAR(20),
+    CREATED_DATE        VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID           VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
-drop table if exists refdata_rulesets;
-CREATE TABLE refdata_rulesets
+DROP TABLE IF EXISTS REFDATA_RULESETS;
+CREATE TABLE REFDATA_RULESETS
 (
-    rule_id         VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    rule_name       VARCHAR(65),
-    created_user    VARCHAR(20),
-    created_date    VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id       VARCHAR(38),
-    expiration_date VARCHAR(20),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    RULE_ID         VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    RULE_NAME       VARCHAR(65),
+    CREATED_USER    VARCHAR(20),
+    CREATED_DATE    VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID       VARCHAR(38),
+    EXPIRATION_DATE VARCHAR(20),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
-drop table if exists refdata_terminologystds;
-CREATE TABLE refdata_terminologystds
+DROP TABLE IF EXISTS REFDATA_TERMINOLOGYSTDS;
+CREATE TABLE REFDATA_TERMINOLOGYSTDS
 (
-    terminology_std        VARCHAR(25) primary key,
-    terminologystd_version VARCHAR(10) NOT NULL,
-    terminologystd_desc    VARCHAR(129),
-    created_date           VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id              VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    TERMINOLOGY_STD        VARCHAR(25) PRIMARY KEY,
+    TERMINOLOGYSTD_VERSION VARCHAR(10) NOT NULL,
+    TERMINOLOGYSTD_DESC    VARCHAR(129),
+    CREATED_DATE           VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID              VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
-drop table if exists refdata_timezones;
-CREATE TABLE refdata_timezones
+DROP TABLE IF EXISTS REFDATA_TIMEZONES;
+CREATE TABLE REFDATA_TIMEZONES
 (
-    timezone_value VARCHAR(3) primary key,
-    timezone_desc  VARCHAR(25),
-    created_date   VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id      VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    TIMEZONE_VALUE VARCHAR(3) PRIMARY KEY,
+    TIMEZONE_DESC  VARCHAR(25),
+    CREATED_DATE   VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID      VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
--- DataModel
-DROP TABLE if exists datamodel_apis;
-CREATE TABLE datamodel_apis
+-- DATAMODEL
+DROP TABLE IF EXISTS DATAMODEL_APIS;
+CREATE TABLE DATAMODEL_APIS
 (
-    api_id             VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    technology         TEXT,
-    dataattribute_id   TEXT,
-    baseurllocation    TEXT,
-    apiname            TEXT,
-    created_date       TEXT default (datetime('now', 'localtime')),
-    status_id          VARCHAR(38),
-    purpose            TEXT,
-    datmodel_tablename TEXT,
-    apiparams          TEXT,
-    apiexample         TEXT,
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    API_ID             VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    TECHNOLOGY         TEXT,
+    DATAATTRIBUTE_ID   TEXT,
+    BASEURLLOCATION    TEXT,
+    APINAME            TEXT,
+    CREATED_DATE       TEXT DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID          VARCHAR(38),
+    PURPOSE            TEXT,
+    DATMODEL_TABLENAME TEXT,
+    APIPARAMS          TEXT,
+    APIEXAMPLE         TEXT,
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
-DROP TABLE if exists datamodel_datatables;
-CREATE TABLE datamodel_datatables
+DROP TABLE IF EXISTS DATAMODEL_DATATABLES;
+CREATE TABLE DATAMODEL_DATATABLES
 (
-    tablename        TEXT NOT NULL,
-    tableinformation TEXT,
-    status_id        VARCHAR(38),
-    created_date     TEXT default (datetime('now', 'localtime')),
-    datadomain       TEXT,
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    TABLENAME        TEXT NOT NULL,
+    TABLEINFORMATION TEXT,
+    STATUS_ID        VARCHAR(38),
+    CREATED_DATE     TEXT DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    DATADOMAIN       TEXT,
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
-DROP TABLE if exists datamodel_domains;
-CREATE TABLE datamodel_domains
+DROP TABLE IF EXISTS DATAMODEL_DOMAINS;
+CREATE TABLE DATAMODEL_DOMAINS
 (
-    domainname        TEXT NOT NULL,
-    domaininformation TEXT,
-    status_id         VARCHAR(38),
-    created_date      TEXT default (datetime('now', 'localtime')),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id)
+    DOMAINNAME        TEXT NOT NULL,
+    DOMAININFORMATION TEXT,
+    STATUS_ID         VARCHAR(38),
+    CREATED_DATE      TEXT DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID)
 );
 
--- Data Tier
-drop table if exists datatier_crawlers;
-CREATE TABLE datatier_crawlers
+-- DATA TIER
+DROP TABLE IF EXISTS DATATIER_CRAWLERS;
+CREATE TABLE DATATIER_CRAWLERS
 (
-    datacrawler_id      INTEGER PRIMARY KEY AUTOINCREMENT,
-    token               TEXT,
-    crawledtext_details text,
-    created_date        TEXT    default (datetime('now', 'localtime')),
-    status_id           VARCHAR(38),
-    registeredapp_guid  VARCHAR(38),
-    organization_guid   VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(registeredapp_guid) REFERENCES refdata_applications(app_guid),
-    FOREIGN KEY(organization_guid) REFERENCES refdata_organizations(organization_guid)
+    DATACRAWLER_ID      INTEGER PRIMARY KEY AUTOINCREMENT,
+    TOKEN               TEXT,
+    CRAWLEDTEXT_DETAILS TEXT,
+    CREATED_DATE        TEXT    DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID           VARCHAR(38),
+    REGISTEREDAPP_GUID  VARCHAR(38),
+    ORGANIZATION_GUID   VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID),
+    FOREIGN KEY(ORGANIZATION_GUID) REFERENCES REFDATA_ORGANIZATIONS(ORGANIZATION_GUID)
 );
 
-DROP TABLE if exists datatier_sdp_datastructures;
-CREATE TABLE datatier_sdp_datastructures
+DROP TABLE IF EXISTS DATATIER_SDP_DATASTRUCTURES;
+CREATE TABLE DATATIER_SDP_DATASTRUCTURES
 (
-    datastructure_core_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    datastructure_name    TEXT,
-    datastructure_details text,
-    created_date          TEXT default (datetime('now', 'localtime')),
-    status_id             VARCHAR(38),
-    registeredapp_guid    VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(registeredapp_guid) REFERENCES refdata_applications(app_guid)
+    DATASTRUCTURE_CORE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    DATASTRUCTURE_NAME    TEXT,
+    DATASTRUCTURE_DETAILS TEXT,
+    CREATED_DATE          TEXT DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID             VARCHAR(38),
+    REGISTEREDAPP_GUID    VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID)
 );
 
-drop table if exists datatier_sdp_dataattributes;
-create table datatier_sdp_dataattributes
+DROP TABLE IF EXISTS DATATIER_SDP_DATAATTRIBUTES;
+CREATE TABLE DATATIER_SDP_DATAATTRIBUTES
 (
-    datatier_id        INTEGER PRIMARY KEY AUTOINCREMENT,
-    basevalue          VARCHAR(149),
-    supportingvalue1   VARCHAR(149),
-    supportingvalue2   VARCHAR(149),
-    supportingvalue3   VARCHAR(149),
-    supportingvalue4   VARCHAR(149),
-    supportingvalue5   VARCHAR(149),
-    supportingvalue6   VARCHAR(149),
-    supportingvalue7   VARCHAR(149),
-    created_date       VARCHAR(149),
-    status_id          VARCHAR(38),
-    dataattribute_id   VARCHAR(38),
-    created_user       VARCHAR(20),
-    registeredapp_guid VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(dataattribute_id) REFERENCES refdata_dataattributes(dataattribute_id),
-    FOREIGN KEY(registeredapp_guid) REFERENCES refdata_applications(app_guid)
+    DATATIER_ID        INTEGER PRIMARY KEY AUTOINCREMENT,
+    BASEVALUE          VARCHAR(149),
+    SUPPORTINGVALUE1   VARCHAR(149),
+    SUPPORTINGVALUE2   VARCHAR(149),
+    SUPPORTINGVALUE3   VARCHAR(149),
+    SUPPORTINGVALUE4   VARCHAR(149),
+    SUPPORTINGVALUE5   VARCHAR(149),
+    SUPPORTINGVALUE6   VARCHAR(149),
+    SUPPORTINGVALUE7   VARCHAR(149),
+    CREATED_DATE       VARCHAR(149),
+    STATUS_ID          VARCHAR(38),
+    DATAATTRIBUTE_ID   VARCHAR(38),
+    CREATED_USER       VARCHAR(20),
+    REGISTEREDAPP_GUID VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(DATAATTRIBUTE_ID) REFERENCES REFDATA_DATAATTRIBUTES(DATAATTRIBUTE_ID),
+    FOREIGN KEY(REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID)
 );
 
-drop table if exists platform_datasources;
-create table platform_datasources
+DROP TABLE IF EXISTS PLATFORM_DATASOURCES;
+CREATE TABLE PLATFORM_DATASOURCES
 (
-    platform_datasources_id VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    datasource_name         VARCHAR(79),
-    datasource_type         VARCHAR(30),
-    created_date            VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id               VARCHAR(38),
-    created_user            VARCHAR(38),
-    organization_guid       VARCHAR(38),
-    registeredapp_guid      VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(registeredapp_guid) REFERENCES refdata_applications(app_guid),
-    FOREIGN KEY(organization_guid) REFERENCES refdata_organizations(organization_guid)
+    PLATFORM_DATASOURCES_ID VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    DATASOURCE_NAME         VARCHAR(79),
+    DATASOURCE_TYPE         VARCHAR(30),
+    CREATED_DATE            VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID               VARCHAR(38),
+    CREATED_USER            VARCHAR(38),
+    ORGANIZATION_GUID       VARCHAR(38),
+    REGISTEREDAPP_GUID      VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID),
+    FOREIGN KEY(ORGANIZATION_GUID) REFERENCES REFDATA_ORGANIZATIONS(ORGANIZATION_GUID)
 );
 
-drop table if exists datatier_tokens;
-CREATE TABLE datatier_tokens
+DROP TABLE IF EXISTS DATATIER_TOKENS;
+CREATE TABLE DATATIER_TOKENS
 (
-    datatoken_id       INTEGER PRIMARY KEY AUTOINCREMENT,
-    token              varchar(128),
-    created_date       TEXT default (datetime('now', 'localtime')),
-    status_id          VARCHAR(38),
-    registeredapp_guid VARCHAR(38),
-    organization_guid  VARCHAR(38),
-    intfc_type         TEXT      DEFAULT 'API',
-    datasource_id      VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(registeredapp_guid) REFERENCES refdata_applications(app_guid),
-    FOREIGN KEY(organization_guid) REFERENCES refdata_organizations(organization_guid),
-    FOREIGN KEY(datasource_id) REFERENCES platform_datasources(platform_datasources_id)
+    DATATOKEN_ID       INTEGER PRIMARY KEY AUTOINCREMENT,
+    TOKEN              VARCHAR(128),
+    CREATED_DATE       TEXT DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID          VARCHAR(38),
+    REGISTEREDAPP_GUID VARCHAR(38),
+    ORGANIZATION_GUID  VARCHAR(38),
+    INTFC_TYPE         TEXT      DEFAULT 'API',
+    DATASOURCE_ID      VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID),
+    FOREIGN KEY(ORGANIZATION_GUID) REFERENCES REFDATA_ORGANIZATIONS(ORGANIZATION_GUID),
+    FOREIGN KEY(DATASOURCE_ID) REFERENCES PLATFORM_DATASOURCES(PLATFORM_DATASOURCES_ID)
 );
 
--- Platform
-DROP TABLE if exists platform_codesets;
-CREATE TABLE platform_codesets
+-- PLATFORM
+DROP TABLE IF EXISTS PLATFORM_CODESETS;
+CREATE TABLE PLATFORM_CODESETS
 (
-    platform_codeset_id  VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    application_guid    VARCHAR(38),
-    organization_guid   VARCHAR(38),
-    codesets_id VARCHAR(38),
-    created_date       VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id           VARCHAR(38),
-    created_user        VARCHAR(20),
-    originalcode_value  VARCHAR(40),
-    originalcode_desc   VARCHAR(149),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(application_guid) REFERENCES refdata_applications(app_guid),
-    FOREIGN KEY(organization_guid) REFERENCES refdata_organizations(organization_guid),
+    PLATFORM_CODESET_ID  VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    APPLICATION_GUID    VARCHAR(38),
+    ORGANIZATION_GUID   VARCHAR(38),
+    CODESETS_ID VARCHAR(38),
+    CREATED_DATE       VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID           VARCHAR(38),
+    CREATED_USER        VARCHAR(20),
+    ORIGINALCODE_VALUE  VARCHAR(40),
+    ORIGINALCODE_DESC   VARCHAR(149),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(APPLICATION_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID),
+    FOREIGN KEY(ORGANIZATION_GUID) REFERENCES REFDATA_ORGANIZATIONS(ORGANIZATION_GUID)
 );
 
-drop table if exists platform_codesets_industrystds;
-CREATE TABLE platform_codesets_industrystds
+DROP TABLE IF EXISTS PLATFORM_CODESETS_INDUSTRYSTDS;
+CREATE TABLE PLATFORM_CODESETS_INDUSTRYSTDS
 (
-    term_codeset_id VARCHAR(38) primary key default (lower(hex(randomblob(16)))),
-    created_date    VARCHAR(20)             default (datetime('now', 'localtime')),
-    status_id       VARCHAR(38),
-    cui             varchar(8) null,
-    lat             varchar(3) null,
-    ts              varchar(1) null,
-    lui             varchar(10) null,
-    stt             varchar(3) null,
-    sui             varchar(10) null,
-    ispref          varchar(1) null,
-    aui             varchar(9) null,
-    saui            varchar(50) null,
-    scui            varchar(50) null,
-    sdui            varchar(50) null,
-    sab             varchar(25) null,
-    tty             varchar(20) null,
-    code            varchar(50) null,
-    str             TEXT null,
-    srl             int null,
-    suppress        varchar(1) null,
-    cvf             int null,
-    FOREIGN KEY (status_id) REFERENCES refdata_status (status_id),
-    FOREIGN KEY (sab) REFERENCES refdata_industrystds (terminology_std)
+    TERMCODESET_ID VARCHAR(38) PRIMARY KEY DEFAULT (LOWER(HEX(RANDOMBLOB(16)))),
+    CREATED_DATE    VARCHAR(20)             DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID       VARCHAR(38),
+    CUI             VARCHAR(8) NULL,
+    LAT             VARCHAR(3) NULL,
+    TS              VARCHAR(1) NULL,
+    LUI             VARCHAR(10) NULL,
+    STT             VARCHAR(3) NULL,
+    SUI             VARCHAR(10) NULL,
+    ISPREF          VARCHAR(1) NULL,
+    AUI             VARCHAR(9) NULL,
+    SAUI            VARCHAR(50) NULL,
+    SCUI            VARCHAR(50) NULL,
+    SDUI            VARCHAR(50) NULL,
+    SAB             VARCHAR(25) NULL,
+    TTY             VARCHAR(20) NULL,
+    CODE            VARCHAR(50) NULL,
+    STR             TEXT NULL,
+    SRL             INT NULL,
+    SUPPRESS        VARCHAR(1) NULL,
+    CVF             INT NULL,
+    FOREIGN KEY (STATUS_ID) REFERENCES REFDATA_STATUS (STATUS_ID),
+    FOREIGN KEY (SAB) REFERENCES REFDATA_INDUSTRYSTDS (INDUSTRY_STD)
 );
 
-DROP TABLE if exists platform_codesets_xmaps;
-CREATE TABLE platform_codesets_xmaps
+DROP TABLE IF EXISTS PLATFORM_CODESETS_XMAPS;
+CREATE TABLE PLATFORM_CODESETS_XMAPS
 (
-    codesetcrossmap_id  VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    registeredapp_guid     VARCHAR(38),
-    organization_guid    VARCHAR(38),
-    terminologystd_from      VARCHAR(25),
-    terminologystd_to    VARCHAR(25),
-    created_date         VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id           VARCHAR(38),
-    created_user         VARCHAR(20),
-    transformcode_value  VARCHAR(40),
-    transformcode_desc   VARCHAR(129),
-    originalcode_value   VARCHAR(40),
-    originalcode_desc    VARCHAR(129),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(registeredapp_guid) REFERENCES refdata_applications(app_guid),
-    FOREIGN KEY(organization_guid) REFERENCES refdata_organizations(organization_guid),
-    FOREIGN KEY (terminologystd_from) REFERENCES refdata_terminologystds(terminology_std),
-    FOREIGN KEY (terminologystd_to) REFERENCES refdata_terminologystds(terminology_std)
+    CODESETCROSSMAP_ID  VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    REGISTEREDAPP_GUID     VARCHAR(38),
+    ORGANIZATION_GUID    VARCHAR(38),
+    TERMINOLOGYSTD_FROM      VARCHAR(25),
+    TERMINOLOGYSTD_TO    VARCHAR(25),
+    CREATED_DATE         VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID           VARCHAR(38),
+    CREATED_USER         VARCHAR(20),
+    TRANSFORMCODE_VALUE  VARCHAR(40),
+    TRANSFORMCODE_DESC   VARCHAR(129),
+    ORIGINALCODE_VALUE   VARCHAR(40),
+    ORIGINALCODE_DESC    VARCHAR(129),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID),
+    FOREIGN KEY(ORGANIZATION_GUID) REFERENCES REFDATA_ORGANIZATIONS(ORGANIZATION_GUID),
+    FOREIGN KEY (TERMINOLOGYSTD_FROM) REFERENCES REFDATA_TERMINOLOGYSTDS(TERMINOLOGY_STD),
+    FOREIGN KEY (TERMINOLOGYSTD_TO) REFERENCES REFDATA_TERMINOLOGYSTDS(TERMINOLOGY_STD)
 );
 
-DROP TABLE if exists platform_datageneration_dataattributes;
-CREATE TABLE platform_datageneration_dataattributes
+DROP TABLE IF EXISTS PLATFORM_DATAGENERATION_DATAATTRIBUTES;
+CREATE TABLE PLATFORM_DATAGENERATION_DATAATTRIBUTES
 (
-    datagentype_id          VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    datagentype_description VARCHAR(65),
-    definition              VARCHAR(255),
-    dataattribute_id        VARCHAR(38),
-    created_date            VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id               VARCHAR(38),
-    created_user            VARCHAR(20),
-    quantity                integer,
-    maxrecords_in_source      integer,
-    registeredapp_guid      VARCHAR(38),
-    organization_guid       VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(registeredapp_guid) REFERENCES refdata_applications(app_guid),
-    FOREIGN KEY(organization_guid) REFERENCES refdata_organizations(organization_guid),
-    FOREIGN KEY(dataattribute_id) REFERENCES refdata_dataattributes(dataattribute_id)
+    DATAGENTYPE_ID          VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    DATAGENTYPE_DESCRIPTION VARCHAR(65),
+    DEFINITION              VARCHAR(255),
+    DATAATTRIBUTE_ID        VARCHAR(38),
+    CREATED_DATE            VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID               VARCHAR(38),
+    CREATED_USER            VARCHAR(20),
+    QUANTITY                INTEGER,
+    MAXRECORDS_IN_SOURCE      INTEGER,
+    REGISTEREDAPP_GUID      VARCHAR(38),
+    ORGANIZATION_GUID       VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID),
+    FOREIGN KEY(ORGANIZATION_GUID) REFERENCES REFDATA_ORGANIZATIONS(ORGANIZATION_GUID),
+    FOREIGN KEY(DATAATTRIBUTE_ID) REFERENCES REFDATA_DATAATTRIBUTES(DATAATTRIBUTE_ID)
 );
 
-DROP TABLE if exists platform_databuilding_dataattributes;
-CREATE TABLE platform_databuilding_dataattributes
+DROP TABLE IF EXISTS PLATFORM_DATABUILDING_DATAATTRIBUTES;
+CREATE TABLE PLATFORM_DATABUILDING_DATAATTRIBUTES
 (
-    databuild_dataattribute_id VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    databuild_description VARCHAR(65),
-    definition              VARCHAR(255),
-    dataattribute_id        VARCHAR(38),
-    created_date            VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id               VARCHAR(38),
-    created_user            VARCHAR(20),
-    quantity                integer,
-    maxrecords_in_source      integer,
-    registeredapp_guid      VARCHAR(38),
-    organization_guid       VARCHAR(38),
-    param1 VARCHAR(30),
-    param1_operator VARCHAR(7),
-    param1_value VARCHAR(65),
-    param2 VARCHAR(30),
-    param2_operator VARCHAR(7),
-    param2_value VARCHAR(65),
-    param3 VARCHAR(30),
-    param3_operator VARCHAR(7),
-    param3_value VARCHAR(65),
-    param4 VARCHAR(30),
-    param4_operator VARCHAR(7),
-    param4_value VARCHAR(30),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(registeredapp_guid) REFERENCES refdata_applications(app_guid),
-    FOREIGN KEY(organization_guid) REFERENCES refdata_organizations(organization_guid)
+    DATABUILD_DATAATTRIBUTE_ID VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    DATABUILD_DESCRIPTION VARCHAR(65),
+    DEFINITION              VARCHAR(255),
+    DATAATTRIBUTE_ID        VARCHAR(38),
+    CREATED_DATE            VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID               VARCHAR(38),
+    CREATED_USER            VARCHAR(20),
+    QUANTITY                INTEGER,
+    MAXRECORDS_IN_SOURCE      INTEGER,
+    REGISTEREDAPP_GUID      VARCHAR(38),
+    ORGANIZATION_GUID       VARCHAR(38),
+    PARAM1 VARCHAR(30),
+    PARAM1_OPERATOR VARCHAR(7),
+    PARAM1_VALUE VARCHAR(65),
+    PARAM2 VARCHAR(30),
+    PARAM2_OPERATOR VARCHAR(7),
+    PARAM2_VALUE VARCHAR(65),
+    PARAM3 VARCHAR(30),
+    PARAM3_OPERATOR VARCHAR(7),
+    PARAM3_VALUE VARCHAR(65),
+    PARAM4 VARCHAR(30),
+    PARAM4_OPERATOR VARCHAR(7),
+    PARAM4_VALUE VARCHAR(30),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID),
+    FOREIGN KEY(ORGANIZATION_GUID) REFERENCES REFDATA_ORGANIZATIONS(ORGANIZATION_GUID)
 );
 
-DROP TABLE if exists platform_databuilding_datastructures;
-CREATE TABLE platform_databuilding_datastructures
+DROP TABLE IF EXISTS PLATFORM_DATABUILDING_DATASTRUCTURES;
+CREATE TABLE PLATFORM_DATABUILDING_DATASTRUCTURES
 (
-    databuild_datastructures_id  VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    databuild_description VARCHAR(65),
-    definition              VARCHAR(255),
-    datastructure_id        VARCHAR(38),
-    created_date            VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id               VARCHAR(38),
-    created_user            VARCHAR(38),
-    quantity                integer,
-    maxrecords_in_source      integer,
-    registeredapp_guid      VARCHAR(38),
-    organization_guid       VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(datastructure_id) REFERENCES refdata_datastructures(datastructure_id),
-    FOREIGN KEY(registeredapp_guid) REFERENCES refdata_applications(app_guid),
-    FOREIGN KEY(organization_guid) REFERENCES refdata_organizations(organization_guid)
+    DATABUILD_DATASTRUCTURES_ID  VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    DATABUILD_DESCRIPTION VARCHAR(65),
+    DEFINITION              VARCHAR(255),
+    DATASTRUCTURE_ID        VARCHAR(38),
+    CREATED_DATE            VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID               VARCHAR(38),
+    CREATED_USER            VARCHAR(38),
+    QUANTITY                INTEGER,
+    MAXRECORDS_IN_SOURCE      INTEGER,
+    REGISTEREDAPP_GUID      VARCHAR(38),
+    ORGANIZATION_GUID       VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(DATASTRUCTURE_ID) REFERENCES REFDATA_DATASTRUCTURES(DATASTRUCTURE_ID),
+    FOREIGN KEY(REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID),
+    FOREIGN KEY(ORGANIZATION_GUID) REFERENCES REFDATA_ORGANIZATIONS(ORGANIZATION_GUID)
 );
 
-drop table if exists platform_datastructures_dtl;
-CREATE TABLE platform_datastructures_dtl
+DROP TABLE IF EXISTS PLATFORM_DATASTRUCTURES_DTL;
+CREATE TABLE PLATFORM_DATASTRUCTURES_DTL
 (
-    platform_datastructuresdtl_id    VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    datastructure_id                     VARCHAR(38),
-    composite_datastructure_name                   VARCHAR(50),
-    sensitivityflag_id                             VARCHAR(38),
-    created_date                                   VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id                                      VARCHAR(38),
-    created_user                                   VARCHAR(20),
-    registeredapp_guid                             VARCHAR(38),
-    organizationapp_guid                             VARCHAR(38),
-    dataattribute_id                     VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(datastructure_id) REFERENCES refdata_datastructures(datastructure_id),
-    FOREIGN KEY(sensitivityflag_id) REFERENCES refdata_sensitivityflags(sensitivityflag_id),
-    FOREIGN KEY(registeredapp_guid) REFERENCES refdata_applications(app_guid),
-    FOREIGN KEY(organization_guid) REFERENCES refdata_organizations(organization_guid)
+    PLATFORM_DATASTRUCTURESDTL_ID    VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    DATASTRUCTURE_ID                     VARCHAR(38),
+    COMPOSITE_DATASTRUCTURE_NAME                   VARCHAR(50),
+    SENSITIVITYFLAG_ID                             VARCHAR(38),
+    CREATED_DATE                                   VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID                                      VARCHAR(38),
+    CREATED_USER                                   VARCHAR(20),
+    REGISTEREDAPP_GUID                             VARCHAR(38),
+    ORGANIZATION_GUID                             VARCHAR(38),
+    DATAATTRIBUTE_ID                     VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(DATASTRUCTURE_ID) REFERENCES REFDATA_DATASTRUCTURES(DATASTRUCTURE_ID),
+    FOREIGN KEY(SENSITIVITYFLAG_ID) REFERENCES REFDATA_SENSITIVITYFLAGS(SENSITIVITYFLAG_ID),
+    FOREIGN KEY(REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID),
+    FOREIGN KEY(ORGANIZATION_GUID) REFERENCES REFDATA_ORGANIZATIONS(ORGANIZATION_GUID)
 );
 
-drop table if exists platform_rulesets_definitions;
-CREATE TABLE platform_rulesets_definitions
+DROP TABLE IF EXISTS PLATFORM_RULESETS_DEFINITIONS;
+CREATE TABLE PLATFORM_RULESETS_DEFINITIONS
 (
-    ruleset_definitions_id   VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    ruleset_definitions_name VARCHAR(65),
-    ruleset_id              VARCHAR(38),
-    steporder_id            integer,
-    operationtype_id        VARCHAR(7),
-    ruleset_defvalue        VARCHAR(20),
-    status_id               VARCHAR(38),
-    created_date           VARCHAR(20) default (datetime('now', 'localtime')),
-    effective_date          VARCHAR(20),
-    registeredapp_guid        VARCHAR(38),
-    term_date               VARCHAR(20),
-    dataattribute_id        VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(dataattribute_id) REFERENCES refdata_dataattributes(dataattribute_id),
-    FOREIGN KEY(operationtype_id) REFERENCES refdata_operationtypes(operationtype_id),
-    FOREIGN KEY(registeredapp_guid) REFERENCES refdata_applications(app_guid),
-    FOREIGN KEY(ruleset_id) REFERENCES refdata_rulesets(rule_id)
+    RULESET_DEFINITIONS_ID   VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    RULESET_DEFINITIONS_NAME VARCHAR(65),
+    RULESET_ID              VARCHAR(38),
+    STEPORDER_ID            INTEGER,
+    OPERATIONTYPE_ID        VARCHAR(7),
+    RULESET_DEFVALUE        VARCHAR(20),
+    STATUS_ID               VARCHAR(38),
+    CREATED_DATE           VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    EFFECTIVE_DATE          VARCHAR(20),
+    REGISTEREDAPP_GUID        VARCHAR(38),
+    TERM_DATE               VARCHAR(20),
+    DATAATTRIBUTE_ID        VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(DATAATTRIBUTE_ID) REFERENCES REFDATA_DATAATTRIBUTES(DATAATTRIBUTE_ID),
+    FOREIGN KEY(OPERATIONTYPE_ID) REFERENCES REFDATA_OPERATIONTYPES(OPERATIONTYPE_ID),
+    FOREIGN KEY(REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID),
+    FOREIGN KEY(RULESET_ID) REFERENCES REFDATA_RULESETS(RULE_ID)
 );
 
-drop table if exists platform_tokens_xmaps;
-CREATE TABLE platform_tokens_xmaps
+DROP TABLE IF EXISTS PLATFORM_TOKENS_XMAPS;
+CREATE TABLE PLATFORM_TOKENS_XMAPS
 (
-    platform_tokens_xmap_id VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    datastructure_id            VARCHAR(38),
-    xmap_details                          VARCHAR(75),
-    dataattribute_id                      VARCHAR(38),
-    fieldorder_id                         integer   DEFAULT 1,
-    created_date                          VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id                             VARCHAR(38),
-    created_user                          VARCHAR(20),
-    registeredapp_guid                    VARCHAR(38),
-    organization_guid                     VARCHAR(38),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(dataattribute_id) REFERENCES refdata_dataattributes(dataattribute_id),
-    FOREIGN KEY(registeredapp_guid) REFERENCES refdata_applications(app_guid),
-    FOREIGN KEY(organization_guid) REFERENCES refdata_organizations(organization_guid)
+    PLATFORM_TOKENS_XMAP_ID VARCHAR(38) PRIMARY KEY DEFAULT  (LOWER(HEX(RANDOMBLOB(16)))),
+    DATASTRUCTURE_ID            VARCHAR(38),
+    XMAP_DETAILS                          VARCHAR(75),
+    DATAATTRIBUTE_ID                      VARCHAR(38),
+    FIELDORDER_ID                         INTEGER   DEFAULT 1,
+    CREATED_DATE                          VARCHAR(20) DEFAULT (DATETIME('NOW', 'LOCALTIME')),
+    STATUS_ID                             VARCHAR(38),
+    CREATED_USER                          VARCHAR(20),
+    REGISTEREDAPP_GUID                    VARCHAR(38),
+    ORGANIZATION_GUID                     VARCHAR(38),
+    FOREIGN KEY(STATUS_ID) REFERENCES REFDATA_STATUS(STATUS_ID),
+    FOREIGN KEY(DATAATTRIBUTE_ID) REFERENCES REFDATA_DATAATTRIBUTES(DATAATTRIBUTE_ID),
+    FOREIGN KEY(REGISTEREDAPP_GUID) REFERENCES REFDATA_APPLICATIONS(APP_GUID),
+    FOREIGN KEY(ORGANIZATION_GUID) REFERENCES REFDATA_ORGANIZATIONS(ORGANIZATION_GUID)
 );
 
--- Indexes
-drop index if exists datatier_sdp_dataattributes_uindex
-create index datatier_sdp_dataattributes_uindex
-    on datatier_sdp_dataattributes (datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4,
-                                    supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
-                                    status_id, created_user, registeredapp_guid);
+-- INDEXES
+DROP INDEX IF EXISTS DATATIER_SDP_DATAATTRIBUTES_UINDEX
+CREATE INDEX DATATIER_SDP_DATAATTRIBUTES_UINDEX
+    ON DATATIER_SDP_DATAATTRIBUTES (DATATIER_ID, BASEVALUE, SUPPORTINGVALUE1, SUPPORTINGVALUE2, SUPPORTINGVALUE3, SUPPORTINGVALUE4,
+                                    SUPPORTINGVALUE5, SUPPORTINGVALUE6, SUPPORTINGVALUE7, CREATED_DATE, DATAATTRIBUTE_ID,
+                                    STATUS_ID, CREATED_USER, REGISTEREDAPP_GUID);
 
-DROP INDEX IF EXISTS platform_codesets_industrystds_index;
-CREATE INDEX platform_codesets_industrystds_index ON platform_codesets_industrystds(term_codeset_id, created_date, status_id, code_value, code_desc, industry_std);
-
-DROP INDEX if exists platform_codesets_industrystds_uindex;
-CREATE UNIQUE INDEX platform_codesets_industrystds_uindex ON platform_codesets_industrystds(industry_std, code_value, code_desc);
-
-
-DROP INDEX if exists datatier_crawler_indx;
-CREATE INDEX datatier_crawler_indx ON datatier_crawlers
+DROP INDEX IF EXISTS DATATIER_CRAWLER_INDX;
+CREATE INDEX DATATIER_CRAWLER_INDX ON DATATIER_CRAWLERS
 (
-	datacrawler_id ASC,
-	token ASC,
-	created_date ASC,
-	status_id ASC,
-	registeredapp_guid ASC,
-	organization_guid ASC
+	DATACRAWLER_ID ASC,
+	TOKEN ASC,
+	CREATED_DATE ASC,
+	STATUS_ID ASC,
+	REGISTEREDAPP_GUID ASC,
+	ORGANIZATION_GUID ASC
 )
 
-drop index if exists datatier_sdp_dataattributes_indx;
-create index datatier_sdp_dataattributes_indx on datatier_sdp_dataattributes
+DROP INDEX IF EXISTS DATATIER_SDP_DATAATTRIBUTES_INDX;
+CREATE INDEX DATATIER_SDP_DATAATTRIBUTES_INDX ON DATATIER_SDP_DATAATTRIBUTES
 (
-    datatier_id        ASC,
-    basevalue          ASC,
-    supportingvalue1   ASC,
-    supportingvalue2   ASC,
-    supportingvalue3   ASC,
-    supportingvalue4   ASC,
-    supportingvalue5   ASC,
-    supportingvalue6   ASC,
-    supportingvalue7   ASC,
-    created_date       ASC,
-    status_id          ASC,
-    dataattribute_id   ASC,
-    created_user       ASC,
-    registeredapp_guid ASC
+    DATATIER_ID        ASC,
+    BASEVALUE          ASC,
+    SUPPORTINGVALUE1   ASC,
+    SUPPORTINGVALUE2   ASC,
+    SUPPORTINGVALUE3   ASC,
+    SUPPORTINGVALUE4   ASC,
+    SUPPORTINGVALUE5   ASC,
+    SUPPORTINGVALUE6   ASC,
+    SUPPORTINGVALUE7   ASC,
+    CREATED_DATE       ASC,
+    STATUS_ID          ASC,
+    DATAATTRIBUTE_ID   ASC,
+    CREATED_USER       ASC,
+    REGISTEREDAPP_GUID ASC
 );
 
-drop index if exists datatier_sdp_datastructures_indx;
-create index datatier_sdp_datastructures_index on datatier_sdp_datastructures
+DROP INDEX IF EXISTS DATATIER_SDP_DATASTRUCTURES_INDX;
+CREATE INDEX DATATIER_SDP_DATASTRUCTURES_INDEX ON DATATIER_SDP_DATASTRUCTURES
 (
-    datastructure_core_id ASC,
-    datastructure_name    ASC,
-    created_date          ASC,
-    status_id             ASC,
-    registeredapp_guid    ASC
+    DATASTRUCTURE_CORE_ID ASC,
+    DATASTRUCTURE_NAME    ASC,
+    CREATED_DATE          ASC,
+    STATUS_ID             ASC,
+    REGISTEREDAPP_GUID    ASC
 );
 
-drop index if exists datatier_tokens_indx;
-create index datatier_tokens_index on datatier_tokens
+DROP INDEX IF EXISTS DATATIER_TOKENS_INDX;
+CREATE INDEX DATATIER_TOKENS_INDEX ON DATATIER_TOKENS
 (
-    datatoken_id       ASC,
-    token              ASC,
-    created_date       ASC,
-    status_id          ASC,
-    registeredapp_guid ASC,
-    organization_guid  ASC,
-    intfc_type         ASC,
-    datasource_id      ASC
+    DATATOKEN_ID       ASC,
+    TOKEN              ASC,
+    CREATED_DATE       ASC,
+    STATUS_ID          ASC,
+    REGISTEREDAPP_GUID ASC,
+    ORGANIZATION_GUID  ASC,
+    INTFC_TYPE         ASC,
+    DATASOURCE_ID      ASC
 );
 
-drop index if exists platform_codesets_industrystds_indx;
-CREATE INDEX platform_codesets_industrystds_indx on platform_codesets_industrystds
+DROP INDEX IF EXISTS PLATFORM_CODESETS_INDUSTRYSTDS_INDX;
+CREATE INDEX PLATFORM_CODESETS_INDUSTRYSTDS_INDX ON PLATFORM_CODESETS_INDUSTRYSTDS
 (
-    term_codeset_id ASC,
-    created_date    ASC,
-    status_id       ASC,
-    cui             ASC,
-    lat             ASC,
-    ts             ASC,
-    lui             ASC,
-    stt             ASC,
-    sui             ASC,
-    ispref          ASC,
-    aui             ASC,
-    saui            ASC,
-    scui            ASC,
-    sdui            ASC,
-    sab             ASC,
-    tty             ASC,
-    code            ASC,
-    str             ASC,
-    srl             ASC,
-    suppress       ASC,
-    cvf             ASC,
+    TERMCODESET_ID ASC,
+    CREATED_DATE    ASC,
+    STATUS_ID       ASC,
+    CUI             ASC,
+    LAT             ASC,
+    TS             ASC,
+    LUI             ASC,
+    STT             ASC,
+    SUI             ASC,
+    ISPREF          ASC,
+    AUI             ASC,
+    SAUI            ASC,
+    SCUI            ASC,
+    SDUI            ASC,
+    SAB             ASC,
+    TTY             ASC,
+    CODE            ASC,
+    STR             ASC,
+    SRL             ASC,
+    SUPPRESS       ASC,
+    CVF             ASC
 );

@@ -15,7 +15,7 @@ CREATE TABLE refdata_applications
     status_id varchar(10) DEFAULT 'Active',
     vendor_id              char(38),
     industry_oid           varchar(49),
-    organization_guid       varchar(49),
+    organization_guid       varchar(38),
     PRIMARY KEY (app_guid)
 );
 
@@ -28,7 +28,6 @@ CREATE TABLE refdata_codesets
     status_id varchar(10) DEFAULT 'Active',
     created_date       timestamp    DEFAULT CURRENT_TIMESTAMP,
     created_user       varchar(20)  DEFAULT 'NULL'::character varying,
-    codeset_guid       char(38)     DEFAULT 'NULL'::bpchar,
     field_mapping      varchar(40)  DEFAULT 'NULL'::character varying,
     sensitivityflag_id varchar(5) DEFAULT 'UNDF',
     externaltable_id   varchar(20)  DEFAULT 'NULL'::character varying,
@@ -46,7 +45,6 @@ CREATE TABLE refdata_dataattributes
     created_date               timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',
     created_user               varchar(20) DEFAULT 'NULL'::character varying,
-    platform_dataattribute_guid char(38)    DEFAULT 'NULL'::bpchar,
     registeredapp_guid             char(38)    DEFAULT 'NULL'::character varying,
     attribute_type              varchar(10) DEFAULT 'NULL'::character varying,
     PRIMARY KEY (dataattribute_id)
@@ -62,7 +60,6 @@ create table refdata_datastructures
     created_date                timestamp   default CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',
     created_user                varchar(20) default 'NULL'::character varying,
-    platform_datastructures_guid char(38)    default gen_random_uuid()::bpchar,
     registeredapp_guid              char(38)    DEFAULT 'NULL'::character varying,
     PRIMARY KEY (datastructure_id)
 );
@@ -249,7 +246,6 @@ CREATE TABLE refdata_vendors
     created_date timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',
     created_user varchar(20) DEFAULT 'NULL'::character varying,
-    vendor_guid  char(38)    DEFAULT 'NULL'::bpchar,
     PRIMARY KEY (vendor_id)
 );
 
@@ -276,6 +272,30 @@ ALTER TABLE refdata_codesets
 ALTER TABLE refdata_codesets
     ADD FOREIGN KEY (sensitivityflag_id)
         REFERENCES refdata_sensitivityflags (sensitivityflag_id);
+
+ALTER TABLE refdata_dataattributes
+    ADD FOREIGN KEY  (status_id)
+        REFERENCES refdata_status(status_id);
+
+ALTER TABLE refdata_dataattributes
+    ADD FOREIGN KEY (sensitivityflag_id)
+        REFERENCES refdata_sensitivityflags (sensitivityflag_id);
+
+ALTER TABLE refdata_dataattributes
+    ADD FOREIGN KEY (registeredapp_guid)
+        REFERENCES refdata_applications (app_guid);
+
+ALTER TABLE refdata_datastructires
+    ADD FOREIGN KEY  (status_id)
+        REFERENCES refdata_status(status_id);
+
+ALTER TABLE refdata_datastructures
+    ADD FOREIGN KEY (sensitivityflag_id)
+        REFERENCES refdata_sensitivityflags (sensitivityflag_id);
+
+ALTER TABLE refdata_datastructures
+    ADD FOREIGN KEY (registeredapp_guid)
+        REFERENCES refdata_applications (app_guid);
 
 ALTER TABLE refdata_devicetypes
     ADD FOREIGN KEY  (status_id)
@@ -312,6 +332,10 @@ ALTER TABLE refdata_legalentities
 ALTER TABLE refdata_legalentities
     ADD FOREIGN KEY (state_id)
         REFERENCES refdata_usstates (state_id);
+
+ALTER TABLE refdata_operationtypes
+    ADD FOREIGN KEY (status_id)
+        REFERENCES refdata_status (status_id);
 
 ALTER TABLE refdata_organizations
     ADD FOREIGN KEY (legalentity_guid)
@@ -412,7 +436,7 @@ ALTER TABLE datamodel_datatables
 drop table if exists datatier_crawlers cascade;
 CREATE TABLE datatier_crawlers
 (
-    datacrawler_id      char(38) default gen_random_uuid() NOT NULL,
+    datacrawler_id     bigserial primary key,
     token               char(128)   DEFAULT 'NULL'::character varying,
     crawledtext_details text        DEFAULT 'NULL'::character varying,
     created_date        timestamp   DEFAULT CURRENT_TIMESTAMP,
@@ -437,7 +461,7 @@ ALTER TABLE datatier_crawlers
 drop table if exists datatier_sdp_dataattributes cascade;
 create table datatier_sdp_dataattributes
 (
-    datatier_id      char(38) default gen_random_uuid() NOT NULL,
+    datatier_id      bigserial primary key,
     basevalue        varchar(99),
     supportingvalue1 varchar(169),
     supportingvalue2 varchar(50),
@@ -451,8 +475,7 @@ create table datatier_sdp_dataattributes
     dataattribute_id  char(38),
     created_user     varchar(20),
     registeredapp_guid   char(38),
-    datagentype_id   integer,
-    dataattribute_guid char(38) DEFAULT 'UNDF'
+    datagentype_id   integer
 );
 
 ALTER TABLE datatier_sdp_dataattributes
@@ -470,8 +493,9 @@ ALTER TABLE datatier_sdp_dataattributes
 drop table if exists datatier_sdp_datastructures cascade;
 CREATE TABLE datatier_sdp_datastructures
 (
-    datastructure_core_id  char(38) DEFAULT gen_random_uuid() NOT NULL,
+    datastructure_core_id  bigserial primary key,
     datastructure_name    varchar(29) DEFAULT 'NULL'::character varying,
+    datastructure_id  varchar(38),
     datastructure_details text        DEFAULT 'NULL'::character varying,
     created_date          timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',
@@ -487,10 +511,14 @@ ALTER TABLE datatier_sdp_datastructures
     ADD FOREIGN KEY (status_id)
         REFERENCES refdata_status (status_id);
 
+ALTER TABLE datatier_sdp_datastructures
+    ADD FOREIGN KEY (datastructure_id)
+        REFERENCES refdata_datastructures (datastructure_id);
+
 drop table if exists datatier_tokens;
 CREATE TABLE datatier_tokens
 (
-    datatoken_id      char(38)    DEFAULT gen_random_uuid() NOT NULL,
+    datatoken_id      bigserial primary key,
     token             char(128)   DEFAULT 'NULL'::character varying,
     created_date      timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',
@@ -544,15 +572,29 @@ CREATE TABLE platform_codesets_industrystds
     termcodeset_id    char(38)    DEFAULT gen_random_uuid() NOT NULL,
     created_date      timestamp    DEFAULT CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',
-    code_value         varchar(20)  DEFAULT 'NULL'::character varying,
-    code_desc          varchar(129) DEFAULT 'NULL'::character varying,
-    industry_std      varchar(6)   DEFAULT 'UNDF'::character varying,
-    terminology_std varchar(25),
+    cui             varchar(8) null,
+    lat             varchar(3) null,
+    ts              varchar(1) null,
+    lui             varchar(10) null,
+    stt             varchar(3) null,
+    sui             varchar(10) null,
+    ispref          varchar(1) null,
+    aui             varchar(9) null,
+    saui            varchar(50) null,
+    scui            varchar(50) null,
+    sdui            varchar(50) null,
+    sab             varchar(25) null,
+    tty             varchar(20) null,
+    code            varchar(50) null,
+    str             TEXT null,
+    srl             int null,
+    suppress        varchar(1) null,
+    cvf             int null,
     PRIMARY KEY (termcodeset_id)
 );
 
 ALTER TABLE platform_codesets_industrystds
-    ADD FOREIGN KEY (terminology_std)
+    ADD FOREIGN KEY (sab)
         REFERENCES refdata_terminologystds (terminology_std);
 
 ALTER TABLE platform_codesets_industrystds
@@ -565,15 +607,15 @@ CREATE TABLE platform_codesets_xmaps
     codesetcrossmap_id  char(38) DEFAULT gen_random_uuid() NOT NULL,
     application_guid      CHAR(38),
     organization_guid      CHAR(38),
-    terminologystd_from     varchar(25),
-    terminologystd_to   varchar(25),
+    terminologystd_from     CHAR(38),
+    terminologystd_to   CHAR(38),
     created_date        timestamp    DEFAULT CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',
     created_user        varchar(20)  DEFAULT 'NULL'::character varying,
     transformcode_value varchar(40)  DEFAULT 'NULL'::character varying,
     transformcode_desc  varchar(129) DEFAULT 'NULL'::character varying,
     originalcode_value  varchar(40),
-    originalcode_desc   varchar(40),
+    originalcode_desc   varchar(129),
     PRIMARY KEY (codesetcrossmap_id)
 );
 ALTER TABLE platform_codesets_xmaps
@@ -586,11 +628,11 @@ ALTER TABLE platform_codesets_xmaps
 
 ALTER TABLE platform_codesets_xmaps
     ADD FOREIGN KEY (terminologystd_from)
-        REFERENCES refdata_terminologystds (terminology_std);
+        REFERENCES refdata_codesets (codesets_id);
 
 ALTER TABLE platform_codesets_xmaps
     ADD FOREIGN KEY (terminologystd_to)
-        REFERENCES refdata_terminologystds (terminology_std);
+        REFERENCES refdata_codesets (codesets_id);
 
 ALTER TABLE platform_codesets_xmaps
     ADD FOREIGN KEY (status_id)
@@ -746,7 +788,6 @@ CREATE TABLE platform_datastructures_dtl
     created_date                                  timestamp   DEFAULT CURRENT_TIMESTAMP,
     status_id varchar(10) DEFAULT 'Active',
     created_user                                  varchar(20) DEFAULT 'NULL'::character varying,
-    platform_datastructures_to_dataattributes_guid char(38)    DEFAULT 'NULL'::bpchar,
     registeredapp_guid                                char(38)    DEFAULT 'NULL'::bpchar,
     dataattribute_id                    char(38),
     PRIMARY KEY (platform_datastructuresdtl_id)
@@ -839,12 +880,16 @@ ALTER TABLE platform_tokens_xmaps
         REFERENCES refdata_applications (app_guid);
 
 -- Indexes
+drop index if exists datatier_sdp_dataattributes_index on datatier_sdp_dataattributes;
 create index if not exists datatier_sdp_dataattributes_index
     on datatier_sdp_dataattributes (datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4,
                                     supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
                                     datagentype_id, status_id, created_user, registeredapp_guid);
 
+DROP INDEX if exists platform_codesets_industrystds_index ON platform_codesets_industrystds;
 CREATE INDEX platform_codesets_industrystds_index ON platform_codesets_industrystds(industry_std, created_date, status_id, code_value, code_desc);
+
+DROP INDEX if exists platform_codesets_industrystds_uindex ON platform_codesets_industrystds;
 CREATE UNIQUE INDEX platform_codesets_industrystds_uindex ON platform_codesets_industrystds(industry_std, code_value, code_desc);
 
 DROP INDEX if exists datatier_crawler_indx ON datatier_crawlers;
@@ -899,4 +944,29 @@ create index datatier_tokens_index on datatier_tokens
     organization_guid  ASC,
     intfc_type         ASC,
     datasource_id      ASC
+);
+
+drop index if exists platform_codesets_industrystds_indx on platform_codesets_industrystds;
+CREATE TABLE platform_codesets_industrystds_indx on platform_codesets_industrystds
+(
+    term_codeset_id ASC,
+    created_date    ASC,
+    status_id       ASC,
+    cui             ASC,
+    lat             ASC,
+    ts             ASC,
+    lui             ASC,
+    stt             ASC,
+    sui             ASC,
+    ispref          ASC,
+    aui             ASC,
+    saui            ASC,
+    scui            ASC,
+    sdui            ASC,
+    sab             ASC,
+    tty             ASC,
+    code            ASC,
+    srl             ASC,
+    suppress       ASC,
+    cvf             ASC,
 );

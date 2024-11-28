@@ -325,18 +325,18 @@ drop table if exists datatier_sdp_dataattributes;
 create table datatier_sdp_dataattributes
 (
     datatier_id        INTEGER PRIMARY KEY AUTOINCREMENT,
-    basevalue          TEXT,
-    supportingvalue1   TEXT,
-    supportingvalue2   TEXT,
-    supportingvalue3   TEXT,
-    supportingvalue4   TEXT,
-    supportingvalue5   TEXT,
-    supportingvalue6   TEXT,
-    supportingvalue7   TEXT,
-    created_date       TEXT,
+    basevalue          VARCHAR(149),
+    supportingvalue1   VARCHAR(149),
+    supportingvalue2   VARCHAR(149),
+    supportingvalue3   VARCHAR(149),
+    supportingvalue4   VARCHAR(149),
+    supportingvalue5   VARCHAR(149),
+    supportingvalue6   VARCHAR(149),
+    supportingvalue7   VARCHAR(149),
+    created_date       VARCHAR(149),
     status_id          VARCHAR(38),
     dataattribute_id   VARCHAR(38),
-    created_user       TEXT,
+    created_user       VARCHAR(20),
     registeredapp_guid VARCHAR(38),
     FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
     FOREIGN KEY(dataattribute_id) REFERENCES refdata_dataattributes(dataattribute_id),
@@ -347,9 +347,9 @@ drop table if exists platform_datasources;
 create table platform_datasources
 (
     platform_datasources_id VARCHAR(38) primary key default  (lower(hex(randomblob(16)))),
-    datasource_name         TEXT,
-    datasource_type         TEXT,
-    created_date            TEXT default (datetime('now', 'localtime')),
+    datasource_name         VARCHAR(79),
+    datasource_type         VARCHAR(30),
+    created_date            VARCHAR(20) default (datetime('now', 'localtime')),
     status_id               VARCHAR(38),
     created_user            VARCHAR(38),
     organization_guid       VARCHAR(38),
@@ -363,7 +363,7 @@ drop table if exists datatier_tokens;
 CREATE TABLE datatier_tokens
 (
     datatoken_id       INTEGER PRIMARY KEY AUTOINCREMENT,
-    token              char(128),
+    token              varchar(128),
     created_date       TEXT default (datetime('now', 'localtime')),
     status_id          VARCHAR(38),
     registeredapp_guid VARCHAR(38),
@@ -397,14 +397,29 @@ CREATE TABLE platform_codesets
 drop table if exists platform_codesets_industrystds;
 CREATE TABLE platform_codesets_industrystds
 (
-    term_codeset_id  VARCHAR(38)  primary key default  (lower(hex(randomblob(16)))),
-    created_date      VARCHAR(20) default (datetime('now', 'localtime')),
-    status_id         VARCHAR(38),
-    code_value        VARCHAR(20),
-    code_desc         VARCHAR(129),
-    industry_std      VARCHAR(6),
-    FOREIGN KEY(status_id) REFERENCES refdata_status(status_id),
-    FOREIGN KEY(industry_std) REFERENCES refdata_industrystds(industry_std)
+    term_codeset_id VARCHAR(38) primary key default (lower(hex(randomblob(16)))),
+    created_date    VARCHAR(20)             default (datetime('now', 'localtime')),
+    status_id       VARCHAR(38),
+    cui             varchar(8) null,
+    lat             varchar(3) null,
+    ts              varchar(1) null,
+    lui             varchar(10) null,
+    stt             varchar(3) null,
+    sui             varchar(10) null,
+    ispref          varchar(1) null,
+    aui             varchar(9) null,
+    saui            varchar(50) null,
+    scui            varchar(50) null,
+    sdui            varchar(50) null,
+    sab             varchar(25) null,
+    tty             varchar(20) null,
+    code            varchar(50) null,
+    str             TEXT null,
+    srl             int null,
+    suppress        varchar(1) null,
+    cvf             int null,
+    FOREIGN KEY (status_id) REFERENCES refdata_status (status_id),
+    FOREIGN KEY (sab) REFERENCES refdata_industrystds (terminology_std)
 );
 
 DROP TABLE if exists platform_codesets_xmaps;
@@ -562,12 +577,16 @@ CREATE TABLE platform_tokens_xmaps
 );
 
 -- Indexes
-create index if not exists datatier_sdp_dataattributes_uindex
+drop index if exists datatier_sdp_dataattributes_uindex
+create index datatier_sdp_dataattributes_uindex
     on datatier_sdp_dataattributes (datatier_id, basevalue, supportingvalue1, supportingvalue2, supportingvalue3, supportingvalue4,
                                     supportingvalue5, supportingvalue6, supportingvalue7, created_date, dataattribute_id,
                                     status_id, created_user, registeredapp_guid);
 
+DROP INDEX IF EXISTS platform_codesets_industrystds_index;
 CREATE INDEX platform_codesets_industrystds_index ON platform_codesets_industrystds(term_codeset_id, created_date, status_id, code_value, code_desc, industry_std);
+
+DROP INDEX if exists platform_codesets_industrystds_uindex;
 CREATE UNIQUE INDEX platform_codesets_industrystds_uindex ON platform_codesets_industrystds(industry_std, code_value, code_desc);
 
 
@@ -622,4 +641,30 @@ create index datatier_tokens_index on datatier_tokens
     organization_guid  ASC,
     intfc_type         ASC,
     datasource_id      ASC
+);
+
+drop index if exists platform_codesets_industrystds_indx;
+CREATE INDEX platform_codesets_industrystds_indx on platform_codesets_industrystds
+(
+    term_codeset_id ASC,
+    created_date    ASC,
+    status_id       ASC,
+    cui             ASC,
+    lat             ASC,
+    ts             ASC,
+    lui             ASC,
+    stt             ASC,
+    sui             ASC,
+    ispref          ASC,
+    aui             ASC,
+    saui            ASC,
+    scui            ASC,
+    sdui            ASC,
+    sab             ASC,
+    tty             ASC,
+    code            ASC,
+    str             ASC,
+    srl             ASC,
+    suppress       ASC,
+    cvf             ASC,
 );

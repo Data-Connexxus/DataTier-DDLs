@@ -218,7 +218,7 @@ CREATE TABLE refdata_terminologystds
 drop table if exists refdata_timezones;
 CREATE TABLE refdata_timezones
 (
-    timezone_value VARCHAR(3) primary key,
+    timezone_id VARCHAR(3) primary key,
     timezone_desc  VARCHAR(25),
     created_date   VARCHAR(20) ,
     status_id      VARCHAR(38)

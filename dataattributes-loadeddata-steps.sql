@@ -30,6 +30,15 @@ from datatier_sdp_dataattributes_metadata
 group by dataattribute_param, dataattribute_value,dataattribute_id, dataattribute_guid
 order by dataattribute_param, dataattribute_value,dataattribute_id, dataattribute_guid,
 random() limit(100)
+-- Grouping the loaded data by specific attribute_id
+select distinct md.dataattribute_param, md.dataattribute_id,
+                attribs.dataattribute_name
+from datatier_sdp_dataattributes_metadata md,
+refdata_dataattributes attribs
+where md.dataattribute_id = attribs.dataattribute_id
+group by md.dataattribute_param, md.dataattribute_id, attribs.dataattribute_name
+order by md.dataattribute_param, md.dataattribute_id, attribs.dataattribute_name
+
 
 select 'Card Name' as dataatribute_param, supportingvalue1 as dataattribute_value, dataattribute_id,
        dataattribute_guid from datatier_sdp_dataattributes_master
@@ -40,6 +49,9 @@ from datatier_sdp_dataattributes_metadata
 where dataattribute_id='a0b7c079-3cd6-4447-97ed-4419652145d3 ' and dataattribute_param='Card Number'
 group by dataattribute_param, dataattribute_value, dataattribute_id, dataattribute_guid
 order by dataattribute_param, dataattribute_value, dataattribute_id, dataattribute_guid
+
+select distinct dataattribute_param, dataattribute_guid from datatier_sdp_dataattributes_metadata
+        group by dataattribute_param, dataattribute_guid
 
 select * from datatier_sdp_dataattributes_metadata
 where dataattribute_id='cbf2f975-a62f-4f8c-8031-b54a01d2e153 '

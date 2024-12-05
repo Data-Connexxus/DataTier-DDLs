@@ -1,12 +1,17 @@
---select * into datatier_sdp_dataatributes_master from datatier_sdp_dataattributes
---select count(*) from datatier_sdp_dataatributes_master
---alter table datatier_sdp_dataatributes_master add column dataattribute_guid varchar(38)
---update datatier_sdp_dataatributes_master set dataattribute_guid = gen_random_uuid() where status_id is not null
-
+-- select * into datatier_sdp_dataatributes_master from datatier_sdp_dataattributes
+-- select count(*) from datatier_sdp_dataatributes_master
+-- alter table datatier_sdp_dataatributes_master add column dataattribute_guid varchar(38)
+-- update datatier_sdp_dataatributes_master set dataattribute_guid = gen_random_uuid() where status_id is not null
+-- alter table datatier_sdp_dataatributes_master add column dataattribute_guid varchar(38)
+-- update datatier_sdp_dataatributes_master set dataattribute_guid = gen_random_uuid() where status_id is not null
 -- Table for imports
-create table if not exists datatier_sdp_attributes_metadata
+
+drop sequence if exists datatier_sdp_attributes_metadata_seq;
+create sequence datatier_sdp_attributes_metadata_seq;
+drop table if exists datatier_sdp_attributes_metadata;
+create table if not exists datatier_sdp_dataattributes_metadata
 (
-    sdp_dataattribute_id bigint default nextval('datatier_sdp_attributes_seq'::regclass),
+    sdp_dataattribute_id bigint default nextval('datatier_sdp_attributes_metadata_seq'::regclass),
     dataattribute_param  varchar(99),
     dataattribute_value  varchar(169),
     created_date         timestamp default CURRENT_TIMESTAMP,
@@ -19,9 +24,26 @@ create table if not exists datatier_sdp_attributes_metadata
     primary key (sdp_dataattribute_id)
 );
 
-alter table datatier_sdp_dataatributes_master add column dataattribute_guid varchar(38)
-update datatier_sdp_dataatributes_master set dataattribute_guid = gen_random_uuid() where status_id is not null
+-- Random query sample(s)
+select dataattribute_param, dataattribute_value, dataattribute_id, dataattribute_guid
+from datatier_sdp_dataattributes_metadata
+group by dataattribute_param, dataattribute_value,dataattribute_id, dataattribute_guid
+order by dataattribute_param, dataattribute_value,dataattribute_id, dataattribute_guid,
+random() limit(100)
 
+select 'Card Name' as dataatribute_param, supportingvalue1 as dataattribute_value, dataattribute_id,
+       dataattribute_guid from datatier_sdp_dataattributes_master
+where dataattribute_id='a0b7c079-3cd6-4447-97ed-4419652145d3 '
+
+select dataattribute_param, dataattribute_value, dataattribute_id, dataattribute_guid
+from datatier_sdp_dataattributes_metadata
+where dataattribute_id='a0b7c079-3cd6-4447-97ed-4419652145d3 ' and dataattribute_param='Card Number'
+group by dataattribute_param, dataattribute_value, dataattribute_id, dataattribute_guid
+order by dataattribute_param, dataattribute_value, dataattribute_id, dataattribute_guid
+
+select * from datatier_sdp_dataattributes_metadata
+where dataattribute_id='cbf2f975-a62f-4f8c-8031-b54a01d2e153 '
+  and dataattribute_guid='6915f230-3b21-45cb-87f6-fc49d93aabc1  '
 
 -- file export naming convention: attrib-<attrib_name>-attribute.csv
 -- Last Names: Last Names

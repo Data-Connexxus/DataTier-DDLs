@@ -8,10 +8,10 @@
 
 drop sequence if exists datatier_sdp_attributes_metadata_seq;
 create sequence datatier_sdp_attributes_metadata_seq;
-drop table if exists datatier_sdp_attributes_metadata;
+drop table if exists datatier_sdp_dataattributes_metadata;
 create table if not exists datatier_sdp_dataattributes_metadata
 (
-    sdp_dataattribute_id bigint default nextval('datatier_sdp_attributes_metadata_seq'::regclass),
+    sdp_dataattribute_metadata_id SERIAL,
     dataattribute_param  varchar(99),
     dataattribute_value  varchar(169),
     created_date         timestamp default CURRENT_TIMESTAMP,
